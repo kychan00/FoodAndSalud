@@ -228,3 +228,12 @@
     font-size: 0.72rem;
   }
 }
+
+.today-state-card--summary {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.today-actions {
+  position: relative;
+}

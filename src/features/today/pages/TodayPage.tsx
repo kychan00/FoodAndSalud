@@ -1,24 +1,36 @@
 import { useState } from "react";
+
 import { Activity, CalendarDays, Pill, Salad } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
 import { DateStripCalendar } from "../../../components/date/DateStripCalendar";
+
 import { Card } from "../../../components/ui/Card";
+
 import {
   formatFullDate,
   formatLongDay,
   isToday,
   withTimeOfDay,
 } from "../../../utils/date";
+
 import { useAuth } from "../../auth/useAuth";
+
+import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
+
 import {
   RegisterSheet,
   type RegisterMode,
 } from "../../entries/components/RegisterSheet";
-import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
+
 import { TimelineList } from "../../timeline/components/TimelineList";
-import { useDayTimeline } from "../../timeline/useDayTimeline";
+
 import type { TimelineEvent } from "../../timeline/timeline.types";
+
+import { useDayTimeline } from "../../timeline/useDayTimeline";
+
+import { DailyOverview } from "../components/DailyOverview";
 
 import "./TodayPage.css";
 
@@ -47,22 +59,14 @@ export function TodayPage() {
 
   const initial = displayName.charAt(0).toUpperCase();
 
-  const foodCount = events.filter(
-    (event) => event.event_type === "food",
-  ).length;
-
-  const bathroomCount = events.filter(
-    (event) => event.event_type === "bathroom",
-  ).length;
-
-  const medicineCount = events.filter(
-    (event) => event.event_type === "medicine",
-  ).length;
-
   const openRegister = (mode: RegisterMode) => {
     setRegisterMode(mode);
 
     setRegisterOpen(true);
+  };
+
+  const goToday = () => {
+    setSelectedDate(new Date());
   };
 
   return (
@@ -106,29 +110,25 @@ export function TodayPage() {
           onSelect={setSelectedDate}
         />
 
-        <section className="today-focus">
-          <p className="today-focus__label">
-            {isToday(selectedDate) ? "Su digestión hoy" : "Resumen del día"}
-          </p>
+        {isLoading ? (
+          <Card className="today-state-card today-state-card--summary">
+            Cargando resumen…
+          </Card>
+        ) : null}
 
-          <strong className="today-focus__value">
-            {events.length === 0
-              ? "Sin registros"
-              : `${events.length} ${
-                  events.length === 1 ? "registro" : "registros"
-                }`}
-          </strong>
+        {isError ? (
+          <Card className="today-state-card today-state-card--summary">
+            No pudimos cargar el resumen de este día.
+          </Card>
+        ) : null}
 
-          <p className="today-focus__description">
-            {events.length === 0
-              ? "Registre comidas, Bristol y Medicina para comenzar a encontrar patrones."
-              : `${foodCount} ${
-                  foodCount === 1 ? "comida" : "comidas"
-                } · ${bathroomCount} Bristol · ${medicineCount} ${
-                  medicineCount === 1 ? "medicina" : "medicinas"
-                }`}
-          </p>
-        </section>
+        {!isLoading && !isError ? (
+          <DailyOverview
+            events={events}
+            selectedIsToday={isToday(selectedDate)}
+            onReturnToday={goToday}
+          />
+        ) : null}
 
         <section className="today-actions">
           <button

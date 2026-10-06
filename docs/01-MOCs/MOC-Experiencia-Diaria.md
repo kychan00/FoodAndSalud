@@ -43,3 +43,7 @@ estado: activo
 ## Comidas recientes
 
 - [[Comidas-Recientes-v1]]
+
+## Resumen diario
+
+- [[Resumen-Diario-v1]]

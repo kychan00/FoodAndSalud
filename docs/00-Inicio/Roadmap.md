@@ -647,3 +647,29 @@ estado: activo
 - [x] Validación visual plantilla
 - [x] Validación de fecha/hora
 - [x] Validación móvil
+
+## Fase 4.4 — Resumen diario v1
+
+- [x] Cerrar Fase 4.3
+- [x] Derivar resumen del timeline existente
+- [x] Evitar consulta adicional
+- [x] Conteo de comidas
+- [x] Conteo Bristol
+- [x] Conteo Medicina
+- [x] Última comida
+- [x] Hora de última comida
+- [x] Último Bristol
+- [x] Hora de último Bristol
+- [x] Última Medicina
+- [x] Hora de última Medicina
+- [x] Día vacío
+- [x] Botón volver a Hoy
+- [x] Orden independiente del input
+- [x] Test del motor
+- [x] ADR-0036
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [ ] Validación visual día con registros
+- [ ] Validación visual día vacío
+- [ ] Validación botón Hoy
+- [ ] Validación móvil

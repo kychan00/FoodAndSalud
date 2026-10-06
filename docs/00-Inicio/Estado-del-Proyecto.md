@@ -827,3 +827,23 @@ Las combinaciones repetidas se deduplican y se conserva la versión más recient
 No se añadió una tabla de plantillas.
 
 Patrones v1 permanece congelado.
+
+## Fase 4.4 — Resumen diario v1
+
+Hoy incorpora una vista compacta del día.
+
+El resumen se deriva del timeline ya cargado.
+
+Muestra:
+
+- última comida;
+- último Bristol;
+- última Medicina;
+- contadores;
+- horarios.
+
+No realiza consultas adicionales.
+
+Las fechas históricas ofrecen una acción para regresar directamente a Hoy.
+
+El resumen es descriptivo y no modifica Patrones v1.

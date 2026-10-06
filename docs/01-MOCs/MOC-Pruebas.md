@@ -187,3 +187,7 @@ repetido ocho veces.
 ## Comidas recientes
 
 - [[Prueba-Comidas-Recientes-v1]]
+
+## Resumen diario
+
+- [[Prueba-Resumen-Diario-v1]]

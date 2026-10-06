@@ -144,3 +144,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Comidas recientes
 
 - [[ADR-0035-Plantillas-Derivadas-de-Comidas-Historicas]]
+
+## Resumen diario
+
+- [[ADR-0036-Resumen-Diario-Derivado-del-Timeline]]
