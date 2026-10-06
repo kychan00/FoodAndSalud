@@ -159,3 +159,7 @@ repetido ocho veces.
 ## Medicamentos específicos
 
 - [[Prueba-Medicamentos-Especificos]]
+
+## Timing de Medicina
+
+- [[Prueba-Medicina-Antes-y-Despues]]

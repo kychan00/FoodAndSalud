@@ -1,3 +1,5 @@
+import { medicineBeforeScenario } from "./medicineBeforeScenario";
+
 import { concurrentMedicineScenario } from "./concurrentScenario";
 
 import {
@@ -349,6 +351,7 @@ function buildMixedMealScenario(): PatternQaScenario {
 }
 
 export const patternQaScenarios: PatternQaScenario[] = [
+  medicineBeforeScenario,
   concurrentMedicineScenario,
   temporalPersistentScenario,
   temporalRecentScenario,

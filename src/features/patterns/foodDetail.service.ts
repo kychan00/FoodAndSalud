@@ -8,6 +8,8 @@ import type {
 
 import { buildFoodDetailReport } from "./foodDetail.engine";
 
+import { MEDICINE_PRE_WINDOW_HOURS } from "./medicineTiming.constants";
+
 import type { FoodDetailExposureInput } from "./foodDetail.types";
 
 const DETAIL_DAYS = 90;
@@ -20,6 +22,12 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
   start.setDate(end.getDate() - DETAIL_DAYS);
 
   const startIso = start.toISOString();
+
+  const medicineStart = new Date(
+    start.getTime() - MEDICINE_PRE_WINDOW_HOURS * 3_600_000,
+  );
+
+  const medicineStartIso = medicineStart.toISOString();
 
   const endIso = end.toISOString();
 
@@ -63,7 +71,7 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
       .from("medicine_entries")
       .select("id,taken_at,medicine_id,dose,unit")
       .eq("user_id", userId)
-      .gte("taken_at", startIso)
+      .gte("taken_at", medicineStartIso)
       .lte("taken_at", endIso)
       .order("taken_at", {
         ascending: true,

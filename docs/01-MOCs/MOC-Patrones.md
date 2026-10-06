@@ -94,3 +94,9 @@ fecha: 2026-10-06
 - [[Medicamentos-Especificos]]
 - [[ADR-0028-Identidad-de-Medicamento-en-Patrones]]
 - [[Prueba-Medicamentos-Especificos]]
+
+## Timing de Medicina
+
+- [[Medicina-Antes-y-Despues]]
+- [[ADR-0029-Ventana-Previa-de-Medicina]]
+- [[Prueba-Medicina-Antes-y-Despues]]

@@ -115,3 +115,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Medicamentos-Especificos]]
 - [[ADR-0028-Identidad-de-Medicamento-en-Patrones]]
+
+## Timing de Medicina
+
+- [[Medicina-Antes-y-Despues]]
+- [[ADR-0029-Ventana-Previa-de-Medicina]]

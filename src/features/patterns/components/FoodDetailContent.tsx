@@ -20,6 +20,8 @@ import { FoodConcurrentFactors } from "./FoodConcurrentFactors";
 
 import { FoodSpecificMedicines } from "./FoodSpecificMedicines";
 
+import { FoodMedicineTiming } from "./FoodMedicineTiming";
+
 import { FoodEffectMetrics } from "./FoodEffectMetrics";
 
 import { FoodTemporalPersistence } from "./FoodTemporalPersistence";
@@ -223,6 +225,8 @@ export function FoodDetailContent({
 
       <FoodSpecificMedicines report={data} />
 
+      <FoodMedicineTiming report={data} />
+
       <FoodCombinationAnalysis report={data} />
 
       <FoodHistoryChart
@@ -367,6 +371,23 @@ export function FoodDetailContent({
                     Ventana efectiva:{" "}
                     <strong>{item.effectiveWindowHours.toFixed(1)} h</strong>.
                     Terminó al registrarse otra comida.
+                  </div>
+                ) : null}
+
+                {item.medicineBeforeOverlap ? (
+                  <div className="food-detail-history-item__medicine">
+                    <Pill size={16} />
+                    {item.medicinesBefore.some(
+                      (medicine) => medicine.medicineName,
+                    )
+                      ? `Medicina antes: ${[
+                          ...new Set(
+                            item.medicinesBefore
+                              .map((medicine) => medicine.medicineName)
+                              .filter((name): name is string => Boolean(name)),
+                          ),
+                        ].join(", ")}`
+                      : "Medicina registrada antes de la comida"}
                   </div>
                 ) : null}
 

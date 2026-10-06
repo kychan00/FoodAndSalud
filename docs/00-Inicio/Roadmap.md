@@ -448,3 +448,31 @@ estado: activo
 - [x] ADR-0028
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.11 — Medicina antes vs después
+
+- [x] Ventana previa de 6 h
+- [x] Frontera exacta -6 h
+- [x] Excluir eventos anteriores a -6 h
+- [x] Mantener ventana posterior efectiva
+- [x] Consultar 6 h previas en Supabase
+- [x] Conservar Medicina previa en historial
+- [x] Antes solamente
+- [x] Después solamente
+- [x] Antes y después
+- [x] Sin medicamento
+- [x] Comparar antes vs sin
+- [x] Comparar después vs sin
+- [x] Diferencias en pp
+- [x] Mediana temporal antes
+- [x] Mediana temporal después
+- [x] Mostrar tomas antes y después
+- [x] Escenario QA Omeprazol antes
+- [x] Mantener escenario posterior
+- [x] Test de frontera
+- [x] Tests del motor
+- [x] Test QA
+- [x] BUG-0015
+- [x] ADR-0029
+- [x] Documentación Obsidian
+- [x] Validación visual

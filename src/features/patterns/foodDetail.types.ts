@@ -63,16 +63,19 @@ export interface FoodDetailBathroomOutcome {
 export interface FoodDetailMedicineContext {
   id: string;
 
-  /*
-   * Pueden ser null en fixtures antiguos que únicamente
-   * registraban que existió "alguna Medicina".
-   */
   medicineId: string | null;
 
   medicineName: string | null;
 
   occurredAt: string;
 
+  /*
+   * Positivo:
+   * después de la comida.
+   *
+   * Negativo:
+   * antes de la comida.
+   */
   elapsedHours: number;
 
   dose: number | null;
@@ -97,9 +100,25 @@ export interface FoodExposureHistoryItem {
 
   firstAdverseBathroom: FoodDetailBathroomOutcome | null;
 
+  /*
+   * Compatibilidad con Fases 3.9 / 3.10:
+   *
+   * medicineOverlap y medicines continúan significando
+   * Medicina DESPUÉS de la comida dentro de la ventana
+   * efectiva.
+   */
   medicineOverlap: boolean;
 
   medicines: FoodDetailMedicineContext[];
+
+  /*
+   * Fase 3.11:
+   *
+   * Medicina registrada en las 6 horas previas.
+   */
+  medicineBeforeOverlap: boolean;
+
+  medicinesBefore: FoodDetailMedicineContext[];
 
   windowTruncated: boolean;
 

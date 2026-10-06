@@ -25,6 +25,8 @@ import {
   type MealWindowBoundary,
 } from "./mealWindow";
 
+import { MEDICINE_PRE_WINDOW_HOURS } from "./medicineTiming.constants";
+
 const HOURS = [6, 12, 24] as const;
 
 function hoursBetween(start: string, end: string) {
@@ -77,6 +79,34 @@ function getMedicinesAfter(
     .filter((medicine) =>
       isEventInsideMealWindow(boundary, medicine.occurredAt, hours),
     )
+    .sort(
+      (left, right) =>
+        new Date(left.occurredAt).getTime() -
+        new Date(right.occurredAt).getTime(),
+    );
+}
+
+function getMedicinesBefore(
+  exposure: FoodDetailExposureInput,
+  medicines: MedicineObservation[],
+  hours: number,
+) {
+  const eatenAt = new Date(exposure.eatenAt).getTime();
+
+  const startAt = eatenAt - hours * 3_600_000;
+
+  return medicines
+    .filter((medicine) => {
+      const occurredAt = new Date(medicine.occurredAt).getTime();
+
+      /*
+       * Incluimos exactamente -6 h.
+       * Excluimos la hora exacta de la comida para evitar
+       * que una misma toma sea simultáneamente "antes" y
+       * "después".
+       */
+      return occurredAt >= startAt && occurredAt < eatenAt;
+    })
     .sort(
       (left, right) =>
         new Date(left.occurredAt).getTime() -
@@ -302,11 +332,17 @@ export function buildFoodDetailReport({
         boundaryByEntry,
       );
 
-      const linkedMedicines = getMedicinesAfter(
+      const linkedMedicinesAfter = getMedicinesAfter(
         exposure,
         medicines,
         24,
         boundaryByEntry,
+      );
+
+      const linkedMedicinesBefore = getMedicinesBefore(
+        exposure,
+        medicines,
+        MEDICINE_PRE_WINDOW_HOURS,
       );
 
       const firstBathroom = linkedBathrooms[0] ?? null;
@@ -314,7 +350,11 @@ export function buildFoodDetailReport({
       const firstAdverseBathroom =
         linkedBathrooms.find(isBathroomAdverse) ?? null;
 
-      const medicineContexts = linkedMedicines.map((medicine) =>
+      const medicineContextsAfter = linkedMedicinesAfter.map((medicine) =>
+        toMedicineContext(exposure, medicine),
+      );
+
+      const medicineContextsBefore = linkedMedicinesBefore.map((medicine) =>
         toMedicineContext(exposure, medicine),
       );
 
@@ -339,9 +379,13 @@ export function buildFoodDetailReport({
           ? toOutcome(exposure, firstAdverseBathroom)
           : null,
 
-        medicineOverlap: medicineContexts.length > 0,
+        medicineOverlap: medicineContextsAfter.length > 0,
 
-        medicines: medicineContexts,
+        medicines: medicineContextsAfter,
+
+        medicineBeforeOverlap: medicineContextsBefore.length > 0,
+
+        medicinesBefore: medicineContextsBefore,
 
         windowTruncated: isMealWindowTruncated(boundary, 24),
 

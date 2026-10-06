@@ -526,3 +526,24 @@ No se realizó ninguna migración de base de datos porque la información necesa
 ya estaba disponible en `medicines` y `medicine_entries`.
 
 El análisis sigue siendo descriptivo y no causal.
+
+## Fase 3.11 — Medicina antes vs después
+
+Patrones distingue ahora temporalmente un medicamento en relación con cada
+comida.
+
+Los contextos disponibles son:
+
+- antes solamente;
+- después solamente;
+- antes y después;
+- sin medicamento.
+
+La ventana previa es de seis horas.
+
+La Medicina posterior continúa utilizando la ventana efectiva de comida.
+
+El servicio real recupera seis horas adicionales antes del inicio de los 90 días
+para conservar el contexto de la primera comida.
+
+La fase continúa siendo descriptiva y no modela farmacocinética.

@@ -106,3 +106,8 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Guards QA
 
 - [[BUG-0014-Guard-QA-Nombre-Real-de-Medicamento]]
+
+## Timing de Medicina
+
+- [[ADR-0029-Ventana-Previa-de-Medicina]]
+- [[BUG-0015-Parche-startIso-Dependiente-de-Formato]]
