@@ -115,3 +115,12 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Semántica temporal
 
 - [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]
+
+## Patrones v1
+
+- [[ADR-0031-Contrato-Estable-Patrones-v1]]
+- [[Auditoria-Patrones-v1]]
+
+## Release estable
+
+- [[Release-Patrones-v1]]

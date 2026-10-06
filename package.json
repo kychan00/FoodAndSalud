@@ -15,7 +15,9 @@
     "supabase:dry-run": "supabase db push --dry-run",
     "supabase:types": "supabase gen types --lang typescript --linked > src/lib/supabase/database.types.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:patterns-bundle": "node scripts/check-patterns-bundle.mjs",
+    "check:patterns-v1": "npm test && npm run lint && npm run build && npm run check:patterns-bundle"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

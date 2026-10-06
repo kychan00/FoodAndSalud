@@ -125,3 +125,11 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Latencia-de-Respuesta]]
 - [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]
+
+## Patrones v1
+
+- [[Patrones-v1]]
+
+## Release estable
+
+- [[Release-Patrones-v1]]

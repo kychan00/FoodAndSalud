@@ -577,3 +577,69 @@ Se muestran:
 Se requieren al menos tres respuestas marcadas para clasificar el perfil.
 
 La latencia es descriptiva y no causal.
+
+## Fase 3.13 — Hardening de Patrones v1
+
+Patrones entra en fase de estabilización.
+
+No se añaden nuevas métricas en esta fase.
+
+Se congela el contrato metodológico que cubre:
+
+- asociación;
+- baseline;
+- ventanas de comida;
+- combinaciones;
+- magnitud;
+- estabilidad;
+- persistencia;
+- factores concurrentes;
+- Medicina específica;
+- timing de Medicina;
+- latencia.
+
+Se añade un quality gate único:
+
+`npm run check:patterns-v1`.
+
+Los cambios metodológicos posteriores deberán modificar explícitamente el
+contrato y sus pruebas.
+
+## Patrones v1 — Liberado
+
+Patrones v1 quedó cerrado después de la Fase 3.13.
+
+El módulo cuenta con un contrato metodológico estable y un quality gate único:
+
+`npm run check:patterns-v1`.
+
+El cierre incluye:
+
+- asociación por alimento;
+- baseline comparable;
+- ventanas 6/12/24 h;
+- censura por nueva comida;
+- combinaciones;
+- magnitud;
+- estabilidad leave-one-out;
+- persistencia temporal;
+- factores concurrentes;
+- Medicina específica;
+- Medicina antes/después;
+- latencia de primera respuesta marcada.
+
+Quality gate de cierre:
+
+- 29 archivos de test;
+- 131 tests;
+- lint aprobado;
+- TypeScript aprobado;
+- build aprobado;
+- budget de bundles aprobado;
+- aislamiento QA aprobado;
+- smoke visual aprobado.
+
+Patrones entra ahora en mantenimiento.
+
+El desarrollo principal continúa en la experiencia de registro diario y uso
+cotidiano de FoodAndSalud.

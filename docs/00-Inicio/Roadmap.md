@@ -502,3 +502,30 @@ estado: activo
 - [x] ADR-0030
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.13 — Hardening y cierre de Patrones v1
+
+- [x] Cerrar Fase 3.12
+- [x] Congelar contrato metodológico
+- [x] Documentar Patrones v1
+- [x] Test frontera exacta 6 h
+- [x] Test frontera exacta 12 h
+- [x] Test frontera exacta 24 h
+- [x] Test evento exactamente en siguiente comida
+- [x] Test comidas simultáneas
+- [x] Test evento exactamente en inicio
+- [x] Test múltiples evacuaciones
+- [x] Test primera evacuación vs primera marcada
+- [x] Test Medicina antes + después
+- [x] Grupos de timing mutuamente excluyentes
+- [x] Auditoría integral de escenarios QA
+- [x] Detectar NaN
+- [x] Detectar Infinity
+- [x] Budget bundle inicial
+- [x] Budget chunks JavaScript
+- [x] Aislamiento QA automatizado
+- [x] Crear npm run check:patterns-v1
+- [x] ADR-0031
+- [x] Documentación Obsidian
+- [x] Smoke visual final
+- [x] Release Patrones v1

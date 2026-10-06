@@ -167,3 +167,7 @@ repetido ocho veces.
 ## Latencia de respuesta
 
 - [[Prueba-Latencia-de-Respuesta]]
+
+## Patrones v1
+
+- [[Auditoria-Patrones-v1]]

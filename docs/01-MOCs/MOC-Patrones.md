@@ -106,3 +106,13 @@ fecha: 2026-10-06
 - [[Latencia-de-Respuesta]]
 - [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]
 - [[Prueba-Latencia-de-Respuesta]]
+
+## Patrones v1
+
+- [[Patrones-v1]]
+- [[ADR-0031-Contrato-Estable-Patrones-v1]]
+- [[Auditoria-Patrones-v1]]
+
+## Release estable
+
+- [[Release-Patrones-v1]]
