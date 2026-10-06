@@ -49,3 +49,10 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Automatización de desarrollo
 
 - [[BUG-0004-Parche-Dependiente-de-Formato]]
+
+- [[MOC-Pruebas]]
+- [[Laboratorio-QA-Patrones]]
+- [[Datos-Sinteticos-Patrones]]
+- [[ADR-0016-QA-Sintetico-No-Persistente]]
+
+- [[BUG-0005-Horario-Fixtures-QA]]

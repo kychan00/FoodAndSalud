@@ -46,3 +46,7 @@ de detalle para poder guardar rápidamente una comida.
 ## Implementación
 
 - [[Registro-de-Alimentos]]
+
+## Análisis
+
+- [[Asociaciones-Alimento-Bristol]]

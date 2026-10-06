@@ -1,0 +1,107 @@
+---
+tipo: moc
+estado: activo
+fecha: 2026-10-06
+---
+
+# MOC — Pruebas
+
+## Objetivo
+
+Centralizar la estrategia de pruebas de FoodAndSalud.
+
+La calidad del proyecto no depende de una sola clase de pruebas.
+
+Se utilizan diferentes niveles.
+
+## Base de datos
+
+- [[Pruebas-de-Base-de-Datos]]
+- pgTAP
+- RLS
+- migraciones
+- db reset
+- db lint
+
+## Autenticación
+
+- [[Prueba-Auth-End-to-End]]
+
+## Funcionalidad
+
+- [[Prueba-E2E-Fase-2.2]]
+
+## Motor de Patrones
+
+- [[Prueba-Motor-Asociaciones]]
+- [[Laboratorio-QA-Patrones]]
+- [[Datos-Sinteticos-Patrones]]
+
+## Bugs
+
+Los bugs encontrados durante las pruebas se documentan en:
+
+`07-Bugs`
+
+## Filosofía
+
+Cada bug importante debe producir al menos uno de estos resultados:
+
+- una prueba nueva;
+- una regla arquitectónica;
+- una documentación;
+- una mejora de validación.
+
+## Tipos de prueba
+
+### Unitarias
+
+Prueban lógica aislada.
+
+Ejemplo:
+
+motor de asociaciones.
+
+### Base de datos
+
+Prueban:
+
+- tablas;
+- constraints;
+- RLS;
+- vistas;
+- migraciones.
+
+### Integración
+
+Prueban la comunicación entre módulos.
+
+Ejemplo:
+
+Supabase → motor → Patrones.
+
+### E2E
+
+Prueban el recorrido real del usuario.
+
+Ejemplo:
+
+Registrar comida
+→ Supabase
+→ Timeline
+→ Calendario
+→ Patrones.
+
+### QA sintético
+
+Permite forzar escenarios artificiales sin contaminar datos reales.
+
+Ejemplo:
+
+Café
+→ Bristol 7
+repetido ocho veces.
+
+- [[Graficas-Temporales]]
+- [[BUG-0005-Horario-Fixtures-QA]]
+- [[ADR-0017-Graficas-Reutilizables-Recharts]]

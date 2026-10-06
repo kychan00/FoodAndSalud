@@ -44,10 +44,15 @@ export async function getPatternSummary(
 
   return {
     totalEvents: events.length,
+
     foodEntries: foodEntries.length,
+
     bathroomEntries: bathroomEntries.length,
+
     medicineEntries: medicineEntries.length,
+
     averageBristol,
+
     bristolHighCount,
   };
 }

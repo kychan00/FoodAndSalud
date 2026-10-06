@@ -143,3 +143,78 @@ Pendiente antes de cerrar Fase 2.2:
 - Patrones;
 - persistencia;
 - prueba de fecha histórica.
+
+## Fase 3.0 — Motor de asociaciones
+
+FoodAndSalud ya cuenta con un primer motor analítico personal.
+
+Flujo:
+
+alimento
+↓
+exposición
+↓
+ventana de 24 horas
+↓
+Bristol / urgencia / dolor
+↓
+comparación contra referencia personal
+↓
+señal + evidencia
+
+También se registra coincidencia temporal con Medicina.
+
+Los resultados se presentan como asociaciones y no como relaciones causales.
+
+La primera implementación funciona en el cliente sobre los datos privados del
+usuario obtenidos mediante Supabase y protegidos por RLS.
+
+## Laboratorio QA de Patrones
+
+FoodAndSalud cuenta ahora con una capa sintética de pruebas.
+
+Ruta de desarrollo:
+
+`/#/qa/patterns`
+
+Características:
+
+- datos totalmente ficticios;
+- no utiliza Supabase;
+- no modifica información real;
+- reutiliza el motor real;
+- reutiliza los componentes visuales reales;
+- permite cambiar entre escenarios;
+- permite inspeccionar el dataset utilizado.
+
+Escenarios iniciales:
+
+- Café señal alta;
+- Pocos datos;
+- Leche señal media;
+- Arroz neutral;
+- Café + Medicina;
+- Café + Leche juntos.
+
+Objetivo:
+
+forzar comportamientos extremos para descubrir bugs antes de depender de meses
+de historial real.
+
+## Gráficas de Patrones
+
+El Laboratorio QA permite ahora inspeccionar visualmente el comportamiento del
+motor.
+
+Visualizaciones:
+
+1. Bristol por fecha y alimento.
+2. Coincidencia observada y ajustada por alimento frente a referencia personal.
+
+Las gráficas son Mobile First y utilizan scroll horizontal cuando el número de
+observaciones supera el espacio disponible.
+
+También se corrigió la interpretación visual de las horas sintéticas mediante
+formatters UTC específicos de QA.
+
+Los datos reales conservan su comportamiento normal de zona horaria.

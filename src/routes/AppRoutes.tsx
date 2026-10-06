@@ -8,6 +8,7 @@ import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
 import { SignUpPage } from "../features/auth/pages/SignUpPage";
 import { CalendarPage } from "../features/calendar/pages/CalendarPage";
+import { PatternLabPage } from "../features/patterns/pages/PatternLabPage";
 import { PatternsPage } from "../features/patterns/pages/PatternsPage";
 import { TodayPage } from "../features/today/pages/TodayPage";
 
@@ -37,6 +38,17 @@ export function AppRoutes() {
           <Route path="/calendar" element={<CalendarPage />} />
 
           <Route path="/patterns" element={<PatternsPage />} />
+
+          <Route
+            path="/qa/patterns"
+            element={
+              import.meta.env.DEV ? (
+                <PatternLabPage />
+              ) : (
+                <Navigate to="/patterns" replace />
+              )
+            }
+          />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

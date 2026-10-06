@@ -51,3 +51,7 @@ estado: activo
 
 - [[Release-Fase-2.2-Medicina]]
 - [[Prueba-E2E-Fase-2.2]]
+
+## Calidad y pruebas
+
+- [[MOC-Pruebas]]

@@ -40,3 +40,5 @@ de aplicaciones como Flo, sin copiar su identidad visual.
 - [[Bottom-Sheet]]
 
 - [[Pantalla-Hoy-Estilo-Flo]]
+
+- [[Graficas-Temporales]]

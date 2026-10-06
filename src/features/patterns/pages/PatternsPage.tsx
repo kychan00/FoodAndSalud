@@ -1,6 +1,7 @@
 import {
   Activity,
   ChartNoAxesCombined,
+  Info,
   Pill,
   Salad,
   Sparkles,
@@ -9,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Card } from "../../../components/ui/Card";
 import { useAuth } from "../../auth/useAuth";
+import { getFoodAssociationReport } from "../association.service";
+import { FoodAssociationCard } from "../components/FoodAssociationCard";
 import { getPatternSummary } from "../patterns.service";
 
 import "./PatternsPage.css";
@@ -17,18 +20,35 @@ export function PatternsPage() {
   const { user } = useAuth();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["patterns", user?.id, "30-days"],
+    queryKey: ["patterns", user?.id, "analysis"],
 
-    queryFn: () => {
+    queryFn: async () => {
       if (!user) {
         throw new Error("User required");
       }
 
-      return getPatternSummary(user.id);
+      const [summary, associations] = await Promise.all([
+        getPatternSummary(user.id),
+
+        getFoodAssociationReport(user.id, 90),
+      ]);
+
+      return {
+        summary,
+        associations,
+      };
     },
 
     enabled: Boolean(user),
+
+    staleTime: 30_000,
   });
+
+  const summary = data?.summary;
+
+  const associationReport = data?.associations;
+
+  const visibleAssociations = associationReport?.associations.slice(0, 8) ?? [];
 
   return (
     <main className="patterns-page">
@@ -39,7 +59,7 @@ export function PatternsPage() {
           </span>
 
           <div>
-            <p>Últimos 30 días</p>
+            <p>Su historial</p>
 
             <h1>Patrones</h1>
           </div>
@@ -51,11 +71,11 @@ export function PatternsPage() {
 
         {isError ? (
           <Card className="patterns-state">
-            No pudimos cargar sus patrones.
+            No pudimos analizar sus patrones.
           </Card>
         ) : null}
 
-        {data ? (
+        {summary && associationReport ? (
           <>
             <section className="patterns-metrics">
               <Card className="pattern-metric">
@@ -63,9 +83,13 @@ export function PatternsPage() {
                   <Salad size={21} />
                 </span>
 
-                <strong>{data.foodEntries}</strong>
+                <strong>{summary.foodEntries}</strong>
 
-                <span>Comidas</span>
+                <span>
+                  Comidas
+                  <br />
+                  30 días
+                </span>
               </Card>
 
               <Card className="pattern-metric">
@@ -73,9 +97,13 @@ export function PatternsPage() {
                   <Activity size={21} />
                 </span>
 
-                <strong>{data.bathroomEntries}</strong>
+                <strong>{summary.bathroomEntries}</strong>
 
-                <span>Bristol</span>
+                <span>
+                  Bristol
+                  <br />
+                  30 días
+                </span>
               </Card>
 
               <Card className="pattern-metric">
@@ -83,9 +111,13 @@ export function PatternsPage() {
                   <Pill size={21} />
                 </span>
 
-                <strong>{data.medicineEntries}</strong>
+                <strong>{summary.medicineEntries}</strong>
 
-                <span>Medicina</span>
+                <span>
+                  Medicina
+                  <br />
+                  30 días
+                </span>
               </Card>
 
               <Card className="pattern-metric">
@@ -94,51 +126,83 @@ export function PatternsPage() {
                 </span>
 
                 <strong>
-                  {data.averageBristol === null
+                  {summary.averageBristol === null
                     ? "—"
-                    : data.averageBristol.toFixed(1)}
+                    : summary.averageBristol.toFixed(1)}
                 </strong>
 
-                <span>Bristol promedio</span>
+                <span>
+                  Bristol
+                  <br />
+                  promedio
+                </span>
               </Card>
             </section>
 
-            <Card className="pattern-insight">
-              <span className="pattern-insight__icon">
-                <Sparkles size={25} />
+            <Card className="pattern-method">
+              <span className="pattern-method__icon">
+                <Info size={21} />
               </span>
 
               <div>
-                <span className="pattern-insight__eyebrow">Análisis</span>
-
-                <h2>
-                  {data.totalEvents < 10
-                    ? "Necesitamos algunos registros más"
-                    : "Ya podemos empezar a observar tendencias"}
-                </h2>
+                <strong>¿Cómo se calculan las señales?</strong>
 
                 <p>
-                  {data.totalEvents < 10
-                    ? "Registre varios días de comidas, Bristol y Medicina. FoodAndSalud necesita historial antes de sugerir asociaciones."
-                    : `En los últimos 30 días hay ${data.totalEvents} eventos. Analizaremos asociaciones temporales entre alimentos, Medicina y respuesta digestiva.`}
+                  FoodAndSalud observa qué ocurre durante las 24 horas
+                  posteriores a cada alimento. Una respuesta marcada significa
+                  Bristol 1–2 o 6–7, urgencia de 2 o más, o dolor de 2 o más.
+                </p>
+
+                <p>
+                  Son asociaciones temporales personales, no una demostración de
+                  que un alimento sea la causa.
                 </p>
               </div>
             </Card>
 
-            {data.bristolHighCount > 0 ? (
-              <Card className="pattern-observation">
-                <strong>
-                  {data.bristolHighCount}{" "}
-                  {data.bristolHighCount === 1 ? "registro" : "registros"}{" "}
-                  Bristol 6–7
-                </strong>
+            <section className="pattern-associations">
+              <div className="pattern-section-heading">
+                <div>
+                  <span>Últimos 90 días</span>
 
-                <span>
-                  Este dato se utilizará para buscar asociaciones temporales con
-                  alimentos y Medicina.
+                  <h2>Posibles asociaciones</h2>
+                </div>
+
+                <span className="pattern-section-heading__count">
+                  {associationReport.associations.length} alimentos
                 </span>
-              </Card>
-            ) : null}
+              </div>
+
+              {visibleAssociations.length === 0 ? (
+                <Card className="patterns-state">
+                  Registre algunas comidas y evacuaciones para comenzar a
+                  comparar alimentos.
+                </Card>
+              ) : (
+                <div className="pattern-association-list">
+                  {visibleAssociations.map((association) => (
+                    <FoodAssociationCard
+                      key={association.foodId}
+                      association={association}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+
+            <Card className="pattern-baseline">
+              <span>Referencia personal</span>
+
+              <strong>
+                {Math.round(associationReport.baselineAdverseRate * 100)}%
+              </strong>
+
+              <p>
+                de sus registros de baño en los últimos 90 días cumplen al menos
+                uno de los criterios de respuesta marcada. Este valor funciona
+                como referencia para comparar cada alimento.
+              </p>
+            </Card>
           </>
         ) : null}
       </div>

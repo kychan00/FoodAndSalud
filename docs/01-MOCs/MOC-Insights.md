@@ -54,3 +54,13 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 ## Implementación
 
 - [[Patrones]]
+
+- [[Asociaciones-Alimento-Bristol]]
+- [[ADR-0015-Asociaciones-No-Causalidad]]
+- [[Prueba-Motor-Asociaciones]]
+
+- [[Laboratorio-QA-Patrones]]
+- [[Datos-Sinteticos-Patrones]]
+
+- [[Graficas-Temporales]]
+- [[ADR-0017-Graficas-Reutilizables-Recharts]]

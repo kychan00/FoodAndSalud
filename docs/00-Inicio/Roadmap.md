@@ -155,3 +155,55 @@ estado: activo
 - [x] Formulario mobile-first
 - [x] Aplicar migración remota
 - [ ] Probar registro real End-to-End
+
+## Fase 3.0 — Motor de Patrones
+
+- [x] Ventana temporal alimento → respuesta
+- [x] Definir respuesta digestiva marcada
+- [x] Referencia personal
+- [x] Suavizado por evidencia
+- [x] Señal alta / media / baja
+- [x] Nivel de evidencia
+- [x] Detección de coincidencia con Medicina
+- [x] Ranking de alimentos
+- [x] UI Mobile First en Patrones
+- [x] Tests unitarios del motor
+- [x] Documentación epistemológica
+- [ ] Validación con registros reales
+- [ ] Detalle individual por alimento
+- [ ] Comparación por ventanas 6 h / 12 h / 24 h
+
+## Fase 3.0 QA — Laboratorio de Patrones
+
+- [x] Crear MOC-Pruebas
+- [x] Dataset sintético no persistente
+- [x] Escenario señal alta
+- [x] Escenario señal media
+- [x] Escenario datos insuficientes
+- [x] Escenario alimento neutral
+- [x] Escenario Medicina concurrente
+- [x] Escenario de alimentos ambiguos
+- [x] Tests automatizados de fixtures
+- [x] Laboratorio visual
+- [x] Dataset inspeccionable
+- [x] Ruta QA solo en desarrollo
+- [ ] Revisar visualmente todos los escenarios
+- [ ] Documentar bugs encontrados
+
+## Fase 3.0 QA Visual
+
+- [x] Gráfica Bristol por fecha
+- [x] Etiquetas alimento + fecha
+- [x] Tooltip Bristol / urgencia / dolor
+- [x] Mostrar Medicina concurrente
+- [x] Zona visual Bristol 3–5
+- [x] Gráfica de asociación por alimento
+- [x] Coincidencia observada
+- [x] Coincidencia ajustada
+- [x] Línea de referencia personal
+- [x] Scroll horizontal Mobile First
+- [x] BUG-0005 horario de fixtures
+- [x] Tests de fechas QA
+- [x] Documentación de gráficas
+- [ ] Validación visual de los seis escenarios
+- [ ] Llevar gráficas aprobadas a Patrones reales
