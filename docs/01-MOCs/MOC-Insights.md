@@ -95,3 +95,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Ventanas-Interrumpidas-por-Nueva-Comida]]
 - [[ADR-0024-Censura-Por-Nueva-Comida]]
+
+## Magnitud
+
+- [[Magnitud-y-Estabilidad]]
+- [[ADR-0025-Medidas-Descriptivas-de-Efecto]]

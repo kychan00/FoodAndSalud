@@ -68,3 +68,11 @@ fecha: 2026-10-06
 - [[ADR-0024-Censura-Por-Nueva-Comida]]
 - [[BUG-0010-Doble-Atribucion-Ventanas-Superpuestas]]
 - [[Prueba-Ventanas-Superpuestas]]
+
+## Magnitud y estabilidad
+
+- [[Magnitud-y-Estabilidad]]
+- [[ADR-0025-Medidas-Descriptivas-de-Efecto]]
+- [[BUG-0012-Primera-Evacuacion-vs-Respuesta-Marcada]]
+- [[Prueba-Magnitud-y-Estabilidad]]
+- [[Prueba-Consistencia-Historial-Patrones]]

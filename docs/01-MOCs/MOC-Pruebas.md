@@ -142,3 +142,8 @@ repetido ocho veces.
 ## Superposición temporal
 
 - [[Prueba-Ventanas-Superpuestas]]
+
+## Magnitud y estabilidad
+
+- [[Prueba-Magnitud-y-Estabilidad]]
+- [[Prueba-Consistencia-Historial-Patrones]]

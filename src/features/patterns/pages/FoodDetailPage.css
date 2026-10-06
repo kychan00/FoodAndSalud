@@ -388,3 +388,31 @@
 .food-detail-history-item__window strong {
   color: var(--color-bathroom);
 }
+
+.food-detail-history-item__later-adverse {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: #f8e8e8;
+  color: var(--color-danger);
+}
+
+.food-detail-history-item__later-adverse svg {
+  flex: 0 0 auto;
+}
+
+.food-detail-history-item__later-adverse div {
+  display: grid;
+  gap: 2px;
+}
+
+.food-detail-history-item__later-adverse strong {
+  font-size: 0.72rem;
+}
+
+.food-detail-history-item__later-adverse span {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+}

@@ -44,6 +44,22 @@ export interface FoodCoOccurrence {
   share: number;
 }
 
+export interface FoodDetailBathroomOutcome {
+  id: string;
+
+  occurredAt: string;
+
+  bristolType: number;
+
+  urgency: number | null;
+
+  painLevel: number | null;
+
+  adverse: boolean;
+
+  elapsedHours: number;
+}
+
 export interface FoodExposureHistoryItem {
   entryId: string;
 
@@ -53,21 +69,13 @@ export interface FoodExposureHistoryItem {
 
   coFoods: CoFood[];
 
-  firstBathroom: {
-    id: string;
+  bathroomCount: number;
 
-    occurredAt: string;
+  windowAdverse: boolean;
 
-    bristolType: number;
+  firstBathroom: FoodDetailBathroomOutcome | null;
 
-    urgency: number | null;
-
-    painLevel: number | null;
-
-    adverse: boolean;
-
-    elapsedHours: number;
-  } | null;
+  firstAdverseBathroom: FoodDetailBathroomOutcome | null;
 
   medicineOverlap: boolean;
 

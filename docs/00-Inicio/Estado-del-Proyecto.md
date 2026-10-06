@@ -399,3 +399,27 @@ de cada exposición afectada.
 
 La estrategia es deliberadamente conservadora y puede reducir sensibilidad a
 latencias largas.
+
+## Fase 3.7 — Magnitud y estabilidad
+
+Las señales alimentarias incorporan ahora medidas descriptivas adicionales:
+
+- diferencia absoluta;
+- RR descriptivo;
+- muestra observada;
+- muestra comparadora;
+- estabilidad leave-one-out.
+
+La razón relativa no se calcula cuando la tasa comparadora es cero ni cuando no
+existe un grupo independiente de comidas sin el alimento.
+
+La estabilidad describe cuánto cambia la categoría al retirar una observación
+evaluable.
+
+También se corrigió la explicación del historial:
+
+una primera evacuación normal ya no oculta una respuesta marcada posterior
+dentro de la misma ventana.
+
+La automatización de esta fase produjo BUG-0013 por depender del formato textual
+de un import; FoodDetailContent pasó a reemplazo estructural completo.

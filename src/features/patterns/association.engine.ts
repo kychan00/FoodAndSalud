@@ -3,6 +3,7 @@ import type {
   AssociationComparisonSource,
   AssociationReport,
   AssociationSignal,
+  AssociationStability,
   BathroomObservation,
   FoodAssociation,
   FoodExposure,
@@ -44,6 +45,14 @@ interface MealWindowStats {
   adverseExposures: number;
 
   adverseRate: number;
+}
+
+interface StabilityResult {
+  stability: AssociationStability;
+
+  score: number | null;
+
+  stableCount: number;
 }
 
 export function isBathroomAdverse(bathroom: BathroomObservation) {
@@ -102,6 +111,104 @@ function getSignal(
   }
 
   return "low";
+}
+
+function getAdjustedRate(
+  adverseExposures: number,
+  evaluableExposures: number,
+  baselineAdverseRate: number,
+) {
+  if (evaluableExposures === 0) {
+    return baselineAdverseRate;
+  }
+
+  return (
+    (adverseExposures + baselineAdverseRate * PRIOR_WEIGHT) /
+    (evaluableExposures + PRIOR_WEIGHT)
+  );
+}
+
+function getStability({
+  outcomes,
+  baselineAdverseRate,
+  comparisonSource,
+  originalSignal,
+}: {
+  outcomes: boolean[];
+
+  baselineAdverseRate: number;
+
+  comparisonSource: AssociationComparisonSource;
+
+  originalSignal: AssociationSignal;
+}): StabilityResult {
+  /*
+   * Sin un control separado no declaramos estabilidad
+   * estadística de la etiqueta.
+   */
+  if (
+    comparisonSource !== "food_absent" ||
+    originalSignal === "insufficient" ||
+    outcomes.length < 4
+  ) {
+    return {
+      stability: "insufficient",
+
+      score: null,
+
+      stableCount: 0,
+    };
+  }
+
+  let stableCount = 0;
+
+  const totalAdverse = outcomes.filter(Boolean).length;
+
+  for (const outcome of outcomes) {
+    const evaluable = outcomes.length - 1;
+
+    const adverse = totalAdverse - (outcome ? 1 : 0);
+
+    const adjusted = getAdjustedRate(adverse, evaluable, baselineAdverseRate);
+
+    const excess = adjusted - baselineAdverseRate;
+
+    const signal = getSignal(evaluable, adjusted, excess);
+
+    if (signal === originalSignal) {
+      stableCount += 1;
+    }
+  }
+
+  const score = stableCount / outcomes.length;
+
+  if (outcomes.length >= 8 && score >= 0.9) {
+    return {
+      stability: "high",
+
+      score,
+
+      stableCount,
+    };
+  }
+
+  if (score >= 0.75) {
+    return {
+      stability: "medium",
+
+      score,
+
+      stableCount,
+    };
+  }
+
+  return {
+    stability: "low",
+
+    score,
+
+    stableCount,
+  };
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -240,6 +347,8 @@ export function buildAssociationReport({
 
     let truncatedExposures = 0;
 
+    const evaluableOutcomes: boolean[] = [];
+
     for (const exposure of foodExposures) {
       const window = mealWindowByEntry.get(exposure.entryId) ?? {
         entryId: exposure.entryId,
@@ -261,6 +370,8 @@ export function buildAssociationReport({
         evaluableExposures += 1;
 
         const adverse = linkedBathrooms.some(isBathroomAdverse);
+
+        evaluableOutcomes.push(adverse);
 
         if (adverse) {
           adverseExposures += 1;
@@ -295,21 +406,31 @@ export function buildAssociationReport({
     const comparisonSource: AssociationComparisonSource =
       controlStats.evaluableExposures > 0 ? "food_absent" : "all_meals";
 
-    const baselineAdverseRate =
-      comparisonSource === "food_absent"
-        ? controlStats.adverseRate
-        : globalMealStats.adverseRate;
+    const comparisonStats =
+      comparisonSource === "food_absent" ? controlStats : globalMealStats;
+
+    const baselineAdverseRate = comparisonStats.adverseRate;
 
     const adverseRate =
       evaluableExposures > 0 ? adverseExposures / evaluableExposures : 0;
 
-    const adjustedAdverseRate =
-      evaluableExposures > 0
-        ? (adverseExposures + baselineAdverseRate * PRIOR_WEIGHT) /
-          (evaluableExposures + PRIOR_WEIGHT)
-        : baselineAdverseRate;
+    const adjustedAdverseRate = getAdjustedRate(
+      adverseExposures,
+      evaluableExposures,
+      baselineAdverseRate,
+    );
 
     const excessRate = adjustedAdverseRate - baselineAdverseRate;
+
+    const absoluteRiskDifference = adverseRate - baselineAdverseRate;
+
+    const relativeRisk =
+      comparisonSource === "food_absent" &&
+      evaluableExposures > 0 &&
+      comparisonStats.evaluableExposures > 0 &&
+      baselineAdverseRate > 0
+        ? adverseRate / baselineAdverseRate
+        : null;
 
     const averageSeverity =
       evaluableExposures > 0 ? totalSeverity / evaluableExposures : 0;
@@ -321,6 +442,16 @@ export function buildAssociationReport({
       adjustedAdverseRate,
       excessRate,
     );
+
+    const stabilityResult = getStability({
+      outcomes: evaluableOutcomes,
+
+      baselineAdverseRate,
+
+      comparisonSource,
+
+      originalSignal: signal,
+    });
 
     const evidenceFactor = clamp(evaluableExposures / 8, 0, 1);
 
@@ -351,9 +482,17 @@ export function buildAssociationReport({
 
       excessRate,
 
+      absoluteRiskDifference,
+
+      relativeRisk,
+
       controlEvaluableExposures: controlStats.evaluableExposures,
 
       controlAdverseExposures: controlStats.adverseExposures,
+
+      comparisonEvaluableExposures: comparisonStats.evaluableExposures,
+
+      comparisonAdverseExposures: comparisonStats.adverseExposures,
 
       comparisonSource,
 
@@ -362,6 +501,12 @@ export function buildAssociationReport({
       medicineOverlapExposures,
 
       truncatedExposures,
+
+      stability: stabilityResult.stability,
+
+      stabilityScore: stabilityResult.score,
+
+      stableLeaveOneOutExposures: stabilityResult.stableCount,
 
       signal,
 

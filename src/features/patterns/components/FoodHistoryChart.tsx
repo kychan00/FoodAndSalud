@@ -73,19 +73,27 @@ export function FoodHistoryChart({
 
     bristol: item.firstBathroom?.bristolType ?? null,
 
-    occurredAt: item.firstBathroom?.occurredAt ?? null,
-
     urgency: item.firstBathroom?.urgency ?? null,
 
     pain: item.firstBathroom?.painLevel ?? null,
 
     elapsed: item.firstBathroom?.elapsedHours ?? null,
 
-    adverse: item.firstBathroom?.adverse ?? false,
+    bathroomCount: item.bathroomCount,
+
+    windowAdverse: item.windowAdverse,
+
+    adverseBristol: item.firstAdverseBathroom?.bristolType ?? null,
+
+    adverseElapsed: item.firstAdverseBathroom?.elapsedHours ?? null,
 
     coFoods: item.coFoods.map((coFood) => coFood.foodName),
 
     medicine: item.medicineOverlap,
+
+    truncated: item.windowTruncated,
+
+    effectiveWindow: item.effectiveWindowHours,
   }));
 
   const width = Math.max(620, data.length * 88);
@@ -98,8 +106,9 @@ export function FoodHistoryChart({
         <h2>Bristol después de {foodName}</h2>
 
         <p>
-          Cada punto representa la primera evacuación registrada dentro de las
-          24 horas posteriores.
+          La línea muestra la primera evacuación de cada ventana. Si aparece una
+          respuesta marcada posteriormente dentro de la misma ventana, el
+          tooltip también la indica.
         </p>
       </div>
 
@@ -114,8 +123,11 @@ export function FoodHistoryChart({
               data={data}
               margin={{
                 top: 20,
+
                 right: 24,
+
                 bottom: 55,
+
                 left: 0,
               }}
             >
@@ -164,9 +176,21 @@ export function FoodHistoryChart({
 
                         elapsed: number | null;
 
+                        bathroomCount: number;
+
+                        windowAdverse: boolean;
+
+                        adverseBristol: number | null;
+
+                        adverseElapsed: number | null;
+
                         coFoods: string[];
 
                         medicine: boolean;
+
+                        truncated: boolean;
+
+                        effectiveWindow: number;
                       }
                     | undefined;
 
@@ -187,7 +211,9 @@ export function FoodHistoryChart({
                         </span>
                       ) : (
                         <>
-                          <span>Bristol {point.bristol}</span>
+                          <span>
+                            Primera evacuación: Bristol {point.bristol}
+                          </span>
 
                           <span>{point.elapsed?.toFixed(1)} h después</span>
 
@@ -195,11 +221,37 @@ export function FoodHistoryChart({
                             Urgencia {point.urgency ?? 0} · Dolor{" "}
                             {point.pain ?? 0}
                           </span>
+
+                          <span>
+                            {point.bathroomCount}{" "}
+                            {point.bathroomCount === 1
+                              ? "evacuación"
+                              : "evacuaciones"}{" "}
+                            dentro de la ventana
+                          </span>
                         </>
                       )}
 
+                      {point.windowAdverse &&
+                      point.adverseBristol !== null &&
+                      point.adverseElapsed !== null &&
+                      (point.bristol !== point.adverseBristol ||
+                        point.elapsed !== point.adverseElapsed) ? (
+                        <span className="food-chart-tooltip__medicine">
+                          Primera respuesta marcada: Bristol{" "}
+                          {point.adverseBristol} ·{" "}
+                          {point.adverseElapsed.toFixed(1)} h
+                        </span>
+                      ) : null}
+
                       {point.coFoods.length > 0 ? (
                         <span>También: {point.coFoods.join(", ")}</span>
+                      ) : null}
+
+                      {point.truncated ? (
+                        <span>
+                          Ventana efectiva: {point.effectiveWindow.toFixed(1)} h
+                        </span>
                       ) : null}
 
                       {point.medicine ? (
@@ -236,8 +288,8 @@ export function FoodHistoryChart({
 
       <p className="food-detail-chart__footnote">
         La ventana dura como máximo 24 horas y termina antes si se registra otra
-        comida. Las exposiciones sin evacuación dentro de su ventana permanecen
-        sin evaluar.
+        comida. Una primera evacuación normal no oculta una respuesta marcada
+        posterior dentro de la misma ventana.
       </p>
     </section>
   );

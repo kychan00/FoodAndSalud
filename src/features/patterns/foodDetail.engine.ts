@@ -10,6 +10,7 @@ import type {
 } from "./association.types";
 
 import type {
+  FoodDetailBathroomOutcome,
   FoodDetailExposureInput,
   FoodDetailReport,
   FoodDetailWindow,
@@ -61,6 +62,27 @@ function getBathroomsAfter(
         new Date(left.occurredAt).getTime() -
         new Date(right.occurredAt).getTime(),
     );
+}
+
+function toOutcome(
+  exposure: FoodDetailExposureInput,
+  bathroom: BathroomObservation,
+): FoodDetailBathroomOutcome {
+  return {
+    id: bathroom.id,
+
+    occurredAt: bathroom.occurredAt,
+
+    bristolType: bathroom.bristolType,
+
+    urgency: bathroom.urgency,
+
+    painLevel: bathroom.painLevel,
+
+    adverse: isBathroomAdverse(bathroom),
+
+    elapsedHours: hoursBetween(exposure.eatenAt, bathroom.occurredAt),
+  };
 }
 
 function buildWindow(
@@ -239,7 +261,10 @@ export function buildFoodDetailReport({
         boundaryByEntry,
       );
 
-      const first = linkedBathrooms[0] ?? null;
+      const firstBathroom = linkedBathrooms[0] ?? null;
+
+      const firstAdverseBathroom =
+        linkedBathrooms.find(isBathroomAdverse) ?? null;
 
       const medicineOverlap = medicines.some((medicine) =>
         isEventInsideMealWindow(boundary, medicine.occurredAt, 24),
@@ -254,22 +279,16 @@ export function buildFoodDetailReport({
 
         coFoods: exposure.coFoods,
 
-        firstBathroom: first
-          ? {
-              id: first.id,
+        bathroomCount: linkedBathrooms.length,
 
-              occurredAt: first.occurredAt,
+        windowAdverse: firstAdverseBathroom !== null,
 
-              bristolType: first.bristolType,
+        firstBathroom: firstBathroom
+          ? toOutcome(exposure, firstBathroom)
+          : null,
 
-              urgency: first.urgency,
-
-              painLevel: first.painLevel,
-
-              adverse: isBathroomAdverse(first),
-
-              elapsedHours: hoursBetween(exposure.eatenAt, first.occurredAt),
-            }
+        firstAdverseBathroom: firstAdverseBathroom
+          ? toOutcome(exposure, firstAdverseBathroom)
           : null,
 
         medicineOverlap,

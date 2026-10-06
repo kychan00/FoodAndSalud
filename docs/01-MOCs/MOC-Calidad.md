@@ -84,3 +84,9 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 - [[BUG-0010-Doble-Atribucion-Ventanas-Superpuestas]]
 - [[BUG-0011-Parche-Import-Combination-Engine]]
 - [[ADR-0024-Censura-Por-Nueva-Comida]]
+
+## Consistencia analítica
+
+- [[BUG-0012-Primera-Evacuacion-vs-Respuesta-Marcada]]
+- [[BUG-0013-Parche-Import-FoodHistoryChart]]
+- [[ADR-0025-Medidas-Descriptivas-de-Efecto]]

@@ -348,3 +348,26 @@ estado: activo
 - [x] ADR-0024
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.7 — Magnitud y estabilidad
+
+- [x] Diferencia absoluta en puntos porcentuales
+- [x] RR descriptivo
+- [x] No mostrar infinito cuando control = 0
+- [x] Tamaño de muestra observado
+- [x] Tamaño de muestra comparador
+- [x] Estabilidad leave-one-out
+- [x] Estabilidad alta
+- [x] Estabilidad media
+- [x] Estabilidad baja
+- [x] No estimable sin control separado
+- [x] Componente visual de magnitud
+- [x] Consistencia primera evacuación / respuesta marcada
+- [x] Mostrar respuesta marcada posterior
+- [x] Tests de efecto
+- [x] Test de explicabilidad
+- [x] BUG-0012
+- [x] BUG-0013
+- [x] ADR-0025
+- [x] Documentación Obsidian
+- [x] Validación visual

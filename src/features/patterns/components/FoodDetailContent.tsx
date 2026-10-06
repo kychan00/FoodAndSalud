@@ -16,6 +16,8 @@ import type { FoodDetailReport } from "../foodDetail.types";
 
 import { FoodCombinationAnalysis } from "./FoodCombinationAnalysis";
 
+import { FoodEffectMetrics } from "./FoodEffectMetrics";
+
 import { FoodHistoryChart } from "./FoodHistoryChart";
 
 import { FoodWindowChart } from "./FoodWindowChart";
@@ -203,6 +205,10 @@ export function FoodDetailContent({
         </Card>
       ) : null}
 
+      {data.association ? (
+        <FoodEffectMetrics association={data.association} />
+      ) : null}
+
       <FoodWindowChart windows={data.windows} />
 
       <FoodCombinationAnalysis report={data} />
@@ -276,9 +282,9 @@ export function FoodDetailContent({
                   {item.firstBathroom ? (
                     <span
                       className="food-detail-history-item__status"
-                      data-adverse={item.firstBathroom.adverse}
+                      data-adverse={item.windowAdverse}
                     >
-                      {item.firstBathroom.adverse
+                      {item.windowAdverse
                         ? "Respuesta marcada"
                         : "Sin respuesta marcada"}
                     </span>
@@ -303,7 +309,8 @@ export function FoodDetailContent({
                 {item.firstBathroom ? (
                   <div className="food-detail-history-item__outcome">
                     <span>
-                      Bristol <strong>{item.firstBathroom.bristolType}</strong>
+                      Primera evacuación: Bristol{" "}
+                      <strong>{item.firstBathroom.bristolType}</strong>
                     </span>
 
                     <span>
@@ -321,6 +328,24 @@ export function FoodDetailContent({
                       </strong>{" "}
                       h después
                     </span>
+                  </div>
+                ) : null}
+
+                {item.firstAdverseBathroom &&
+                item.firstBathroom &&
+                item.firstAdverseBathroom.id !== item.firstBathroom.id ? (
+                  <div className="food-detail-history-item__later-adverse">
+                    <Activity size={16} />
+
+                    <div>
+                      <strong>Respuesta marcada posterior</strong>
+
+                      <span>
+                        Bristol {item.firstAdverseBathroom.bristolType} ·{" "}
+                        {item.firstAdverseBathroom.elapsedHours.toFixed(1)} h
+                        después
+                      </span>
+                    </div>
                   </div>
                 ) : null}
 
@@ -352,6 +377,12 @@ export function FoodDetailContent({
           FoodAndSalud muestra coincidencias temporales. Otros alimentos,
           Medicina y factores que no se registraron pueden explicar parte del
           patrón.
+        </p>
+
+        <p>
+          La diferencia absoluta, el RR descriptivo y la estabilidad sirven para
+          describir sus propios registros. No son pruebas de causalidad ni un
+          diagnóstico.
         </p>
 
         <p>
