@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Activity,
   Beaker,
@@ -35,6 +36,8 @@ function percent(value: number) {
 }
 
 export function PatternLabPage() {
+  const navigate = useNavigate();
+
   const [scenarioId, setScenarioId] = useState(patternQaScenarios[0]?.id ?? "");
 
   const scenario =
@@ -254,6 +257,11 @@ export function PatternLabPage() {
               <FoodAssociationCard
                 key={association.foodId}
                 association={association}
+                onOpen={() =>
+                  navigate(
+                    `/qa/patterns/${scenario.id}/food/${association.foodId}`,
+                  )
+                }
               />
             ))}
           </div>

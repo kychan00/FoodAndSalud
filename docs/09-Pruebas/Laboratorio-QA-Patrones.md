@@ -173,3 +173,43 @@ hora ficticia cambie según la zona horaria del navegador.
 Véase:
 
 [[BUG-0005-Horario-Fixtures-QA]]
+
+## Detalle individual sintético
+
+Cada asociación del laboratorio dispone ahora de:
+
+`Ver detalle`
+
+Flujo:
+
+escenario
+→ asociación
+→ alimento
+→ detalle
+
+El detalle sintético utiliza exactamente el mismo componente visual que la
+pantalla real.
+
+### Puede comprobar
+
+- señal;
+- exposiciones;
+- evaluables;
+- 6 h;
+- 12 h;
+- 24 h;
+- gráfica Bristol;
+- horas hasta evacuación;
+- otros alimentos;
+- Medicina;
+- historial.
+
+### Ruta
+
+`/#/qa/patterns/:scenarioId/food/:foodId`
+
+### Datos
+
+No se utiliza Supabase.
+
+Los datos provienen exclusivamente de fixtures.

@@ -1,11 +1,13 @@
 import {
   AlertTriangle,
+  ChevronRight,
   CircleHelp,
   ShieldCheck,
   TrendingUp,
 } from "lucide-react";
 
 import { Card } from "../../../components/ui/Card";
+
 import type {
   AssociationConfidence,
   AssociationSignal,
@@ -16,6 +18,8 @@ import "./FoodAssociationCard.css";
 
 interface FoodAssociationCardProps {
   association: FoodAssociation;
+
+  onOpen?: () => void;
 }
 
 const signalLabels: Record<AssociationSignal, string> = {
@@ -56,7 +60,10 @@ function formatPercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
-export function FoodAssociationCard({ association }: FoodAssociationCardProps) {
+export function FoodAssociationCard({
+  association,
+  onOpen,
+}: FoodAssociationCardProps) {
   const hasEvaluation = association.evaluableExposures > 0;
 
   return (
@@ -125,9 +132,20 @@ export function FoodAssociationCard({ association }: FoodAssociationCardProps) {
             {association.medicineOverlapExposures === 1
               ? "ocasión"
               : "ocasiones"}{" "}
-            dentro de la misma ventana temporal. Interprete esta asociación con
-            cautela.
+            dentro de la misma ventana temporal.
           </p>
+        ) : null}
+
+        {onOpen ? (
+          <button
+            type="button"
+            className="food-association__open"
+            onClick={onOpen}
+          >
+            <span>Ver detalle</span>
+
+            <ChevronRight size={18} />
+          </button>
         ) : null}
       </div>
     </Card>

@@ -64,3 +64,15 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Graficas-Temporales]]
 - [[ADR-0017-Graficas-Reutilizables-Recharts]]
+
+## Detalle y explicabilidad
+
+- [[MOC-Patrones]]
+- [[Detalle-de-Alimento]]
+- [[Ventanas-Temporales-6-12-24]]
+- [[ADR-0018-Explicabilidad-de-Patrones]]
+- [[Prueba-Detalle-Alimento]]
+
+## QA de explicabilidad
+
+- [[Prueba-QA-Detalle-Alimento]]

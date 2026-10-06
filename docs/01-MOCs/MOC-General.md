@@ -55,3 +55,7 @@ estado: activo
 ## Calidad y pruebas
 
 - [[MOC-Pruebas]]
+
+## Patrones
+
+- [[MOC-Patrones]]

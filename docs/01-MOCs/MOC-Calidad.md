@@ -56,3 +56,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 - [[ADR-0016-QA-Sintetico-No-Persistente]]
 
 - [[BUG-0005-Horario-Fixtures-QA]]
+
+## Automatización
+
+- [[BUG-0006-Parche-PatternsPage-Dependiente-de-Formato]]

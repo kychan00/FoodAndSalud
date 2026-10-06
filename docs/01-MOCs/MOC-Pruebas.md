@@ -105,3 +105,12 @@ repetido ocho veces.
 - [[Graficas-Temporales]]
 - [[BUG-0005-Horario-Fixtures-QA]]
 - [[ADR-0017-Graficas-Reutilizables-Recharts]]
+
+## Detalle de alimento
+
+- [[Prueba-Detalle-Alimento]]
+
+## Detalle sintético
+
+- [[Prueba-QA-Detalle-Alimento]]
+- [[ADR-0019-Vista-Compartida-Real-QA]]

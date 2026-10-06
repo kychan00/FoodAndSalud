@@ -1,15 +1,29 @@
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AppShell } from "../components/layout/AppShell";
+
 import { ProtectedRoute } from "../features/auth/components/ProtectedRoute";
+
 import { CheckEmailPage } from "../features/auth/pages/CheckEmailPage";
+
 import { ForgotPasswordPage } from "../features/auth/pages/ForgotPasswordPage";
+
 import { LoginPage } from "../features/auth/pages/LoginPage";
+
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
+
 import { SignUpPage } from "../features/auth/pages/SignUpPage";
+
 import { CalendarPage } from "../features/calendar/pages/CalendarPage";
+
+import { FoodDetailPage } from "../features/patterns/pages/FoodDetailPage";
+
+import { PatternLabFoodDetailPage } from "../features/patterns/pages/PatternLabFoodDetailPage";
+
 import { PatternLabPage } from "../features/patterns/pages/PatternLabPage";
+
 import { PatternsPage } from "../features/patterns/pages/PatternsPage";
+
 import { TodayPage } from "../features/today/pages/TodayPage";
 
 export function AppRoutes() {
@@ -39,11 +53,24 @@ export function AppRoutes() {
 
           <Route path="/patterns" element={<PatternsPage />} />
 
+          <Route path="/patterns/food/:foodId" element={<FoodDetailPage />} />
+
           <Route
             path="/qa/patterns"
             element={
               import.meta.env.DEV ? (
                 <PatternLabPage />
+              ) : (
+                <Navigate to="/patterns" replace />
+              )
+            }
+          />
+
+          <Route
+            path="/qa/patterns/:scenarioId/food/:foodId"
+            element={
+              import.meta.env.DEV ? (
+                <PatternLabFoodDetailPage />
               ) : (
                 <Navigate to="/patterns" replace />
               )

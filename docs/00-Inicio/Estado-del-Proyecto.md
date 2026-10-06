@@ -218,3 +218,61 @@ También se corrigió la interpretación visual de las horas sintéticas mediant
 formatters UTC específicos de QA.
 
 Los datos reales conservan su comportamiento normal de zona horaria.
+
+## Fase 3.1 — Detalle explicable por alimento
+
+La asociación general puede abrir ahora una vista individual.
+
+Ruta:
+
+`/patterns/food/:foodId`
+
+La pantalla explica:
+
+- cantidad de exposiciones;
+- cantidad evaluable;
+- señal;
+- coincidencia;
+- ventanas 6 / 12 / 24 horas;
+- Bristol posterior;
+- urgencia;
+- dolor;
+- tiempo hasta evacuación;
+- Medicina concurrente;
+- otros alimentos de la misma comida;
+- historial de cada exposición.
+
+Las exposiciones sin evacuación posterior permanecen como:
+
+No evaluables.
+
+No se interpretan automáticamente como ausencia de respuesta.
+
+## QA sintético del detalle de alimento
+
+El Laboratorio de Patrones puede abrir ahora la vista completa de cada alimento
+ficticio.
+
+Arquitectura:
+
+Fixtures QA
+↓
+qaFoodDetail
+↓
+FoodDetailReport
+↓
+FoodDetailContent
+
+Producción utiliza:
+
+Supabase
+↓
+foodDetail.service
+↓
+FoodDetailReport
+↓
+FoodDetailContent
+
+La interfaz visual es compartida.
+
+Esto permite probar la pantalla real sin contaminar los datos del usuario.

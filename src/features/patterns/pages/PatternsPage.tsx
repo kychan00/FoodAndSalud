@@ -7,6 +7,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 import { Card } from "../../../components/ui/Card";
 import { useAuth } from "../../auth/useAuth";
@@ -18,6 +19,8 @@ import "./PatternsPage.css";
 
 export function PatternsPage() {
   const { user } = useAuth();
+
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["patterns", user?.id, "analysis"],
@@ -184,6 +187,9 @@ export function PatternsPage() {
                     <FoodAssociationCard
                       key={association.foodId}
                       association={association}
+                      onOpen={() =>
+                        navigate(`/patterns/food/${association.foodId}`)
+                      }
                     />
                   ))}
                 </div>

@@ -207,3 +207,44 @@ estado: activo
 - [x] Documentación de gráficas
 - [ ] Validación visual de los seis escenarios
 - [ ] Llevar gráficas aprobadas a Patrones reales
+
+## Fase 3.1 — Detalle de alimento
+
+- [x] Ruta individual por alimento
+- [x] Botón Ver detalle desde Patrones
+- [x] Exposiciones totales
+- [x] Exposiciones evaluables
+- [x] Señal actual
+- [x] Ventana 6 h
+- [x] Ventana 12 h
+- [x] Ventana 24 h
+- [x] Gráfica de ventanas
+- [x] Gráfica Bristol por fecha
+- [x] Tiempo alimento → evacuación
+- [x] Bristol posterior
+- [x] Urgencia posterior
+- [x] Dolor posterior
+- [x] Medicina concurrente
+- [x] Alimentos consumidos juntos
+- [x] Historial individual
+- [x] Tests unitarios
+- [x] ADR de explicabilidad
+- [x] MOC Patrones
+- [x] BUG-0006 documentado
+- [ ] Validación visual con datos reales
+- [ ] QA sintético del detalle
+- [ ] Comparación alimento solo vs combinación
+
+## Fase 3.1 QA — Detalle sintético
+
+- [x] Abrir detalle desde Laboratorio QA
+- [x] Reutilizar FoodDetailContent
+- [x] Adaptar fixtures a FoodDetailReport
+- [x] Probar Café señal alta
+- [x] Probar alimento neutral
+- [x] Probar co-ocurrencia
+- [x] Probar Medicina
+- [x] Mantener horarios QA en UTC
+- [x] Tests del adaptador
+- [x] Documentación MOC Pruebas
+- [ ] Validación visual de todos los escenarios

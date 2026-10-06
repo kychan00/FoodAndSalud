@@ -118,3 +118,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+.food-association__open {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  width: 100%;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
