@@ -147,3 +147,7 @@ repetido ocho veces.
 
 - [[Prueba-Magnitud-y-Estabilidad]]
 - [[Prueba-Consistencia-Historial-Patrones]]
+
+## Persistencia temporal
+
+- [[Prueba-Persistencia-Temporal]]

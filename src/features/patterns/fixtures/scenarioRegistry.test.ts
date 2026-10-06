@@ -6,6 +6,9 @@ const requiredScenarios = [
   "coffee-milk-discrimination",
   "coffee-milk-delayed",
   "overlapping-meals",
+  "temporal-persistent",
+  "temporal-recent",
+  "temporal-weakened",
 ];
 
 describe("pattern QA scenario registry", () => {

@@ -371,3 +371,29 @@ estado: activo
 - [x] ADR-0025
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.8 — Persistencia temporal
+
+- [x] Dividir historial cronológicamente
+- [x] Mitad anterior
+- [x] Mitad reciente
+- [x] Tasa del alimento por periodo
+- [x] Tasa comparadora por periodo
+- [x] Diferencia absoluta por periodo
+- [x] Detectar patrón persistente
+- [x] Detectar patrón reciente
+- [x] Detectar patrón debilitado
+- [x] Detectar patrón estable
+- [x] Detectar patrón variable
+- [x] Detectar datos insuficientes
+- [x] Gráfica temporal
+- [x] Mostrar fechas reales
+- [x] Mostrar muestras
+- [x] Escenario QA persistente
+- [x] Escenario QA reciente
+- [x] Escenario QA debilitado
+- [x] Tests unitarios
+- [x] Tests QA
+- [x] ADR-0026
+- [x] Documentación Obsidian
+- [x] Validación visual

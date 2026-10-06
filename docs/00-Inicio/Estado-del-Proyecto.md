@@ -423,3 +423,32 @@ dentro de la misma ventana.
 
 La automatización de esta fase produjo BUG-0013 por depender del formato textual
 de un import; FoodDetailContent pasó a reemplazo estructural completo.
+
+## Fase 3.8 — Persistencia temporal
+
+El detalle de alimento distingue ahora entre:
+
+- patrón persistente;
+- patrón más reciente;
+- patrón debilitado;
+- comportamiento estable;
+- comportamiento variable;
+- datos insuficientes.
+
+El historial de comidas se divide en dos mitades cronológicas según el número de
+comidas disponibles.
+
+Cada mitad vuelve a calcular:
+
+alimento
+vs
+comidas sin alimento.
+
+La interfaz muestra también:
+
+- fechas de cada mitad;
+- tasas;
+- muestra;
+- diferencia en puntos porcentuales.
+
+La clasificación es descriptiva y no causal.

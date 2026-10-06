@@ -100,3 +100,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Magnitud-y-Estabilidad]]
 - [[ADR-0025-Medidas-Descriptivas-de-Efecto]]
+
+## Persistencia temporal
+
+- [[Persistencia-Temporal]]
+- [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]

@@ -18,6 +18,8 @@ import { FoodCombinationAnalysis } from "./FoodCombinationAnalysis";
 
 import { FoodEffectMetrics } from "./FoodEffectMetrics";
 
+import { FoodTemporalPersistence } from "./FoodTemporalPersistence";
+
 import { FoodHistoryChart } from "./FoodHistoryChart";
 
 import { FoodWindowChart } from "./FoodWindowChart";
@@ -208,6 +210,8 @@ export function FoodDetailContent({
       {data.association ? (
         <FoodEffectMetrics association={data.association} />
       ) : null}
+
+      <FoodTemporalPersistence report={data} timeZone={timeZone} />
 
       <FoodWindowChart windows={data.windows} />
 

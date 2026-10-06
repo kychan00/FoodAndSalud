@@ -90,3 +90,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 - [[BUG-0012-Primera-Evacuacion-vs-Respuesta-Marcada]]
 - [[BUG-0013-Parche-Import-FoodHistoryChart]]
 - [[ADR-0025-Medidas-Descriptivas-de-Efecto]]
+
+## Persistencia temporal
+
+- [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]

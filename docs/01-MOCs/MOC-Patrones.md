@@ -76,3 +76,9 @@ fecha: 2026-10-06
 - [[BUG-0012-Primera-Evacuacion-vs-Respuesta-Marcada]]
 - [[Prueba-Magnitud-y-Estabilidad]]
 - [[Prueba-Consistencia-Historial-Patrones]]
+
+## Persistencia temporal
+
+- [[Persistencia-Temporal]]
+- [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]
+- [[Prueba-Persistencia-Temporal]]
