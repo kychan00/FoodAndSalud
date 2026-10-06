@@ -35,12 +35,51 @@ export interface CreateMedicineScheduleInput {
   intervalStartTime?: string;
 }
 
+export interface UpdateMedicineScheduleInput {
+  userId: string;
+
+  scheduleId: string;
+
+  dose?: number;
+
+  unit?: string;
+
+  reason?: string;
+
+  notes?: string;
+
+  startDate: string;
+
+  endDate: string;
+
+  timezone: string;
+
+  scheduleType: MedicineScheduleType;
+
+  times?: string[];
+
+  intervalHours?: number;
+
+  intervalStartTime?: string;
+}
+
 function normalizeTime(value: string) {
   return value.trim().slice(0, 5);
 }
 
 function uniqueTimes(values: string[]) {
   return [...new Set(values.map(normalizeTime).filter(Boolean))].sort();
+}
+
+function getIntervalMinutes(
+  scheduleType: MedicineScheduleType,
+  intervalHours: number | undefined,
+) {
+  if (scheduleType !== "interval" || !intervalHours) {
+    return null;
+  }
+
+  return Math.round(intervalHours * 60);
 }
 
 export async function createMedicineSchedule({
@@ -62,10 +101,7 @@ export async function createMedicineSchedule({
 
   const normalizedTimes = uniqueTimes(times);
 
-  const intervalMinutes =
-    scheduleType === "interval" && intervalHours
-      ? Math.round(intervalHours * 60)
-      : null;
+  const intervalMinutes = getIntervalMinutes(scheduleType, intervalHours);
 
   const { data: schedule, error: scheduleError } = await supabase
     .from("medicine_schedules")
@@ -147,9 +183,10 @@ export async function getMedicineSchedules(
   const { data: schedules, error: scheduleError } = await supabase
     .from("medicine_schedules")
     .select(
-      "id,medicine_id,schedule_type,start_date,end_date,dose,unit,reason,notes,timezone,interval_minutes,interval_start_time,created_at",
+      "id,medicine_id,schedule_type,start_date,end_date,dose,unit,reason,notes,timezone,interval_minutes,interval_start_time,stopped_at,created_at",
     )
     .eq("user_id", userId)
+    .is("archived_at", null)
     .order("created_at", {
       ascending: false,
     });
@@ -240,5 +277,216 @@ export async function getMedicineSchedules(
     intervalStartTime: schedule.interval_start_time
       ? schedule.interval_start_time.slice(0, 5)
       : null,
+
+    stoppedAt: schedule.stopped_at,
   }));
+}
+
+export async function updateMedicineSchedule({
+  userId,
+  scheduleId,
+  dose,
+  unit,
+  reason,
+  notes,
+  startDate,
+  endDate,
+  timezone,
+  scheduleType,
+  times = [],
+  intervalHours,
+  intervalStartTime,
+}: UpdateMedicineScheduleInput) {
+  const normalizedTimes = uniqueTimes(times);
+
+  if (scheduleType === "specific_times" && normalizedTimes.length === 0) {
+    throw new Error("La programación necesita al menos una hora.");
+  }
+
+  const intervalMinutes = getIntervalMinutes(scheduleType, intervalHours);
+
+  const { data: oldSchedule, error: oldScheduleError } = await supabase
+    .from("medicine_schedules")
+    .select(
+      "schedule_type,start_date,end_date,dose,unit,reason,notes,timezone,interval_minutes,interval_start_time,stopped_at",
+    )
+    .eq("user_id", userId)
+    .eq("id", scheduleId)
+    .is("archived_at", null)
+    .single();
+
+  if (oldScheduleError || !oldSchedule) {
+    throw oldScheduleError ?? new Error("No se encontró la programación.");
+  }
+
+  if (oldSchedule.stopped_at) {
+    throw new Error("Una programación finalizada ya no puede editarse.");
+  }
+
+  const { data: oldTimes, error: oldTimesError } = await supabase
+    .from("medicine_schedule_times")
+    .select("time_of_day,sort_order")
+    .eq("user_id", userId)
+    .eq("schedule_id", scheduleId)
+    .order("sort_order", {
+      ascending: true,
+    });
+
+  if (oldTimesError) {
+    throw oldTimesError;
+  }
+
+  const restore = async () => {
+    await supabase
+      .from("medicine_schedules")
+      .update({
+        schedule_type: oldSchedule.schedule_type,
+
+        start_date: oldSchedule.start_date,
+
+        end_date: oldSchedule.end_date,
+
+        dose: oldSchedule.dose,
+
+        unit: oldSchedule.unit,
+
+        reason: oldSchedule.reason,
+
+        notes: oldSchedule.notes,
+
+        timezone: oldSchedule.timezone,
+
+        interval_minutes: oldSchedule.interval_minutes,
+
+        interval_start_time: oldSchedule.interval_start_time,
+      })
+      .eq("user_id", userId)
+      .eq("id", scheduleId);
+
+    await supabase
+      .from("medicine_schedule_times")
+      .delete()
+      .eq("user_id", userId)
+      .eq("schedule_id", scheduleId);
+
+    if ((oldTimes ?? []).length > 0) {
+      await supabase.from("medicine_schedule_times").insert(
+        (oldTimes ?? []).map((row) => ({
+          user_id: userId,
+
+          schedule_id: scheduleId,
+
+          time_of_day: row.time_of_day,
+
+          sort_order: row.sort_order,
+        })),
+      );
+    }
+  };
+
+  const { error: updateError } = await supabase
+    .from("medicine_schedules")
+    .update({
+      schedule_type: scheduleType,
+
+      start_date: startDate,
+
+      end_date: endDate,
+
+      dose: dose ?? null,
+
+      unit: dose === undefined ? null : unit?.trim() || null,
+
+      reason: reason?.trim() || null,
+
+      notes: notes?.trim() || null,
+
+      timezone,
+
+      interval_minutes: intervalMinutes,
+
+      interval_start_time:
+        scheduleType === "interval"
+          ? normalizeTime(intervalStartTime ?? "") || null
+          : null,
+    })
+    .eq("user_id", userId)
+    .eq("id", scheduleId)
+    .is("archived_at", null);
+
+  if (updateError) {
+    throw updateError;
+  }
+
+  const { error: deleteTimesError } = await supabase
+    .from("medicine_schedule_times")
+    .delete()
+    .eq("user_id", userId)
+    .eq("schedule_id", scheduleId);
+
+  if (deleteTimesError) {
+    await restore();
+
+    throw deleteTimesError;
+  }
+
+  if (scheduleType === "specific_times") {
+    const { error: insertTimesError } = await supabase
+      .from("medicine_schedule_times")
+      .insert(
+        normalizedTimes.map((time, index) => ({
+          user_id: userId,
+
+          schedule_id: scheduleId,
+
+          time_of_day: time,
+
+          sort_order: index,
+        })),
+      );
+
+    if (insertTimesError) {
+      await restore();
+
+      throw insertTimesError;
+    }
+  }
+}
+
+export async function stopMedicineSchedule(
+  userId: string,
+  scheduleId: string,
+  stoppedAt = new Date().toISOString(),
+) {
+  const { error } = await supabase
+    .from("medicine_schedules")
+    .update({
+      stopped_at: stoppedAt,
+    })
+    .eq("user_id", userId)
+    .eq("id", scheduleId)
+    .is("archived_at", null)
+    .is("stopped_at", null);
+
+  if (error) {
+    throw error;
+  }
+}
+
+export async function archiveMedicineSchedule(
+  userId: string,
+  scheduleId: string,
+) {
+  const { error } = await supabase
+    .from("medicine_schedules")
+    .update({
+      archived_at: new Date().toISOString(),
+    })
+    .eq("user_id", userId)
+    .eq("id", scheduleId)
+    .is("archived_at", null);
+
+  if (error) {
+    throw error;
+  }
 }

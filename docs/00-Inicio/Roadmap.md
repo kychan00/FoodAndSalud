@@ -719,3 +719,37 @@ estado: activo
 - [x] Vincular scheduled_for
 - [x] Refrescar estado del Calendario
 - [x] Validación móvil
+
+### Fase 4.5C — Administrar programaciones
+
+- [x] Modo Administrar
+- [x] Listar programaciones
+- [x] Estado Próxima
+- [x] Estado Activa
+- [x] Estado Finalizada
+- [x] Estado Terminada
+- [x] Editar dosis
+- [x] Editar unidad
+- [x] Editar periodo
+- [x] Editar horas específicas
+- [x] Editar intervalo
+- [x] Editar motivo
+- [x] Editar notas
+- [x] No reescribir tomas históricas
+- [x] Finalizar ahora
+- [x] stopped_at exacto
+- [x] Recurrencia respeta stopped_at
+- [x] Quitar programación
+- [x] archived_at lógico
+- [x] No borrar medicine_entries
+- [x] Calendario ignora archivadas
+- [x] Test lifecycle
+- [x] Test stop exacto
+- [x] BUG-0018 documentado
+- [x] ADR-0039
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [x] Validación visual editar
+- [x] Validación visual finalizar
+- [x] Validación visual quitar
+- [x] Validación móvil

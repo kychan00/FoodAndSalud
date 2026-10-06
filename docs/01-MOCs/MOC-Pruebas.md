@@ -199,3 +199,7 @@ repetido ocho veces.
 ## Medicina programada en Calendario
 
 - [[Prueba-Medicina-Programada-en-Calendario-v1]]
+
+## Gestión de programaciones
+
+- [[Prueba-Administrar-Programaciones-Medicina-v1]]

@@ -156,3 +156,11 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Ocurrencias programadas
 
 - [[ADR-0038-Ocurrencias-Programadas-Derivadas]]
+
+## Lifecycle de programaciones
+
+- [[ADR-0039-Ciclo-de-Vida-de-Programaciones-de-Medicina]]
+
+## Bugs de automatización
+
+- [[BUG-0018-Parche-de-Fixture-Dependiente-del-Formato]]

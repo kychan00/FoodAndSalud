@@ -82,3 +82,15 @@
   color: var(--color-insight);
   box-shadow: 0 3px 12px rgb(80 67 72 / 7%);
 }
+
+.medicine-registration__mode {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 360px) {
+  .medicine-registration__mode button {
+    gap: 4px;
+    padding-inline: 4px;
+    font-size: 0.64rem;
+  }
+}

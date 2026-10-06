@@ -40,3 +40,7 @@ estado: activo
 ## Calendario
 
 - [[Medicina-Programada-en-Calendario-v1]]
+
+## Gestión de programaciones
+
+- [[Administrar-Programaciones-Medicina-v1]]

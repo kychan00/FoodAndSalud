@@ -285,6 +285,7 @@ export type Database = {
       };
       medicine_schedules: {
         Row: {
+          archived_at: string | null;
           created_at: string;
           dose: number | null;
           end_date: string;
@@ -296,12 +297,14 @@ export type Database = {
           reason: string | null;
           schedule_type: string;
           start_date: string;
+          stopped_at: string | null;
           timezone: string;
           unit: string | null;
           updated_at: string;
           user_id: string;
         };
         Insert: {
+          archived_at?: string | null;
           created_at?: string;
           dose?: number | null;
           end_date: string;
@@ -313,12 +316,14 @@ export type Database = {
           reason?: string | null;
           schedule_type: string;
           start_date: string;
+          stopped_at?: string | null;
           timezone: string;
           unit?: string | null;
           updated_at?: string;
           user_id: string;
         };
         Update: {
+          archived_at?: string | null;
           created_at?: string;
           dose?: number | null;
           end_date?: string;
@@ -330,6 +335,7 @@ export type Database = {
           reason?: string | null;
           schedule_type?: string;
           start_date?: string;
+          stopped_at?: string | null;
           timezone?: string;
           unit?: string | null;
           updated_at?: string;

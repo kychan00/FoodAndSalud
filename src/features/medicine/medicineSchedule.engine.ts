@@ -28,6 +28,8 @@ export interface MedicineScheduleDefinition {
   intervalMinutes: number | null;
 
   intervalStartTime: string | null;
+
+  stoppedAt: string | null;
 }
 
 export interface MedicineScheduleOccurrence {
@@ -150,12 +152,6 @@ export function zonedLocalDateTimeToDate(
 
   let candidate = new Date(desiredAsUtc);
 
-  /*
-   * Iterative offset correction using Intl.
-   *
-   * This avoids assuming the user's schedule timezone
-   * is the same as the machine executing the calculation.
-   */
   for (let iteration = 0; iteration < 3; iteration += 1) {
     const actual = getWallTimeInZone(candidate, timeZone);
 
@@ -232,6 +228,14 @@ function buildOccurrence(
   };
 }
 
+function isBeforeStop(schedule: MedicineScheduleDefinition, timestamp: number) {
+  if (!schedule.stoppedAt) {
+    return true;
+  }
+
+  return timestamp < new Date(schedule.stoppedAt).getTime();
+}
+
 export function expandMedicineSchedule(
   schedule: MedicineScheduleDefinition,
   rangeStart: Date,
@@ -253,9 +257,12 @@ export function expandMedicineSchedule(
       for (const time of uniqueTimes) {
         const date = zonedLocalDateTimeToDate(dateKey, time, schedule.timezone);
 
+        const timestamp = date.getTime();
+
         if (
-          date.getTime() < rangeStart.getTime() ||
-          date.getTime() >= rangeEnd.getTime()
+          timestamp < rangeStart.getTime() ||
+          timestamp >= rangeEnd.getTime() ||
+          !isBeforeStop(schedule, timestamp)
         ) {
           continue;
         }
@@ -281,12 +288,18 @@ export function expandMedicineSchedule(
     schedule.timezone,
   );
 
-  const endOfSchedule =
+  const nominalEnd =
     zonedLocalDateTimeToDate(
       schedule.endDate,
       "23:59",
       schedule.timezone,
     ).getTime() + 60_000;
+
+  const stoppedAt = schedule.stoppedAt
+    ? new Date(schedule.stoppedAt).getTime()
+    : Number.POSITIVE_INFINITY;
+
+  const endOfSchedule = Math.min(nominalEnd, stoppedAt);
 
   const step = schedule.intervalMinutes * 60_000;
 

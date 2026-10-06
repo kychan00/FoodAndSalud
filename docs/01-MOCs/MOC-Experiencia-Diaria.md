@@ -55,3 +55,7 @@ estado: activo
 ## Medicina programada en Calendario
 
 - [[Medicina-Programada-en-Calendario-v1]]
+
+## Administrar Medicina programada
+
+- [[Administrar-Programaciones-Medicina-v1]]

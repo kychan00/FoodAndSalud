@@ -946,3 +946,44 @@ La gestión completa de programaciones:
 - exportar a calendario externo;
 
 queda fuera de 4.5B.
+
+## Fase 4.5C — Administrar programaciones
+
+Medicina incorpora:
+
+`Administrar`.
+
+Una programación puede:
+
+- editarse;
+- finalizarse en un instante preciso;
+- archivarse lógicamente.
+
+### Finalización
+
+`stopped_at`
+
+corta futuras ocurrencias desde el instante exacto.
+
+### Archivado
+
+`archived_at`
+
+retira la programación de la experiencia activa sin destruir su fila histórica.
+
+### Historia
+
+Los medicine_entries ya registrados permanecen intactos.
+
+### Calidad
+
+Durante la implementación se documentó:
+
+[[BUG-0018-Parche-de-Fixture-Dependiente-del-Formato]]
+
+para evitar nuevamente parches estructurales dependientes del formato de
+Prettier.
+
+### Patrones
+
+Sin cambios metodológicos.

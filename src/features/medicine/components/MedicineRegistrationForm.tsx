@@ -1,8 +1,10 @@
 import { useState } from "react";
 
-import { CalendarClock, CheckCircle2 } from "lucide-react";
+import { CalendarClock, CheckCircle2, Settings2 } from "lucide-react";
 
 import { MedicineScheduleForm } from "./MedicineScheduleForm";
+
+import { MedicineScheduleManager } from "./MedicineScheduleManager";
 
 import { MedicineSingleEntryForm } from "./MedicineSingleEntryForm";
 
@@ -18,7 +20,7 @@ interface MedicineRegistrationFormProps {
   onCancel: () => void;
 }
 
-type MedicineCaptureMode = "single" | "schedule";
+type MedicineCaptureMode = "single" | "schedule" | "manage";
 
 export function MedicineRegistrationForm({
   userId,
@@ -50,6 +52,16 @@ export function MedicineRegistrationForm({
 
           <span>Programar</span>
         </button>
+
+        <button
+          type="button"
+          data-selected={mode === "manage"}
+          onClick={() => setMode("manage")}
+        >
+          <Settings2 size={16} />
+
+          <span>Administrar</span>
+        </button>
       </div>
 
       {mode === "single" ? (
@@ -59,14 +71,20 @@ export function MedicineRegistrationForm({
           onSaved={onSaved}
           onCancel={onCancel}
         />
-      ) : (
+      ) : null}
+
+      {mode === "schedule" ? (
         <MedicineScheduleForm
           userId={userId}
           initialDate={initialDate}
           onSaved={onSaved}
           onCancel={onCancel}
         />
-      )}
+      ) : null}
+
+      {mode === "manage" ? (
+        <MedicineScheduleManager userId={userId} onCancel={onCancel} />
+      ) : null}
     </div>
   );
 }
