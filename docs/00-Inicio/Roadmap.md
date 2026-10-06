@@ -753,3 +753,37 @@ estado: activo
 - [x] Validación visual finalizar
 - [x] Validación visual quitar
 - [x] Validación móvil
+
+### Fase 4.5D — Exportar programación a calendario
+
+- [x] Exportación iCalendar
+- [x] Archivo .ics
+- [x] VEVENT por ocurrencia
+- [x] UID determinista
+- [x] DTSTART UTC
+- [x] Respetar timezone
+- [x] Respetar fecha inicial
+- [x] Respetar fecha final
+- [x] Respetar stopped_at
+- [x] Soportar horas específicas
+- [x] Soportar intervalos
+- [x] TRANSP:TRANSPARENT
+- [x] Nombre de medicamento
+- [x] Dosis programada
+- [x] No exportar reason
+- [x] No exportar notes
+- [x] Aclarar programado != tomado
+- [x] No crear medicine_entries
+- [x] No modificar Patrones
+- [x] Nombre de archivo amigable
+- [x] Test ICS
+- [x] ADR-0040
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [ ] Validación descarga .ics
+- [ ] Validación Apple Calendar
+- [ ] Validación Google Calendar
+- [ ] Validación programación finalizada
+- [ ] Validación móvil
+
+- [x] Despliegue de revisión en GitHub Pages

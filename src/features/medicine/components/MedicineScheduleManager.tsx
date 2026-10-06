@@ -6,6 +6,7 @@ import {
   CalendarClock,
   ChevronLeft,
   Clock3,
+  Download,
   Pencil,
   Square,
   Trash2,
@@ -15,6 +16,8 @@ import {
   archiveMedicineSchedule,
   stopMedicineSchedule,
 } from "../medicineSchedule.service";
+
+import { downloadMedicineScheduleIcs } from "../medicineSchedule.download";
 
 import {
   formatMedicineScheduleRule,
@@ -126,7 +129,7 @@ export function MedicineScheduleManager({
             <strong>Sus programaciones</strong>
 
             <span>
-              Edite horarios o retire una programación sin borrar las tomas que
+              Edite, exporte o retire una programación sin borrar las tomas que
               ya registró.
             </span>
           </div>
@@ -147,7 +150,11 @@ export function MedicineScheduleManager({
                   type="button"
                   className="medicine-schedule-manager__card"
                   data-lifecycle={lifecycle}
-                  onClick={() => setSelectedId(schedule.id)}
+                  onClick={() => {
+                    setError(null);
+
+                    setSelectedId(schedule.id);
+                  }}
                 >
                   <span className="medicine-schedule-manager__icon">
                     <Clock3 size={18} />
@@ -189,6 +196,24 @@ export function MedicineScheduleManager({
   const canEdit = lifecycle !== "stopped";
 
   const canStop = lifecycle === "active";
+
+  const exportCalendar = () => {
+    try {
+      const filename = downloadMedicineScheduleIcs(selected);
+
+      setError(null);
+
+      console.info(`Calendario exportado: ${filename}`);
+    } catch (exportError) {
+      console.error(exportError);
+
+      setError(
+        exportError instanceof Error
+          ? exportError.message
+          : "No pudimos exportar esta programación.",
+      );
+    }
+  };
 
   const performStop = async () => {
     setWorking(true);
@@ -286,45 +311,65 @@ export function MedicineScheduleManager({
       </article>
 
       {confirmMode === null ? (
-        <div className="medicine-schedule-manager__actions">
-          {canEdit ? (
-            <button type="button" onClick={() => setEditing(true)}>
-              <Pencil size={18} />
+        <>
+          <div className="medicine-schedule-manager__actions">
+            <button type="button" onClick={exportCalendar}>
+              <Download size={18} />
 
               <span>
-                <strong>Editar programación</strong>
+                <strong>Exportar calendario</strong>
 
-                <small>Horario, periodo, dosis y notas</small>
+                <small>
+                  Descargar archivo .ics para Apple o Google Calendar
+                </small>
               </span>
             </button>
-          ) : null}
 
-          {canStop ? (
-            <button type="button" onClick={() => setConfirmMode("stop")}>
-              <Square size={18} />
+            {canEdit ? (
+              <button type="button" onClick={() => setEditing(true)}>
+                <Pencil size={18} />
+
+                <span>
+                  <strong>Editar programación</strong>
+
+                  <small>Horario, periodo, dosis y notas</small>
+                </span>
+              </button>
+            ) : null}
+
+            {canStop ? (
+              <button type="button" onClick={() => setConfirmMode("stop")}>
+                <Square size={18} />
+
+                <span>
+                  <strong>Finalizar ahora</strong>
+
+                  <small>Detener futuras ocurrencias desde este momento</small>
+                </span>
+              </button>
+            ) : null}
+
+            <button
+              type="button"
+              className="medicine-schedule-manager__danger"
+              onClick={() => setConfirmMode("archive")}
+            >
+              <Trash2 size={18} />
 
               <span>
-                <strong>Finalizar ahora</strong>
+                <strong>Quitar programación</strong>
 
-                <small>Detener futuras ocurrencias desde este momento</small>
+                <small>Ocultarla del calendario y de esta lista</small>
               </span>
             </button>
+          </div>
+
+          {error ? (
+            <p className="entry-form__error" role="alert">
+              {error}
+            </p>
           ) : null}
-
-          <button
-            type="button"
-            className="medicine-schedule-manager__danger"
-            onClick={() => setConfirmMode("archive")}
-          >
-            <Trash2 size={18} />
-
-            <span>
-              <strong>Quitar programación</strong>
-
-              <small>Ocultarla del calendario y de esta lista</small>
-            </span>
-          </button>
-        </div>
+        </>
       ) : (
         <div className="medicine-schedule-manager__confirm">
           <strong>

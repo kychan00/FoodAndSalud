@@ -987,3 +987,128 @@ Prettier.
 ### Patrones
 
 Sin cambios metodológicos.
+
+## Fase 4.5D — Exportación de programación a calendario
+
+Las programaciones de Medicina pueden exportarse como:
+
+`.ics`.
+
+### Modelo
+
+La exportación es un snapshot.
+
+No existe sincronización externa.
+
+### Compatibilidad
+
+El archivo utiliza iCalendar y está pensado para clientes compatibles como:
+
+- Apple Calendar;
+- Google Calendar.
+
+### Privacidad
+
+Se exportan:
+
+- medicamento;
+- horario;
+- dosis si existe.
+
+No se exportan:
+
+- motivo;
+- notas.
+
+### Semántica
+
+Un evento externo sigue representando:
+
+programado.
+
+No:
+
+tomado.
+
+### Patrones
+
+Descargar o importar un archivo ICS no genera medicine_entries y no modifica
+Patrones.
+
+### Arquitectura
+
+La exportación reutiliza el motor de recurrencia existente.
+
+No se añadió una migración de base de datos para Fase 4.5D.
+
+### BUG-0019 — ICS line folding
+
+Durante Fase 4.5D se detectó un falso negativo en pruebas.
+
+El exportador realizaba correctamente line folding de iCalendar, pero una
+assertion buscaba texto continuo sobre la representación física plegada.
+
+La prueba ahora realiza unfolding antes de validar contenido semántico.
+
+Referencia:
+
+[[BUG-0019-Prueba-ICS-No-Consideraba-Line-Folding]]
+
+## Producción — GitHub Pages
+
+FoodAndSalud se despliega para revisión real mediante GitHub Pages.
+
+URL pública:
+
+`https://kychan00.github.io/FoodAndSalud/`
+
+### Estado
+
+El despliegue incluye hasta:
+
+Fase 4.5D.
+
+La exportación ICS se encuentra:
+
+`desplegada para validación`.
+
+Sus pruebas automatizadas están aprobadas, pero las comprobaciones manuales de:
+
+- Apple Calendar;
+- Google Calendar;
+- móvil;
+
+continúan abiertas hasta su validación sobre la versión publicada.
+
+### Build
+
+Vite utiliza:
+
+`/FoodAndSalud/`
+
+como base de producción.
+
+La navegación utiliza:
+
+`HashRouter`.
+
+### Backend
+
+La aplicación publicada utiliza el proyecto Supabase remoto mediante las
+variables VITE del build local.
+
+`.env.local` permanece fuera de Git.
+
+### Seguridad
+
+La publishable key de Supabase pertenece al cliente público.
+
+La protección de los datos continúa dependiendo de RLS.
+
+### Auth
+
+Debe verificarse en producción que Supabase Auth permita como redirect:
+
+`https://kychan00.github.io/FoodAndSalud/`
+
+especialmente para recuperación de contraseña y flujos por correo.

@@ -164,3 +164,11 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Bugs de automatización
 
 - [[BUG-0018-Parche-de-Fixture-Dependiente-del-Formato]]
+
+## Calendario externo
+
+- [[ADR-0040-Calendario-Externo-Como-Proyeccion]]
+
+## ICS
+
+- [[BUG-0019-Prueba-ICS-No-Consideraba-Line-Folding]]

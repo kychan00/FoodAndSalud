@@ -87,3 +87,13 @@ Un usuario solamente puede acceder a sus propios registros.
 ## Estado
 
 En desarrollo.
+
+## Producción
+
+FoodAndSalud está disponible para revisión en GitHub Pages:
+
+https://kychan00.github.io/FoodAndSalud/
+
+La rama `main` conserva el código fuente.
+
+La rama `gh-pages` contiene únicamente el build estático publicado.

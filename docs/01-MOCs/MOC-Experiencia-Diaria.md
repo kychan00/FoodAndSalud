@@ -59,3 +59,7 @@ estado: activo
 ## Administrar Medicina programada
 
 - [[Administrar-Programaciones-Medicina-v1]]
+
+## Calendario externo
+
+- [[Exportar-Programacion-Medicina-ICS-v1]]
