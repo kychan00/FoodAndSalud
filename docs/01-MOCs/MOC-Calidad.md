@@ -1,0 +1,41 @@
+---
+tipo: moc
+estado: activo
+---
+
+# MOC — Calidad
+
+## Regla
+
+Todo bug significativo debe producir conocimiento permanente.
+
+## Flujo
+
+Problema
+→ reproducción
+→ causa raíz
+→ solución
+→ prevención
+→ test
+→ estándar reutilizable
+
+## Regla complementaria
+
+Toda solución buena que pueda reutilizarse debe documentarse como patrón.
+
+## Herramientas
+
+- ESLint
+- Prettier
+- TypeScript
+- Vitest
+- React Testing Library
+- Playwright
+
+## Objetivo
+
+Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente.
+
+## Bugs documentados
+
+- [[BUG-0001-Docker-Supabase-Read-Only-Memory]]

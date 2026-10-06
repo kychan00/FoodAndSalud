@@ -1,0 +1,10 @@
+-- ============================================================
+-- FoodAndSalud local development seed
+-- ============================================================
+--
+-- Intentionally empty for now.
+--
+-- Never include personal production health data in this file.
+--
+-- Future seed data must be synthetic and suitable for tests only.
+-- ============================================================
