@@ -151,3 +151,7 @@ repetido ocho veces.
 ## Persistencia temporal
 
 - [[Prueba-Persistencia-Temporal]]
+
+## Factores concurrentes
+
+- [[Prueba-Factores-Concurrentes]]

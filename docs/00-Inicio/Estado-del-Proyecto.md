@@ -452,3 +452,41 @@ La interfaz muestra también:
 - diferencia en puntos porcentuales.
 
 La clasificación es descriptiva y no causal.
+
+## Fase 3.9 — Factores concurrentes
+
+El detalle del alimento analiza ahora contextos concurrentes.
+
+### Medicina
+
+Las exposiciones se dividen en:
+
+con Medicina
+vs
+sin Medicina.
+
+Se muestran:
+
+- muestra;
+- tasa;
+- diferencia;
+- inseparabilidad.
+
+### Otros alimentos
+
+Se sintetiza el motor de combinaciones para mostrar:
+
+- frecuencia de acompañamiento;
+- alimentos inseparables;
+- diferencias observadas;
+- exposiciones del alimento solo.
+
+La interfaz utiliza deliberadamente:
+
+`factor concurrente`
+
+en lugar de:
+
+`confusor causal`.
+
+El análisis continúa siendo descriptivo.

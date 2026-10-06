@@ -9,6 +9,7 @@ const requiredScenarios = [
   "temporal-persistent",
   "temporal-recent",
   "temporal-weakened",
+  "medicine-discrimination",
 ];
 
 describe("pattern QA scenario registry", () => {

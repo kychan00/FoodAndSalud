@@ -397,3 +397,27 @@ estado: activo
 - [x] ADR-0026
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.9 — Factores concurrentes
+
+- [x] Definir factor concurrente
+- [x] Evitar lenguaje causal de confusión
+- [x] Dividir alimento con / sin Medicina
+- [x] Calcular tasa con Medicina
+- [x] Calcular tasa sin Medicina
+- [x] Calcular diferencia en pp
+- [x] Detectar Medicina inseparable
+- [x] Detectar pocos datos
+- [x] Detectar diferencia mayor con Medicina
+- [x] Detectar diferencia menor con Medicina
+- [x] Detectar diferencia pequeña
+- [x] Detectar ausencia de Medicina
+- [x] Resumir alimentos acompañantes
+- [x] Detectar alimento inseparable
+- [x] Mostrar exposiciones del alimento solo
+- [x] Escenario QA Medicina discriminable
+- [x] Tests del motor
+- [x] Test QA
+- [x] ADR-0027
+- [x] Documentación Obsidian
+- [x] Validación visual

@@ -94,3 +94,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Persistencia temporal
 
 - [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]
+
+## Lenguaje causal
+
+- [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]

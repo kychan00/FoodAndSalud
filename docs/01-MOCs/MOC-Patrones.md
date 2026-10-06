@@ -82,3 +82,9 @@ fecha: 2026-10-06
 - [[Persistencia-Temporal]]
 - [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]
 - [[Prueba-Persistencia-Temporal]]
+
+## Factores concurrentes
+
+- [[Factores-Concurrentes]]
+- [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]
+- [[Prueba-Factores-Concurrentes]]

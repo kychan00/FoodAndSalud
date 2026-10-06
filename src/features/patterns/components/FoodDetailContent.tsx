@@ -16,6 +16,8 @@ import type { FoodDetailReport } from "../foodDetail.types";
 
 import { FoodCombinationAnalysis } from "./FoodCombinationAnalysis";
 
+import { FoodConcurrentFactors } from "./FoodConcurrentFactors";
+
 import { FoodEffectMetrics } from "./FoodEffectMetrics";
 
 import { FoodTemporalPersistence } from "./FoodTemporalPersistence";
@@ -214,6 +216,8 @@ export function FoodDetailContent({
       <FoodTemporalPersistence report={data} timeZone={timeZone} />
 
       <FoodWindowChart windows={data.windows} />
+
+      <FoodConcurrentFactors report={data} />
 
       <FoodCombinationAnalysis report={data} />
 

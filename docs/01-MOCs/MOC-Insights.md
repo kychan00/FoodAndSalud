@@ -105,3 +105,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Persistencia-Temporal]]
 - [[ADR-0026-Persistencia-Por-Mitades-Cronologicas]]
+
+## Factores concurrentes
+
+- [[Factores-Concurrentes]]
+- [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]
