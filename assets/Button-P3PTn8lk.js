@@ -1,0 +1,1 @@
+import{n as e}from"./client-CRtBsRF2.js";var t=e();function n({children:e,fullWidth:n=!1,variant:r=`primary`,className:i=``,...a}){let o=[`ui-button`,`ui-button--${r}`,n?`ui-button--full`:``,i].filter(Boolean).join(` `);return(0,t.jsx)(`button`,{className:o,...a,children:e})}export{n as t};
