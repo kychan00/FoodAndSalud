@@ -476,3 +476,29 @@ estado: activo
 - [x] ADR-0029
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.12 — Latencia de respuesta
+
+- [x] Usar primera respuesta marcada
+- [x] No confundir primera evacuación con primera respuesta marcada
+- [x] Intervalo 0–6 h
+- [x] Intervalo >6–12 h
+- [x] Intervalo >12–24 h
+- [x] Mediana de latencia
+- [x] Rango mínimo–máximo
+- [x] Proporción de exposiciones marcadas
+- [x] Perfil principalmente temprano
+- [x] Perfil principalmente intermedio
+- [x] Perfil principalmente tardío
+- [x] Perfil variable
+- [x] Pocos datos
+- [x] Umbral dominante 60%
+- [x] Muestra mínima de 3 respuestas marcadas
+- [x] Respetar ventana efectiva
+- [x] Reutilizar escenario tardío de Café + Leche
+- [x] Escenario QA tardío 16 h
+- [x] Tests del motor
+- [x] Tests QA
+- [x] ADR-0030
+- [x] Documentación Obsidian
+- [x] Validación visual

@@ -120,3 +120,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Medicina-Antes-y-Despues]]
 - [[ADR-0029-Ventana-Previa-de-Medicina]]
+
+## Latencia de respuesta
+
+- [[Latencia-de-Respuesta]]
+- [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]

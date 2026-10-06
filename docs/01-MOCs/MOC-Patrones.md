@@ -100,3 +100,9 @@ fecha: 2026-10-06
 - [[Medicina-Antes-y-Despues]]
 - [[ADR-0029-Ventana-Previa-de-Medicina]]
 - [[Prueba-Medicina-Antes-y-Despues]]
+
+## Latencia de respuesta
+
+- [[Latencia-de-Respuesta]]
+- [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]
+- [[Prueba-Latencia-de-Respuesta]]

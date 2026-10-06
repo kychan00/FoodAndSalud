@@ -30,6 +30,8 @@ import { FoodHistoryChart } from "./FoodHistoryChart";
 
 import { FoodWindowChart } from "./FoodWindowChart";
 
+import { FoodResponseLatency } from "./FoodResponseLatency";
+
 interface FoodDetailContentProps {
   data: FoodDetailReport;
 
@@ -220,6 +222,8 @@ export function FoodDetailContent({
       <FoodTemporalPersistence report={data} timeZone={timeZone} />
 
       <FoodWindowChart windows={data.windows} />
+
+      <FoodResponseLatency report={data} />
 
       <FoodConcurrentFactors report={data} />
 

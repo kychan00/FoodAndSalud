@@ -111,3 +111,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 
 - [[ADR-0029-Ventana-Previa-de-Medicina]]
 - [[BUG-0015-Parche-startIso-Dependiente-de-Formato]]
+
+## Semántica temporal
+
+- [[ADR-0030-Latencia-de-Primera-Respuesta-Marcada]]

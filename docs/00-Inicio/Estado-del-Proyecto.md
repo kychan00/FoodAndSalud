@@ -547,3 +547,33 @@ El servicio real recupera seis horas adicionales antes del inicio de los 90 día
 para conservar el contexto de la primera comida.
 
 La fase continúa siendo descriptiva y no modela farmacocinética.
+
+## Fase 3.12 — Latencia de respuesta
+
+Patrones puede describir ahora cuándo aparece la primera respuesta marcada.
+
+La métrica utiliza:
+
+`firstAdverseBathroom`
+
+y no simplemente:
+
+`firstBathroom`.
+
+Los intervalos son:
+
+- 0–6 h;
+- > 6–12 h;
+- > 12–24 h.
+
+Se muestran:
+
+- mediana;
+- rango;
+- distribución;
+- proporción marcada;
+- perfil temporal dominante.
+
+Se requieren al menos tres respuestas marcadas para clasificar el perfil.
+
+La latencia es descriptiva y no causal.

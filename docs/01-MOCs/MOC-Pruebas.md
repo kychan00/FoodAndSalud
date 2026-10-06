@@ -163,3 +163,7 @@ repetido ocho veces.
 ## Timing de Medicina
 
 - [[Prueba-Medicina-Antes-y-Despues]]
+
+## Latencia de respuesta
+
+- [[Prueba-Latencia-de-Respuesta]]

@@ -1,3 +1,5 @@
+import { latencyLateScenario } from "./latencyScenario";
+
 import { medicineBeforeScenario } from "./medicineBeforeScenario";
 
 import { concurrentMedicineScenario } from "./concurrentScenario";
@@ -351,6 +353,7 @@ function buildMixedMealScenario(): PatternQaScenario {
 }
 
 export const patternQaScenarios: PatternQaScenario[] = [
+  latencyLateScenario,
   medicineBeforeScenario,
   concurrentMedicineScenario,
   temporalPersistentScenario,

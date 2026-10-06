@@ -11,6 +11,7 @@ const requiredScenarios = [
   "temporal-weakened",
   "medicine-discrimination",
   "medicine-before-discrimination",
+  "latency-late-16h",
 ];
 
 describe("pattern QA scenario registry", () => {
