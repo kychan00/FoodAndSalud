@@ -847,3 +847,49 @@ No realiza consultas adicionales.
 Las fechas históricas ofrecen una acción para regresar directamente a Hoy.
 
 El resumen es descriptivo y no modifica Patrones v1.
+
+## Fase 4.5A — Programación de Medicina
+
+Se agregó un modelo independiente para horarios de Medicina.
+
+### Separación semántica
+
+`medicine_schedules`
+
+representa:
+
+programado.
+
+`medicine_entries`
+
+representa:
+
+registrado como tomado.
+
+Una programación no crea automáticamente eventos reales.
+
+### Métodos
+
+Se admiten:
+
+- N horas específicas al día;
+- intervalos continuos cada X horas.
+
+### Periodo
+
+Cada programación tiene:
+
+- fecha inicial;
+- fecha final;
+- zona horaria.
+
+### Calendario
+
+El motor de recurrencia ya puede expandir las ocurrencias.
+
+La representación visual y la conversión de una ocurrencia en una toma real
+quedan para Fase 4.5B.
+
+### Patrones
+
+Patrones v1 continúa leyendo únicamente tomas reales.

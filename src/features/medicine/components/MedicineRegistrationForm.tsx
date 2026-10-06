@@ -1,20 +1,11 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useState } from "react";
 
-import { Pill } from "lucide-react";
+import { CalendarClock, CheckCircle2 } from "lucide-react";
 
-import { Button } from "../../../components/ui/Button";
+import { MedicineScheduleForm } from "./MedicineScheduleForm";
 
-import { QuickSuggestionChips } from "../../entries/components/QuickSuggestionChips";
+import { MedicineSingleEntryForm } from "./MedicineSingleEntryForm";
 
-import { normalizeSuggestionText } from "../../entries/dailySuggestions";
-
-import { localDateTimeToIso, toLocalDateTimeInput } from "../../../utils/date";
-
-import { createMedicineEntry } from "../medicine.service";
-
-import { useMedicineSuggestions } from "../useMedicineSuggestions";
-
-import "../../entries/components/EntryForm.css";
 import "./MedicineRegistrationForm.css";
 
 interface MedicineRegistrationFormProps {
@@ -27,7 +18,7 @@ interface MedicineRegistrationFormProps {
   onCancel: () => void;
 }
 
-const units = ["mg", "g", "ml", "tableta", "cápsula"];
+type MedicineCaptureMode = "single" | "schedule";
 
 export function MedicineRegistrationForm({
   userId,
@@ -35,268 +26,47 @@ export function MedicineRegistrationForm({
   onSaved,
   onCancel,
 }: MedicineRegistrationFormProps) {
-  const [name, setName] = useState("");
-
-  const [takenAt, setTakenAt] = useState(toLocalDateTimeInput(initialDate));
-
-  const [dose, setDose] = useState("");
-
-  const [unit, setUnit] = useState("mg");
-
-  const [reason, setReason] = useState("");
-
-  const [notes, setNotes] = useState("");
-
-  const [saving, setSaving] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-
-  const { data: suggestions = [] } = useMedicineSuggestions(userId);
-
-  const visibleSuggestions = useMemo(() => {
-    const query = normalizeSuggestionText(name);
-
-    return suggestions
-      .filter(
-        (suggestion) =>
-          !query || normalizeSuggestionText(suggestion.name).includes(query),
-      )
-      .slice(0, 8);
-  }, [name, suggestions]);
-
-  const selectSuggestion = (id: string) => {
-    const suggestion = suggestions.find((item) => item.id === id);
-
-    if (!suggestion) {
-      return;
-    }
-
-    setName(suggestion.name);
-
-    if (suggestion.lastDose !== null) {
-      setDose(String(suggestion.lastDose));
-    }
-
-    const suggestedUnit = suggestion.lastUnit ?? suggestion.defaultUnit;
-
-    if (suggestedUnit) {
-      setUnit(suggestedUnit);
-    }
-
-    setError(null);
-  };
-
-  const getSuggestionMeta = (suggestion: (typeof suggestions)[number]) => {
-    if (suggestion.lastDose !== null) {
-      return [
-        suggestion.lastDose,
-        suggestion.lastUnit ?? suggestion.defaultUnit,
-      ]
-        .filter(Boolean)
-        .join(" ");
-    }
-
-    return suggestion.defaultUnit;
-  };
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    const cleanName = name.trim().replace(/\s+/g, " ");
-
-    if (!cleanName) {
-      setError("Escriba el nombre.");
-
-      return;
-    }
-
-    const parsedDose = dose.trim() ? Number(dose) : undefined;
-
-    if (
-      parsedDose !== undefined &&
-      (!Number.isFinite(parsedDose) || parsedDose <= 0)
-    ) {
-      setError("La dosis debe ser mayor a cero.");
-
-      return;
-    }
-
-    setSaving(true);
-
-    setError(null);
-
-    try {
-      await createMedicineEntry({
-        userId,
-
-        name: cleanName,
-
-        takenAt: localDateTimeToIso(takenAt),
-
-        dose: parsedDose,
-
-        unit: dose.trim() ? unit : undefined,
-
-        reason,
-
-        notes,
-      });
-
-      onSaved();
-    } catch (saveError) {
-      console.error(saveError);
-
-      setError("No pudimos guardar Medicina. Inténtelo nuevamente.");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const [mode, setMode] = useState<MedicineCaptureMode>("single");
 
   return (
-    <form className="entry-form" onSubmit={(event) => void handleSubmit(event)}>
-      <div className="medicine-form__hero">
-        <span>
-          <Pill size={27} />
-        </span>
-
-        <div>
-          <strong>Medicina</strong>
-
-          <p>Medicamento, suplemento o remedio.</p>
-        </div>
-      </div>
-
-      <QuickSuggestionChips
-        label="Atajos"
-        hint="Usados recientemente"
-        items={visibleSuggestions.map((suggestion) => ({
-          id: suggestion.id,
-
-          label: suggestion.name,
-
-          meta: getSuggestionMeta(suggestion),
-
-          favorite: suggestion.isFavorite,
-        }))}
-        onSelect={selectSuggestion}
-      />
-
-      <section className="entry-form__section">
-        <label className="entry-form__label" htmlFor="medicine-name">
-          Nombre
-        </label>
-
-        <input
-          id="medicine-name"
-          className="entry-form__input"
-          type="text"
-          value={name}
-          maxLength={120}
-          autoComplete="off"
-          placeholder="Ej. Omeprazol"
-          onChange={(event) => setName(event.target.value)}
-          required
-        />
-      </section>
-
-      <section className="entry-form__section">
-        <label className="entry-form__label" htmlFor="medicine-time">
-          ¿Cuándo?
-        </label>
-
-        <input
-          id="medicine-time"
-          className="entry-form__input entry-form__date"
-          type="datetime-local"
-          value={takenAt}
-          onChange={(event) => setTakenAt(event.target.value)}
-          required
-        />
-      </section>
-
-      <section className="entry-form__section">
-        <p className="entry-form__label">Dosis</p>
-
-        <div className="medicine-dose-row">
-          <input
-            className="entry-form__input"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="any"
-            value={dose}
-            placeholder="20"
-            onChange={(event) => setDose(event.target.value)}
-          />
-
-          <select
-            className="entry-form__input"
-            value={unit}
-            onChange={(event) => setUnit(event.target.value)}
-          >
-            {units.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <p className="entry-form__hint">Opcional.</p>
-      </section>
-
-      <section className="entry-form__section">
-        <label className="entry-form__label" htmlFor="medicine-reason">
-          Motivo
-        </label>
-
-        <input
-          id="medicine-reason"
-          className="entry-form__input"
-          type="text"
-          value={reason}
-          maxLength={300}
-          placeholder="Ej. Acidez"
-          onChange={(event) => setReason(event.target.value)}
-        />
-      </section>
-
-      <section className="entry-form__section">
-        <label className="entry-form__label" htmlFor="medicine-notes">
-          Notas
-        </label>
-
-        <textarea
-          id="medicine-notes"
-          className="entry-form__textarea"
-          value={notes}
-          maxLength={2000}
-          placeholder="Opcional"
-          onChange={(event) => setNotes(event.target.value)}
-        />
-      </section>
-
-      {error ? (
-        <p className="entry-form__error" role="alert">
-          {error}
-        </p>
-      ) : null}
-
-      <div className="entry-form__actions">
-        <Button type="submit" fullWidth disabled={saving}>
-          {saving ? "Guardando…" : "Guardar Medicina"}
-        </Button>
-
-        <Button
+    <div className="medicine-registration">
+      <div className="medicine-registration__mode">
+        <button
           type="button"
-          variant="ghost"
-          fullWidth
-          disabled={saving}
-          onClick={onCancel}
+          data-selected={mode === "single"}
+          onClick={() => setMode("single")}
         >
-          Volver
-        </Button>
+          <CheckCircle2 size={16} />
+
+          <span>Una toma</span>
+        </button>
+
+        <button
+          type="button"
+          data-selected={mode === "schedule"}
+          onClick={() => setMode("schedule")}
+        >
+          <CalendarClock size={16} />
+
+          <span>Programar</span>
+        </button>
       </div>
-    </form>
+
+      {mode === "single" ? (
+        <MedicineSingleEntryForm
+          userId={userId}
+          initialDate={initialDate}
+          onSaved={onSaved}
+          onCancel={onCancel}
+        />
+      ) : (
+        <MedicineScheduleForm
+          userId={userId}
+          initialDate={initialDate}
+          onSaved={onSaved}
+          onCancel={onCancel}
+        />
+      )}
+    </div>
   );
 }

@@ -1,0 +1,179 @@
+.medicine-schedule-form {
+  gap: var(--space-5);
+}
+
+.medicine-schedule-form__notice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid rgb(138 125 165 / 18%);
+  border-radius: var(--radius-lg);
+  background: var(--color-insight-soft);
+}
+
+.medicine-schedule-form__notice > svg {
+  color: var(--color-insight);
+}
+
+.medicine-schedule-form__notice > div {
+  display: grid;
+  gap: 3px;
+}
+
+.medicine-schedule-form__notice strong {
+  font-size: 0.78rem;
+}
+
+.medicine-schedule-form__notice span {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.medicine-schedule-existing {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.medicine-schedule-existing__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.medicine-schedule-existing__heading strong {
+  font-size: 0.76rem;
+}
+
+.medicine-schedule-existing__heading > span {
+  display: grid;
+  min-width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.medicine-schedule-existing__list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.medicine-schedule-existing__card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+}
+
+.medicine-schedule-existing__card > svg {
+  color: var(--color-insight);
+}
+
+.medicine-schedule-existing__card > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.medicine-schedule-existing__card strong {
+  font-size: 0.76rem;
+}
+
+.medicine-schedule-existing__card span,
+.medicine-schedule-existing__card small {
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  line-height: 1.4;
+}
+
+.medicine-schedule-form__dates,
+.medicine-schedule-form__times {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.medicine-schedule-form__dates {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.medicine-schedule-form__dates label,
+.medicine-schedule-form__times label,
+.medicine-schedule-form__first-time {
+  display: grid;
+  gap: 5px;
+}
+
+.medicine-schedule-form__dates label > span,
+.medicine-schedule-form__times label > span,
+.medicine-schedule-form__first-time > span {
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 750;
+}
+
+.medicine-schedule-form__mode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.medicine-schedule-form__mode button {
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.medicine-schedule-form__mode button[data-selected="true"] {
+  border-color: rgb(138 125 165 / 32%);
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+}
+
+.medicine-schedule-form__interval {
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(90px, 1fr)
+    auto;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.medicine-schedule-form__interval > span {
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.medicine-schedule-form__first-time {
+  margin-top: var(--space-3);
+}
+
+.medicine-schedule-form__timezone {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 360px) {
+  .medicine-schedule-form__dates {
+    grid-template-columns: 1fr;
+  }
+}

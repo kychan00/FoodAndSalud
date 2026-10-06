@@ -191,3 +191,7 @@ repetido ocho veces.
 ## Resumen diario
 
 - [[Prueba-Resumen-Diario-v1]]
+
+## Programación de Medicina
+
+- [[Prueba-Programacion-de-Medicina-v1]]

@@ -673,3 +673,49 @@ estado: activo
 - [ ] Validación visual día vacío
 - [ ] Validación botón Hoy
 - [ ] Validación móvil
+
+## Fase 4.5 — Programación de Medicina v1
+
+### Fase 4.5A — Modelo y captura
+
+- [x] Separar programado de tomado
+- [x] medicine_schedules
+- [x] medicine_schedule_times
+- [x] RLS
+- [x] Fecha de inicio
+- [x] Fecha de fin
+- [x] Zona horaria
+- [x] N veces al día
+- [x] Horas específicas
+- [x] Cada X horas
+- [x] Primera hora del intervalo
+- [x] Dosis opcional
+- [x] Unidad opcional
+- [x] Motivo
+- [x] Notas
+- [x] No crear medicine_entries automáticamente
+- [x] Preparar schedule_id en medicine_entries
+- [x] Preparar scheduled_for en medicine_entries
+- [x] Evitar doble registro de una ocurrencia
+- [x] Motor de recurrencia
+- [x] Test de timezone
+- [x] Test de intervalos
+- [x] Test de horas específicas
+- [x] Formulario Una toma / Programar
+- [x] Ver programaciones existentes
+- [x] ADR-0037
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [x] Validación visual 4.5A
+
+### Fase 4.5B — Calendario y toma real
+
+- [ ] Expandir horarios en Calendario
+- [ ] Indicador visual Programado
+- [ ] Diferenciar programado de registrado
+- [ ] Registrar una ocurrencia como tomada
+- [ ] Permitir corregir hora real
+- [ ] Vincular schedule_id
+- [ ] Vincular scheduled_for
+- [ ] Refrescar estado del Calendario
+- [ ] Validación móvil

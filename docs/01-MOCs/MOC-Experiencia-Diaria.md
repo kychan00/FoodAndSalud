@@ -47,3 +47,7 @@ estado: activo
 ## Resumen diario
 
 - [[Resumen-Diario-v1]]
+
+## Programación de Medicina
+
+- [[Programacion-de-Medicina-v1]]

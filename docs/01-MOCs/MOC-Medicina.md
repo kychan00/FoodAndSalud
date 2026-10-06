@@ -32,3 +32,7 @@ estado: activo
 ## Corrección de registros
 
 - [[Editar-y-Eliminar-Registros-v1]]
+
+## Programación
+
+- [[Programacion-de-Medicina-v1]]

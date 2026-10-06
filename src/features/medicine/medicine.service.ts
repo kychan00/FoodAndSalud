@@ -57,7 +57,7 @@ async function findActiveMedicine(userId: string, name: string) {
   return data;
 }
 
-async function getOrCreateMedicine(
+export async function getOrCreateMedicine(
   userId: string,
   rawName: string,
   unit?: string,

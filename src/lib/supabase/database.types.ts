@@ -203,6 +203,8 @@ export type Database = {
           medicine_id: string;
           notes: string | null;
           reason: string | null;
+          schedule_id: string | null;
+          scheduled_for: string | null;
           taken_at: string;
           unit: string | null;
           updated_at: string;
@@ -215,6 +217,8 @@ export type Database = {
           medicine_id: string;
           notes?: string | null;
           reason?: string | null;
+          schedule_id?: string | null;
+          scheduled_for?: string | null;
           taken_at: string;
           unit?: string | null;
           updated_at?: string;
@@ -227,6 +231,8 @@ export type Database = {
           medicine_id?: string;
           notes?: string | null;
           reason?: string | null;
+          schedule_id?: string | null;
+          scheduled_for?: string | null;
           taken_at?: string;
           unit?: string | null;
           updated_at?: string;
@@ -235,6 +241,103 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "medicine_entries_medicine_user_fk";
+            columns: ["medicine_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "medicines";
+            referencedColumns: ["id", "user_id"];
+          },
+        ];
+      };
+      medicine_schedule_times: {
+        Row: {
+          created_at: string;
+          id: string;
+          schedule_id: string;
+          sort_order: number;
+          time_of_day: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          schedule_id: string;
+          sort_order?: number;
+          time_of_day: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          schedule_id?: string;
+          sort_order?: number;
+          time_of_day?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "medicine_schedule_times_schedule_user_fk";
+            columns: ["schedule_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "medicine_schedules";
+            referencedColumns: ["id", "user_id"];
+          },
+        ];
+      };
+      medicine_schedules: {
+        Row: {
+          created_at: string;
+          dose: number | null;
+          end_date: string;
+          id: string;
+          interval_minutes: number | null;
+          interval_start_time: string | null;
+          medicine_id: string;
+          notes: string | null;
+          reason: string | null;
+          schedule_type: string;
+          start_date: string;
+          timezone: string;
+          unit: string | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          dose?: number | null;
+          end_date: string;
+          id?: string;
+          interval_minutes?: number | null;
+          interval_start_time?: string | null;
+          medicine_id: string;
+          notes?: string | null;
+          reason?: string | null;
+          schedule_type: string;
+          start_date: string;
+          timezone: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          dose?: number | null;
+          end_date?: string;
+          id?: string;
+          interval_minutes?: number | null;
+          interval_start_time?: string | null;
+          medicine_id?: string;
+          notes?: string | null;
+          reason?: string | null;
+          schedule_type?: string;
+          start_date?: string;
+          timezone?: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "medicine_schedules_medicine_user_fk";
             columns: ["medicine_id", "user_id"];
             isOneToOne: false;
             referencedRelation: "medicines";

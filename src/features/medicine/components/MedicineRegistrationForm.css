@@ -46,3 +46,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+.medicine-registration {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.medicine-registration__mode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  background: rgb(138 125 165 / 8%);
+}
+
+.medicine-registration__mode button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 3px);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.medicine-registration__mode button[data-selected="true"] {
+  background: var(--surface-card);
+  color: var(--color-insight);
+  box-shadow: 0 3px 12px rgb(80 67 72 / 7%);
+}

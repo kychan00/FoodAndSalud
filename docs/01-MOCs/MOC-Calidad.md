@@ -148,3 +148,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Resumen diario
 
 - [[ADR-0036-Resumen-Diario-Derivado-del-Timeline]]
+
+## Programación de Medicina
+
+- [[ADR-0037-Programado-No-Equivale-a-Tomado]]
