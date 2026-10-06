@@ -27,3 +27,7 @@ estado: activo
 - captura
 - timeline
 - calendario
+
+## Captura rápida
+
+- [[Captura-Rapida-v1]]

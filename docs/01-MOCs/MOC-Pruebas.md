@@ -175,3 +175,7 @@ repetido ocho veces.
 ## Experiencia diaria
 
 - [[Prueba-Centro-Diario-v1]]
+
+## Captura rápida
+
+- [[Prueba-Captura-Rapida-v1]]

@@ -1,17 +1,29 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
+
 import { Pill } from "lucide-react";
 
 import { Button } from "../../../components/ui/Button";
+
+import { QuickSuggestionChips } from "../../entries/components/QuickSuggestionChips";
+
+import { normalizeSuggestionText } from "../../entries/dailySuggestions";
+
 import { localDateTimeToIso, toLocalDateTimeInput } from "../../../utils/date";
+
 import { createMedicineEntry } from "../medicine.service";
+
+import { useMedicineSuggestions } from "../useMedicineSuggestions";
 
 import "../../entries/components/EntryForm.css";
 import "./MedicineRegistrationForm.css";
 
 interface MedicineRegistrationFormProps {
   userId: string;
+
   initialDate: Date;
+
   onSaved: () => void;
+
   onCancel: () => void;
 }
 
@@ -39,6 +51,54 @@ export function MedicineRegistrationForm({
 
   const [error, setError] = useState<string | null>(null);
 
+  const { data: suggestions = [] } = useMedicineSuggestions(userId);
+
+  const visibleSuggestions = useMemo(() => {
+    const query = normalizeSuggestionText(name);
+
+    return suggestions
+      .filter(
+        (suggestion) =>
+          !query || normalizeSuggestionText(suggestion.name).includes(query),
+      )
+      .slice(0, 8);
+  }, [name, suggestions]);
+
+  const selectSuggestion = (id: string) => {
+    const suggestion = suggestions.find((item) => item.id === id);
+
+    if (!suggestion) {
+      return;
+    }
+
+    setName(suggestion.name);
+
+    if (suggestion.lastDose !== null) {
+      setDose(String(suggestion.lastDose));
+    }
+
+    const suggestedUnit = suggestion.lastUnit ?? suggestion.defaultUnit;
+
+    if (suggestedUnit) {
+      setUnit(suggestedUnit);
+    }
+
+    setError(null);
+  };
+
+  const getSuggestionMeta = (suggestion: (typeof suggestions)[number]) => {
+    if (suggestion.lastDose !== null) {
+      return [
+        suggestion.lastDose,
+        suggestion.lastUnit ?? suggestion.defaultUnit,
+      ]
+        .filter(Boolean)
+        .join(" ");
+    }
+
+    return suggestion.defaultUnit;
+  };
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
@@ -46,6 +106,7 @@ export function MedicineRegistrationForm({
 
     if (!cleanName) {
       setError("Escriba el nombre.");
+
       return;
     }
 
@@ -56,20 +117,28 @@ export function MedicineRegistrationForm({
       (!Number.isFinite(parsedDose) || parsedDose <= 0)
     ) {
       setError("La dosis debe ser mayor a cero.");
+
       return;
     }
 
     setSaving(true);
+
     setError(null);
 
     try {
       await createMedicineEntry({
         userId,
+
         name: cleanName,
+
         takenAt: localDateTimeToIso(takenAt),
+
         dose: parsedDose,
+
         unit: dose.trim() ? unit : undefined,
+
         reason,
+
         notes,
       });
 
@@ -96,6 +165,21 @@ export function MedicineRegistrationForm({
           <p>Medicamento, suplemento o remedio.</p>
         </div>
       </div>
+
+      <QuickSuggestionChips
+        label="Atajos"
+        hint="Usados recientemente"
+        items={visibleSuggestions.map((suggestion) => ({
+          id: suggestion.id,
+
+          label: suggestion.name,
+
+          meta: getSuggestionMeta(suggestion),
+
+          favorite: suggestion.isFavorite,
+        }))}
+        onSelect={selectSuggestion}
+      />
 
       <section className="entry-form__section">
         <label className="entry-form__label" htmlFor="medicine-name">

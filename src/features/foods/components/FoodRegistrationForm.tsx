@@ -1,48 +1,70 @@
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { useMemo, useState, type FormEvent, type KeyboardEvent } from "react";
+
 import { Plus, X } from "lucide-react";
 
 import { Button } from "../../../components/ui/Button";
+
+import { QuickSuggestionChips } from "../../entries/components/QuickSuggestionChips";
+
+import { normalizeSuggestionText } from "../../entries/dailySuggestions";
+
 import { localDateTimeToIso, toLocalDateTimeInput } from "../../../utils/date";
+
 import { createFoodEntry, type MealType } from "../food.service";
+
+import { useFoodSuggestions } from "../useFoodSuggestions";
 
 import "../../entries/components/EntryForm.css";
 import "./FoodRegistrationForm.css";
 
 interface FoodRegistrationFormProps {
   userId: string;
+
   initialDate: Date;
+
   onSaved: () => void;
+
   onCancel: () => void;
 }
 
 const mealTypes: Array<{
   value: MealType;
+
   label: string;
 }> = [
   {
     value: "breakfast",
+
     label: "Desayuno",
   },
+
   {
     value: "lunch",
+
     label: "Comida",
   },
+
   {
     value: "dinner",
+
     label: "Cena",
   },
+
   {
     value: "snack",
+
     label: "Colación",
   },
+
   {
     value: "other",
+
     label: "Otro",
   },
 ];
 
 function normalizeKey(value: string) {
-  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase("es-MX");
+  return normalizeSuggestionText(value);
 }
 
 export function FoodRegistrationForm({
@@ -65,8 +87,30 @@ export function FoodRegistrationForm({
 
   const [saving, setSaving] = useState(false);
 
-  const addFood = () => {
-    const value = foodInput.trim().replace(/\s+/g, " ");
+  const { data: suggestions = [] } = useFoodSuggestions(userId);
+
+  const visibleSuggestions = useMemo(() => {
+    const selected = new Set(foodNames.map(normalizeKey));
+
+    const query = normalizeKey(foodInput);
+
+    return suggestions
+      .filter((suggestion) => {
+        if (selected.has(normalizeKey(suggestion.name))) {
+          return false;
+        }
+
+        if (!query) {
+          return true;
+        }
+
+        return normalizeKey(suggestion.name).includes(query);
+      })
+      .slice(0, 8);
+  }, [foodInput, foodNames, suggestions]);
+
+  const addFoodValue = (rawValue: string) => {
+    const value = rawValue.trim().replace(/\s+/g, " ");
 
     if (!value) {
       return;
@@ -76,18 +120,25 @@ export function FoodRegistrationForm({
 
     if (foodNames.some((food) => normalizeKey(food) === key)) {
       setFoodInput("");
+
       return;
     }
 
     setFoodNames((current) => [...current, value]);
 
     setFoodInput("");
+
     setError(null);
+  };
+
+  const addFood = () => {
+    addFoodValue(foodInput);
   };
 
   const handleFoodKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
+
       addFood();
     }
   };
@@ -117,18 +168,24 @@ export function FoodRegistrationForm({
 
     if (namesToSave.length === 0) {
       setError("Agregue al menos un alimento.");
+
       return;
     }
 
     setSaving(true);
+
     setError(null);
 
     try {
       await createFoodEntry({
         userId,
+
         eatenAt: localDateTimeToIso(eatenAt),
+
         mealType,
+
         notes,
+
         foodNames: namesToSave,
       });
 
@@ -186,6 +243,25 @@ export function FoodRegistrationForm({
           Agregue cada alimento por separado. Ejemplo: arroz, pollo, salsa.
         </p>
 
+        <QuickSuggestionChips
+          label="Atajos"
+          hint="Recientes y favoritos"
+          items={visibleSuggestions.map((suggestion) => ({
+            id: suggestion.id,
+
+            label: suggestion.name,
+
+            favorite: suggestion.isFavorite,
+          }))}
+          onSelect={(id) => {
+            const suggestion = suggestions.find((item) => item.id === id);
+
+            if (suggestion) {
+              addFoodValue(suggestion.name);
+            }
+          }}
+        />
+
         <div className="food-add-row">
           <input
             id="food-name"
@@ -194,6 +270,7 @@ export function FoodRegistrationForm({
             value={foodInput}
             placeholder="Ej. Café"
             maxLength={120}
+            autoComplete="off"
             onChange={(event) => setFoodInput(event.target.value)}
             onKeyDown={handleFoodKeyDown}
           />

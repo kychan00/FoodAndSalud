@@ -679,3 +679,44 @@ El enriquecimiento de nombres de alimentos se realiza en el servicio de timeline
 ### Patrones
 
 Patrones v1 permanece estable y su quality gate continúa siendo obligatorio.
+
+## Fase 4.1 — Captura rápida v1
+
+Experiencia diaria incorpora atajos basados en el historial personal.
+
+### Alimentos
+
+El formulario muestra alimentos usados recientemente y favoritos.
+
+La recencia utiliza:
+
+`food_entries.eaten_at`.
+
+### Medicina
+
+El formulario muestra medicamentos usados recientemente.
+
+Un atajo puede recuperar:
+
+- nombre;
+- última dosis;
+- última unidad.
+
+Esto representa repetición de un registro previo y no una recomendación
+terapéutica.
+
+### Caché
+
+Las consultas usan:
+
+`daily-suggestions`.
+
+Se invalidan después de guardar.
+
+### Base de datos
+
+No se requieren migraciones.
+
+### Patrones
+
+Patrones v1 permanece congelado.

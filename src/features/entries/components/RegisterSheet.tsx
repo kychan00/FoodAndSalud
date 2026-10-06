@@ -1,9 +1,13 @@
 import { Activity, ChevronRight, Pill, Salad } from "lucide-react";
+
 import { useQueryClient } from "@tanstack/react-query";
 
 import { BottomSheet } from "../../../components/ui/BottomSheet";
+
 import { BathroomRegistrationForm } from "../../bathroom/components/BathroomRegistrationForm";
+
 import { FoodRegistrationForm } from "../../foods/components/FoodRegistrationForm";
+
 import { MedicineRegistrationForm } from "../../medicine/components/MedicineRegistrationForm";
 
 import "./RegisterSheet.css";
@@ -12,10 +16,15 @@ export type RegisterMode = "choice" | "food" | "bathroom" | "medicine";
 
 interface RegisterSheetProps {
   open: boolean;
+
   mode: RegisterMode;
+
   userId: string;
+
   initialDate: Date;
+
   onModeChange: (mode: RegisterMode) => void;
+
   onClose: () => void;
 }
 
@@ -31,6 +40,7 @@ export function RegisterSheet({
 
   const handleClose = () => {
     onModeChange("choice");
+
     onClose();
   };
 
@@ -42,6 +52,10 @@ export function RegisterSheet({
 
       queryClient.invalidateQueries({
         queryKey: ["patterns"],
+      }),
+
+      queryClient.invalidateQueries({
+        queryKey: ["daily-suggestions"],
       }),
     ]);
 

@@ -54,3 +54,7 @@ de detalle para poder guardar rápidamente una comida.
 ## Timeline
 
 - [[BUG-0016-Timeline-de-Comida-Sin-Alimentos]]
+
+## Captura rápida
+
+- [[Captura-Rapida-v1]]

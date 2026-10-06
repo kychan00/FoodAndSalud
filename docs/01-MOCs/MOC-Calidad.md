@@ -128,3 +128,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Experiencia diaria
 
 - [[ADR-0032-Enriquecimiento-de-Timeline-en-Cliente]]
+
+## Captura rápida
+
+- [[ADR-0033-Atajos-Basados-en-Historial-Personal]]

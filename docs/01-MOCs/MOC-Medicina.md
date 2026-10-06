@@ -24,3 +24,7 @@ estado: activo
 - Timeline
 - Calendario
 - Patrones
+
+## Captura rápida
+
+- [[Captura-Rapida-v1]]

@@ -551,3 +551,27 @@ estado: activo
 - [x] Regresión completa de Patrones v1
 - [x] Validación visual en Hoy
 - [x] Validación visual en Calendario
+
+## Fase 4.1 — Captura rápida v1
+
+- [x] Cerrar Fase 4.0
+- [x] Atajos de alimentos
+- [x] Historial real por eaten_at
+- [x] Favoritos como fallback
+- [x] Evitar alimentos duplicados
+- [x] Filtrar atajos mientras se escribe
+- [x] Atajos de Medicina
+- [x] Historial real por taken_at
+- [x] Recuperar última dosis
+- [x] Recuperar última unidad
+- [x] Fallback a unidad predeterminada
+- [x] Invalidar caché de atajos al guardar
+- [x] Scroll horizontal móvil
+- [x] Ranking deduplicado
+- [x] Test de ranking
+- [x] ADR-0033
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [x] Validación visual alimentos
+- [x] Validación visual Medicina
+- [x] Validación visual móvil
