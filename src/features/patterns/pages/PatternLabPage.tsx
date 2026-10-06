@@ -213,13 +213,17 @@ export function PatternLabPage() {
         </section>
 
         <Card className="pattern-lab-baseline">
-          <span>Referencia personal sintética</span>
+          <span>Referencia global de comidas sintéticas</span>
 
           <strong>{percent(report.baselineAdverseRate)}</strong>
 
           <p>
-            Porcentaje de evacuaciones ficticias que cumplen al menos un
-            criterio de respuesta marcada.
+            Porcentaje de ventanas de comida ficticias evaluables que tuvieron
+            al menos una respuesta marcada dentro de 24 horas.
+          </p>
+
+          <p>
+            Eventos de baño marcados: {percent(report.bathroomEventAdverseRate)}
           </p>
         </Card>
 

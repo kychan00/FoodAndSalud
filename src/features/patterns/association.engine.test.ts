@@ -92,7 +92,7 @@ describe("association engine", () => {
 
     expect(rice?.adverseExposures).toBe(0);
 
-    expect(coffee?.signal).toBe("high");
+    expect(coffee?.signal).toBe("medium");
 
     expect(rice?.signal).toBe("low");
   });

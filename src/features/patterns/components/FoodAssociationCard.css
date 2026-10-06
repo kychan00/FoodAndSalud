@@ -135,3 +135,10 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+.food-association__comparison {
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  font-size: 0.72rem !important;
+}

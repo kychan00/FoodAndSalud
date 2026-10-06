@@ -189,3 +189,10 @@
     margin-right: var(--space-4);
   }
 }
+
+.pattern-chart-legend__baseline {
+  height: 4px !important;
+  border: 0 !important;
+  border-radius: var(--radius-pill) !important;
+  background: var(--color-primary);
+}

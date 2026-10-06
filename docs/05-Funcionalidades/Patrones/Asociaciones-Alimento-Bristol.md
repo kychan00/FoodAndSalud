@@ -155,3 +155,35 @@ La interfaz debe utilizar expresiones como:
 - señal;
 - patrón;
 - requiere más datos.
+
+## Fase 3.5 — Baseline comparable
+
+El comparador estadístico dejó de basarse directamente en el número de
+evacuaciones individuales.
+
+La unidad principal es ahora:
+
+ventana de comida.
+
+Para cada alimento:
+
+### Observado
+
+comidas con el alimento.
+
+### Control preferido
+
+comidas sin el alimento.
+
+### Fallback
+
+todas las comidas evaluables.
+
+La tasa de evacuaciones marcadas se conserva como dato descriptivo, pero ya no
+es el denominador utilizado para calcular la diferencia del alimento.
+
+Véase:
+
+- [[BUG-0009-Baseline-Denominadores-No-Comparables]]
+- [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]
+- [[Prueba-Baseline-Comparable]]

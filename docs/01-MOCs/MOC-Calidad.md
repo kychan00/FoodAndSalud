@@ -73,3 +73,8 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Automatización estructural
 
 - [[BUG-0008-Marcador-Ambiguo-Registro-QA]]
+
+## Metodología
+
+- [[BUG-0009-Baseline-Denominadores-No-Comparables]]
+- [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]

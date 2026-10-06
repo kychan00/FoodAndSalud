@@ -75,5 +75,7 @@ export function buildQaFoodDetailReport(
     bathrooms: scenario.input.bathrooms,
 
     medicines: scenario.input.medicines,
+
+    comparisonExposures: scenario.input.exposures,
   });
 }

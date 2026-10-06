@@ -305,3 +305,23 @@ estado: activo
 - [ ] Validación visual
 
 - [x] BUG-0008 registro del escenario QA tardío
+
+## Fase 3.5 — Baseline comparable
+
+- [x] Detectar problema de denominadores
+- [x] Crear ventanas únicas por comida
+- [x] Baseline global por ventanas de comida
+- [x] Comparador específico por alimento
+- [x] Usar comidas sin el alimento
+- [x] Fallback cuando no existe control
+- [x] Mantener tasa de baño como dato descriptivo
+- [x] Deduplicar alimento dentro de una misma comida
+- [x] Aplicar comparador al detalle real
+- [x] Aplicar comparador al detalle QA
+- [x] Actualizar gráfica de comparación
+- [x] Actualizar fixtures
+- [x] Tests metodológicos
+- [x] BUG-0009
+- [x] ADR-0023
+- [x] Documentación Obsidian
+- [x] Validación visual

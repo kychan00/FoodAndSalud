@@ -2,14 +2,16 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
-import type { AssociationReport } from "../association.types";
+import type {
+  AssociationComparisonSource,
+  AssociationReport,
+} from "../association.types";
 
 import "./PatternCharts.css";
 
@@ -19,9 +21,18 @@ interface AssociationRateChartProps {
 
 interface AssociationChartPoint {
   foodName: string;
+
   coincidence: number;
+
   adjusted: number;
+
+  comparison: number;
+
+  comparisonSource: AssociationComparisonSource;
+
   evidence: number;
+
+  controls: number;
 }
 
 function toPercent(value: number) {
@@ -37,13 +48,17 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
 
       adjusted: toPercent(association.adjustedAdverseRate),
 
+      comparison: toPercent(association.baselineAdverseRate),
+
+      comparisonSource: association.comparisonSource,
+
       evidence: association.evaluableExposures,
+
+      controls: association.controlEvaluableExposures,
     }),
   );
 
-  const baseline = toPercent(report.baselineAdverseRate);
-
-  const chartWidth = Math.max(520, data.length * 150);
+  const chartWidth = Math.max(560, data.length * 170);
 
   return (
     <section className="pattern-chart-card">
@@ -58,8 +73,9 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
       </div>
 
       <p className="pattern-chart-description">
-        Compara la coincidencia observada de cada alimento contra la referencia
-        personal del escenario.
+        Cada alimento se compara con ventanas de comida donde no estuvo
+        presente. Si no existe ese control, se utiliza la referencia global de
+        comidas.
       </p>
 
       <div className="pattern-chart-legend">
@@ -75,7 +91,7 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
 
         <span>
           <i className="pattern-chart-legend__baseline" />
-          Referencia
+          Comparación
         </span>
       </div>
 
@@ -86,7 +102,7 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
             width: chartWidth,
           }}
         >
-          <ResponsiveContainer width="100%" height={310}>
+          <ResponsiveContainer width="100%" height={320}>
             <BarChart
               data={data}
               margin={{
@@ -121,22 +137,10 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
                 }}
               />
 
-              <ReferenceLine
-                y={baseline}
-                stroke="var(--color-primary)"
-                strokeDasharray="6 5"
-                strokeWidth={2}
-                label={{
-                  value: `Referencia ${baseline}%`,
-                  position: "insideTopRight",
-                  fill: "var(--color-primary)",
-                  fontSize: 11,
-                }}
-              />
-
               <Tooltip
                 cursor={{
                   fill: "var(--surface-muted)",
+
                   opacity: 0.6,
                 }}
                 content={({ active, payload }) => {
@@ -159,7 +163,14 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
 
                       <span>Coincidencia ajustada: {point.adjusted}%</span>
 
-                      <span>Referencia personal: {baseline}%</span>
+                      <span>Comparación: {point.comparison}%</span>
+
+                      <span>
+                        Fuente:{" "}
+                        {point.comparisonSource === "food_absent"
+                          ? `${point.controls} comidas evaluables sin el alimento`
+                          : "referencia global de comidas"}
+                      </span>
 
                       <span>Exposiciones evaluables: {point.evidence}</span>
                     </div>
@@ -182,14 +193,23 @@ export function AssociationRateChart({ report }: AssociationRateChartProps) {
                 radius={[8, 8, 0, 0]}
                 isAnimationActive={false}
               />
+
+              <Bar
+                dataKey="comparison"
+                name="Comparación"
+                fill="var(--color-primary)"
+                radius={[8, 8, 0, 0]}
+                isAnimationActive={false}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       <p className="pattern-chart-footnote">
-        La columna ajustada aplica el suavizado estadístico usado por el motor
-        para evitar conclusiones fuertes con pocas observaciones.
+        Todas las columnas utilizan ahora el mismo tipo de unidad: ventanas de
+        comida evaluables. Las evacuaciones individuales se conservan como dato
+        descriptivo, no como baseline comparador.
       </p>
     </section>
   );

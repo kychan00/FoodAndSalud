@@ -55,3 +55,9 @@ fecha: 2026-10-06
 ## Bugs QA
 
 - [[BUG-0008-Marcador-Ambiguo-Registro-QA]]
+
+## Baseline
+
+- [[BUG-0009-Baseline-Denominadores-No-Comparables]]
+- [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]
+- [[Prueba-Baseline-Comparable]]

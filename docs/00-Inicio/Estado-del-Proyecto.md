@@ -354,3 +354,27 @@ Café sin Leche:
 24 h → 0%
 
 La señal continúa siendo observacional y no causal.
+
+## Fase 3.5 — Baseline comparable
+
+El motor de Patrones utiliza ahora unidades comparables.
+
+Antes:
+
+exposición alimentaria
+vs
+evento individual de baño.
+
+Ahora:
+
+comida con alimento
+vs
+comida sin alimento.
+
+La tasa por evacuaciones individuales permanece visible únicamente como dato
+descriptivo.
+
+Si no existen comidas sin un alimento determinado, se utiliza la referencia
+global por ventanas de comida.
+
+También se evita contar dos veces el mismo alimento dentro de una misma comida.

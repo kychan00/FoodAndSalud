@@ -1,5 +1,6 @@
 import type {
   AssociationConfidence,
+  AssociationComparisonSource,
   AssociationReport,
   AssociationSignal,
   BathroomObservation,
@@ -9,16 +10,39 @@ import type {
 } from "./association.types";
 
 const OUTCOME_WINDOW_HOURS = 24;
+
 const OUTCOME_WINDOW_MS = OUTCOME_WINDOW_HOURS * 60 * 60 * 1000;
 
 const PRIOR_WEIGHT = 4;
 
 interface BuildAssociationReportInput {
   days: number;
+
   totalFoodEntries: number;
+
   exposures: FoodExposure[];
+
   bathrooms: BathroomObservation[];
+
   medicines: MedicineObservation[];
+}
+
+interface MealWindow {
+  entryId: string;
+
+  eatenAt: string;
+
+  foodIds: Set<string>;
+}
+
+interface MealWindowStats {
+  totalWindows: number;
+
+  evaluableExposures: number;
+
+  adverseExposures: number;
+
+  adverseRate: number;
 }
 
 export function isBathroomAdverse(bathroom: BathroomObservation) {
@@ -91,6 +115,88 @@ function isWithinOutcomeWindow(start: number, candidate: string) {
   return difference > 0 && difference <= OUTCOME_WINDOW_MS;
 }
 
+function buildMealWindows(exposures: FoodExposure[]) {
+  const windows = new Map<string, MealWindow>();
+
+  for (const exposure of exposures) {
+    const current = windows.get(exposure.entryId);
+
+    if (current) {
+      current.foodIds.add(exposure.foodId);
+
+      continue;
+    }
+
+    windows.set(exposure.entryId, {
+      entryId: exposure.entryId,
+
+      eatenAt: exposure.eatenAt,
+
+      foodIds: new Set([exposure.foodId]),
+    });
+  }
+
+  return [...windows.values()];
+}
+
+function evaluateMealWindows(
+  windows: MealWindow[],
+  bathrooms: BathroomObservation[],
+): MealWindowStats {
+  let evaluableExposures = 0;
+
+  let adverseExposures = 0;
+
+  for (const window of windows) {
+    const eatenAt = new Date(window.eatenAt).getTime();
+
+    const linkedBathrooms = bathrooms.filter((bathroom) =>
+      isWithinOutcomeWindow(eatenAt, bathroom.occurredAt),
+    );
+
+    if (linkedBathrooms.length === 0) {
+      continue;
+    }
+
+    evaluableExposures += 1;
+
+    if (linkedBathrooms.some(isBathroomAdverse)) {
+      adverseExposures += 1;
+    }
+  }
+
+  return {
+    totalWindows: windows.length,
+
+    evaluableExposures,
+
+    adverseExposures,
+
+    adverseRate:
+      evaluableExposures > 0 ? adverseExposures / evaluableExposures : 0,
+  };
+}
+
+function dedupeFoodExposures(exposures: FoodExposure[]) {
+  const seen = new Set<string>();
+
+  const deduped: FoodExposure[] = [];
+
+  for (const exposure of exposures) {
+    const key = `${exposure.foodId}::${exposure.entryId}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+
+    deduped.push(exposure);
+  }
+
+  return deduped;
+}
+
 export function buildAssociationReport({
   days,
   totalFoodEntries,
@@ -100,12 +206,28 @@ export function buildAssociationReport({
 }: BuildAssociationReportInput): AssociationReport {
   const adverseBathrooms = bathrooms.filter(isBathroomAdverse);
 
-  const baselineAdverseRate =
+  const bathroomEventAdverseRate =
     bathrooms.length > 0 ? adverseBathrooms.length / bathrooms.length : 0;
+
+  /*
+   * Una misma comida puede contener múltiples alimentos.
+   *
+   * Para la referencia global se cuenta UNA sola ventana
+   * por food_entry.
+   */
+  const mealWindows = buildMealWindows(exposures);
+
+  const globalMealStats = evaluateMealWindows(mealWindows, bathrooms);
+
+  /*
+   * Evita que el mismo alimento repetido accidentalmente
+   * dentro de una misma comida infle sus exposiciones.
+   */
+  const uniqueExposures = dedupeFoodExposures(exposures);
 
   const exposuresByFood = new Map<string, FoodExposure[]>();
 
-  for (const exposure of exposures) {
+  for (const exposure of uniqueExposures) {
     const current = exposuresByFood.get(exposure.foodId) ?? [];
 
     current.push(exposure);
@@ -156,6 +278,36 @@ export function buildAssociationReport({
       }
     }
 
+    /*
+     * CONTROL INTERNO:
+     *
+     * ventanas de comida donde el alimento objetivo
+     * NO estuvo presente.
+     */
+    const controlWindows = mealWindows.filter(
+      (window) => !window.foodIds.has(foodId),
+    );
+
+    const controlStats = evaluateMealWindows(controlWindows, bathrooms);
+
+    const comparisonSource: AssociationComparisonSource =
+      controlStats.evaluableExposures > 0 ? "food_absent" : "all_meals";
+
+    /*
+     * Si existen comidas evaluables sin el alimento,
+     * son el comparador principal.
+     *
+     * Si el alimento aparece en todas las comidas,
+     * usamos la referencia global de ventanas de comida.
+     *
+     * Esto es conservador: si el alimento está presente
+     * siempre, la aplicación no inventa un control inexistente.
+     */
+    const baselineAdverseRate =
+      comparisonSource === "food_absent"
+        ? controlStats.adverseRate
+        : globalMealStats.adverseRate;
+
     const adverseRate =
       evaluableExposures > 0 ? adverseExposures / evaluableExposures : 0;
 
@@ -190,23 +342,35 @@ export function buildAssociationReport({
 
     associations.push({
       foodId,
+
       foodName: foodExposures[0]?.foodName ?? "Alimento",
 
       totalExposures: foodExposures.length,
 
       evaluableExposures,
+
       adverseExposures,
 
       adverseRate,
+
       adjustedAdverseRate,
+
       baselineAdverseRate,
+
       excessRate,
+
+      controlEvaluableExposures: controlStats.evaluableExposures,
+
+      controlAdverseExposures: controlStats.adverseExposures,
+
+      comparisonSource,
 
       averageSeverity,
 
       medicineOverlapExposures,
 
       signal,
+
       confidence,
 
       rankScore,
@@ -223,14 +387,24 @@ export function buildAssociationReport({
 
   return {
     days,
+
     generatedAt: new Date().toISOString(),
 
     totalFoodEntries,
-    totalFoodExposures: exposures.length,
+
+    totalFoodExposures: uniqueExposures.length,
 
     totalBathroomEntries: bathrooms.length,
 
-    baselineAdverseRate,
+    baselineAdverseRate: globalMealStats.adverseRate,
+
+    totalMealWindows: globalMealStats.totalWindows,
+
+    totalEvaluableMealWindows: globalMealStats.evaluableExposures,
+
+    totalAdverseMealWindows: globalMealStats.adverseExposures,
+
+    bathroomEventAdverseRate,
 
     associations,
   };

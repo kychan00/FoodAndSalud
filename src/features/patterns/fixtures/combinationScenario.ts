@@ -30,7 +30,7 @@ export const combinationDiscriminationScenario: PatternQaScenario = {
   expectedSignals: {
     coffee: "low",
 
-    milk: "high",
+    milk: "medium",
   } satisfies Record<string, AssociationSignal>,
 
   input: {
@@ -216,7 +216,7 @@ export const delayedCombinationScenario: PatternQaScenario = {
   expectedSignals: {
     coffee: "low",
 
-    milk: "high",
+    milk: "medium",
   } satisfies Record<string, AssociationSignal>,
 
   input: {

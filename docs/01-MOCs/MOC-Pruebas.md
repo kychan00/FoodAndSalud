@@ -134,3 +134,7 @@ repetido ocho veces.
 ## Registro de escenarios QA
 
 - [[BUG-0008-Marcador-Ambiguo-Registro-QA]]
+
+## Baseline
+
+- [[Prueba-Baseline-Comparable]]

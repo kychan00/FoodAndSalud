@@ -2,6 +2,8 @@ export type AssociationSignal = "insufficient" | "low" | "medium" | "high";
 
 export type AssociationConfidence = "low" | "medium" | "high";
 
+export type AssociationComparisonSource = "food_absent" | "all_meals";
+
 export interface FoodExposure {
   entryId: string;
   foodId: string;
@@ -31,9 +33,31 @@ export interface FoodAssociation {
   adverseExposures: number;
 
   adverseRate: number;
+
+  /*
+   * Tasa suavizada del alimento utilizando como prior
+   * una referencia con el mismo tipo de denominador:
+   * ventanas de comida.
+   */
   adjustedAdverseRate: number;
+
+  /*
+   * Referencia utilizada para ESTE alimento.
+   *
+   * Normalmente:
+   * comidas evaluables donde el alimento no estuvo presente.
+   *
+   * Fallback:
+   * todas las ventanas de comida evaluables.
+   */
   baselineAdverseRate: number;
+
   excessRate: number;
+
+  controlEvaluableExposures: number;
+  controlAdverseExposures: number;
+
+  comparisonSource: AssociationComparisonSource;
 
   averageSeverity: number;
 
@@ -53,7 +77,22 @@ export interface AssociationReport {
   totalFoodExposures: number;
   totalBathroomEntries: number;
 
+  /*
+   * Baseline GLOBAL por ventanas de comida.
+   */
   baselineAdverseRate: number;
+
+  totalMealWindows: number;
+  totalEvaluableMealWindows: number;
+  totalAdverseMealWindows: number;
+
+  /*
+   * Métrica descriptiva secundaria.
+   *
+   * No participa directamente como comparador estadístico
+   * de los alimentos.
+   */
+  bathroomEventAdverseRate: number;
 
   associations: FoodAssociation[];
 }

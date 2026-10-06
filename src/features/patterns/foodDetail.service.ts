@@ -2,6 +2,7 @@ import { supabase } from "../../lib/supabase/client";
 
 import type {
   BathroomObservation,
+  FoodExposure,
   MedicineObservation,
 } from "./association.types";
 
@@ -116,28 +117,37 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
       exposures: [],
 
       bathrooms,
+
       medicines,
+
+      comparisonExposures: [],
     });
   }
 
   const allEntryIds = allEntries.map((entry) => entry.id);
 
-  const { data: selectedItems, error: selectedItemsError } = await supabase
+  /*
+   * Una sola consulta para todos los items del periodo.
+   *
+   * Esto permite crear:
+   *
+   * - exposiciones del alimento seleccionado;
+   * - alimentos concurrentes;
+   * - comidas donde el alimento NO estuvo presente.
+   */
+  const { data: allItems, error: allItemsError } = await supabase
     .from("food_entry_items")
     .select("food_entry_id,food_id")
     .eq("user_id", userId)
-    .eq("food_id", foodId)
     .in("food_entry_id", allEntryIds);
 
-  if (selectedItemsError) {
-    throw selectedItemsError;
+  if (allItemsError) {
+    throw allItemsError;
   }
 
-  const selectedEntryIds = [
-    ...new Set((selectedItems ?? []).map((item) => item.food_entry_id)),
-  ];
+  const items = allItems ?? [];
 
-  if (selectedEntryIds.length === 0) {
+  if (items.length === 0) {
     return buildFoodDetailReport({
       foodId: food.id,
 
@@ -148,27 +158,14 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
       exposures: [],
 
       bathrooms,
+
       medicines,
+
+      comparisonExposures: [],
     });
   }
 
-  const selectedEntrySet = new Set(selectedEntryIds);
-
-  const selectedEntries = allEntries.filter((entry) =>
-    selectedEntrySet.has(entry.id),
-  );
-
-  const { data: allItems, error: allItemsError } = await supabase
-    .from("food_entry_items")
-    .select("food_entry_id,food_id")
-    .eq("user_id", userId)
-    .in("food_entry_id", selectedEntryIds);
-
-  if (allItemsError) {
-    throw allItemsError;
-  }
-
-  const foodIds = [...new Set((allItems ?? []).map((item) => item.food_id))];
+  const foodIds = [...new Set(items.map((item) => item.food_id))];
 
   const { data: foods, error: foodsError } = await supabase
     .from("foods")
@@ -180,11 +177,13 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
     throw foodsError;
   }
 
+  const entryById = new Map(allEntries.map((entry) => [entry.id, entry]));
+
   const foodById = new Map((foods ?? []).map((item) => [item.id, item]));
 
   const itemsByEntry = new Map<string, string[]>();
 
-  for (const item of allItems ?? []) {
+  for (const item of items) {
     const current = itemsByEntry.get(item.food_entry_id) ?? [];
 
     current.push(item.food_id);
@@ -192,11 +191,59 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
     itemsByEntry.set(item.food_entry_id, current);
   }
 
+  /*
+   * Todas las exposiciones del periodo.
+   *
+   * Éstas alimentan el comparador del motor.
+   */
+  const comparisonExposures: FoodExposure[] = [];
+
+  for (const item of items) {
+    const entry = entryById.get(item.food_entry_id);
+
+    const itemFood = foodById.get(item.food_id);
+
+    if (!entry || !itemFood) {
+      continue;
+    }
+
+    comparisonExposures.push({
+      entryId: entry.id,
+
+      foodId: itemFood.id,
+
+      foodName: itemFood.name,
+
+      eatenAt: entry.eaten_at,
+    });
+  }
+
+  const selectedEntryIds = new Set(
+    comparisonExposures
+      .filter((exposure) => exposure.foodId === foodId)
+      .map((exposure) => exposure.entryId),
+  );
+
+  const selectedEntries = allEntries.filter((entry) =>
+    selectedEntryIds.has(entry.id),
+  );
+
   const exposures: FoodDetailExposureInput[] = selectedEntries.map((entry) => {
     const itemIds = itemsByEntry.get(entry.id) ?? [];
 
+    const seen = new Set<string>();
+
     const coFoods = itemIds
       .filter((itemFoodId) => itemFoodId !== foodId)
+      .filter((itemFoodId) => {
+        if (seen.has(itemFoodId)) {
+          return false;
+        }
+
+        seen.add(itemFoodId);
+
+        return true;
+      })
       .map((itemFoodId) => {
         const item = foodById.get(itemFoodId);
 
@@ -238,6 +285,9 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
     exposures,
 
     bathrooms,
+
     medicines,
+
+    comparisonExposures,
   });
 }

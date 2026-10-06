@@ -86,3 +86,7 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Combinaciones-por-Ventana]]
 - [[ADR-0022-Comparaciones-Multiventana]]
+
+## Referencia comparable
+
+- [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]

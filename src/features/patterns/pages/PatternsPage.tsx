@@ -197,16 +197,22 @@ export function PatternsPage() {
             </section>
 
             <Card className="pattern-baseline">
-              <span>Referencia personal</span>
+              <span>Referencia global de comidas</span>
 
               <strong>
                 {Math.round(associationReport.baselineAdverseRate * 100)}%
               </strong>
 
               <p>
-                de sus registros de baño en los últimos 90 días cumplen al menos
-                uno de los criterios de respuesta marcada. Este valor funciona
-                como referencia para comparar cada alimento.
+                de sus ventanas de comida evaluables en los últimos 90 días
+                tuvieron al menos una respuesta marcada dentro de las siguientes
+                24 horas. Esta es la referencia global de comidas.
+              </p>
+
+              <p>
+                Como dato descriptivo independiente,{" "}
+                {Math.round(associationReport.bathroomEventAdverseRate * 100)}%
+                de los registros individuales de baño fueron marcados.
               </p>
             </Card>
           </>

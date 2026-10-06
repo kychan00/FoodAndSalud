@@ -66,6 +66,11 @@ export function FoodAssociationCard({
 }: FoodAssociationCardProps) {
   const hasEvaluation = association.evaluableExposures > 0;
 
+  const comparisonLabel =
+    association.comparisonSource === "food_absent"
+      ? "Comidas sin alimento"
+      : "Referencia de comidas";
+
   return (
     <Card className="food-association">
       <div className="food-association__header">
@@ -114,7 +119,7 @@ export function FoodAssociationCard({
           </span>
 
           <span>
-            <small>Referencia personal</small>
+            <small>{comparisonLabel}</small>
 
             <strong>{formatPercent(association.baselineAdverseRate)}</strong>
           </span>
@@ -125,6 +130,22 @@ export function FoodAssociationCard({
             <strong>{confidenceLabels[association.confidence]}</strong>
           </span>
         </div>
+
+        {association.comparisonSource === "food_absent" ? (
+          <p className="food-association__comparison">
+            Comparación basada en{" "}
+            <strong>{association.controlEvaluableExposures}</strong>{" "}
+            {association.controlEvaluableExposures === 1
+              ? "comida evaluable"
+              : "comidas evaluables"}{" "}
+            donde {association.foodName} no estuvo presente.
+          </p>
+        ) : (
+          <p className="food-association__comparison">
+            No hay suficientes comidas evaluables sin {association.foodName}. Se
+            usa como referencia la frecuencia global por ventanas de comida.
+          </p>
+        )}
 
         {association.medicineOverlapExposures > 0 ? (
           <p className="food-association__confounder">

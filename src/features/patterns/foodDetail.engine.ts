@@ -91,6 +91,7 @@ export function buildFoodDetailReport({
   exposures,
   bathrooms,
   medicines,
+  comparisonExposures,
 }: {
   foodId: string;
   foodName: string;
@@ -98,6 +99,7 @@ export function buildFoodDetailReport({
   exposures: FoodDetailExposureInput[];
   bathrooms: BathroomObservation[];
   medicines: MedicineObservation[];
+  comparisonExposures?: FoodExposure[];
 }): FoodDetailReport {
   const associationExposures: FoodExposure[] = exposures.map((exposure) => ({
     entryId: exposure.entryId,
@@ -109,12 +111,18 @@ export function buildFoodDetailReport({
     eatenAt: exposure.eatenAt,
   }));
 
+  const analysisExposures = comparisonExposures ?? associationExposures;
+
+  const comparisonEntryCount = new Set(
+    analysisExposures.map((item) => item.entryId),
+  ).size;
+
   const associationReport = buildAssociationReport({
     days,
 
-    totalFoodEntries: exposures.length,
+    totalFoodEntries: comparisonEntryCount,
 
-    exposures: associationExposures,
+    exposures: analysisExposures,
 
     bathrooms,
 

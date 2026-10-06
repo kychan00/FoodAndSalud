@@ -150,6 +150,16 @@ function buildMediumMilkScenario(): PatternQaScenario {
     exposure("milk-2", "milk", "Leche", 3),
     exposure("milk-3", "milk", "Leche", 5),
     exposure("milk-4", "milk", "Leche", 7),
+
+    /*
+     * Comidas comparadoras.
+     *
+     * Una de cuatro tiene respuesta marcada.
+     */
+    exposure("milk-control-10", "rice", "Arroz", 10),
+    exposure("milk-control-12", "rice", "Arroz", 12),
+    exposure("milk-control-14", "rice", "Arroz", 14),
+    exposure("milk-control-16", "rice", "Arroz", 16),
   ];
 
   const bathrooms = [
@@ -180,7 +190,7 @@ function buildMediumMilkScenario(): PatternQaScenario {
     },
     input: {
       days: 90,
-      totalFoodEntries: 4,
+      totalFoodEntries: 8,
       exposures,
       bathrooms,
       medicines: [],
@@ -244,6 +254,11 @@ function buildMedicineOverlapScenario(): PatternQaScenario {
   }
 
   for (let day = 15; day <= 20; day += 1) {
+    /*
+     * Comidas control sin Café.
+     */
+    exposures.push(exposure(`bread-control-${day}`, "bread", "Pan", day));
+
     bathrooms.push(bathroom(`normal-${day}`, day, 4, 0, 0));
   }
 
@@ -264,7 +279,7 @@ function buildMedicineOverlapScenario(): PatternQaScenario {
     },
     input: {
       days: 90,
-      totalFoodEntries: 6,
+      totalFoodEntries: 12,
       exposures,
       bathrooms,
       medicines,
@@ -289,6 +304,11 @@ function buildMixedMealScenario(): PatternQaScenario {
   }
 
   for (let day = 15; day <= 18; day += 1) {
+    /*
+     * Comidas control sin Café ni Leche.
+     */
+    exposures.push(exposure(`mixed-control-${day}`, "rice", "Arroz", day));
+
     bathrooms.push(bathroom(`mixed-normal-${day}`, day, 4, 0, 0));
   }
 
@@ -302,12 +322,13 @@ function buildMixedMealScenario(): PatternQaScenario {
     expectedText:
       "Café y Leche deben obtener señales muy similares. Ninguno debe presentarse como causa.",
     expectedSignals: {
-      coffee: "high",
-      milk: "high",
+      coffee: "medium",
+      milk: "medium",
+      rice: "low",
     },
     input: {
       days: 90,
-      totalFoodEntries: 4,
+      totalFoodEntries: 8,
       exposures,
       bathrooms,
       medicines: [],
