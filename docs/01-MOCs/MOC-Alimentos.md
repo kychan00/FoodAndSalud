@@ -50,3 +50,7 @@ de detalle para poder guardar rápidamente una comida.
 ## Análisis
 
 - [[Asociaciones-Alimento-Bristol]]
+
+## Timeline
+
+- [[BUG-0016-Timeline-de-Comida-Sin-Alimentos]]

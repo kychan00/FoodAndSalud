@@ -529,3 +529,25 @@ estado: activo
 - [x] Documentación Obsidian
 - [x] Smoke visual final
 - [x] Release Patrones v1
+
+## Fase 4.0 — Centro diario v1
+
+- [x] Mantener Patrones v1 congelado
+- [x] Mostrar alimentos dentro del timeline
+- [x] Respetar sort_order de alimentos
+- [x] Mantener notas separadas de los alimentos
+- [x] Registrar comida desde Calendario
+- [x] Registrar Bristol desde Calendario
+- [x] Registrar Medicina desde Calendario
+- [x] Usar día seleccionado + hora actual
+- [x] Resumen de registros del día en Calendario
+- [x] Estado vacío accionable
+- [x] Test de fecha de registro
+- [x] Test de enriquecimiento del timeline
+- [x] Test de presentación del timeline
+- [x] BUG-0016
+- [x] ADR-0032
+- [x] Documentación Obsidian
+- [x] Regresión completa de Patrones v1
+- [x] Validación visual en Hoy
+- [x] Validación visual en Calendario

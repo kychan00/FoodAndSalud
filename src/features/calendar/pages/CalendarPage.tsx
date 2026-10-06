@@ -1,15 +1,26 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Activity, ChevronLeft, ChevronRight, Pill, Salad } from "lucide-react";
 
 import { Card } from "../../../components/ui/Card";
+
 import {
   formatMonthTitle,
   getDateKey,
   isSameLocalDay,
   isToday,
+  withTimeOfDay,
 } from "../../../utils/date";
+
 import { useAuth } from "../../auth/useAuth";
+
+import {
+  RegisterSheet,
+  type RegisterMode,
+} from "../../entries/components/RegisterSheet";
+
 import { TimelineList } from "../../timeline/components/TimelineList";
+
 import { useMonthTimeline } from "../../timeline/useMonthTimeline";
 
 import "./CalendarPage.css";
@@ -52,7 +63,15 @@ export function CalendarPage() {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const { data: events = [], isLoading } = useMonthTimeline(user?.id, month);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
+  const [registerMode, setRegisterMode] = useState<RegisterMode>("choice");
+
+  const {
+    data: events = [],
+    isLoading,
+    isError,
+  } = useMonthTimeline(user?.id, month);
 
   const cells = useMemo(() => getCalendarCells(month), [month]);
 
@@ -61,7 +80,9 @@ export function CalendarPage() {
       string,
       {
         food: number;
+
         bathroom: number;
+
         medicine: number;
       }
     >();
@@ -75,7 +96,9 @@ export function CalendarPage() {
 
       const current = result.get(key) ?? {
         food: 0,
+
         bathroom: 0,
+
         medicine: 0,
       };
 
@@ -103,10 +126,23 @@ export function CalendarPage() {
       : false,
   );
 
+  const selectedFoodCount = selectedEvents.filter(
+    (event) => event.event_type === "food",
+  ).length;
+
+  const selectedBathroomCount = selectedEvents.filter(
+    (event) => event.event_type === "bathroom",
+  ).length;
+
+  const selectedMedicineCount = selectedEvents.filter(
+    (event) => event.event_type === "medicine",
+  ).length;
+
   const moveMonth = (amount: number) => {
     const next = new Date(month.getFullYear(), month.getMonth() + amount, 1);
 
     setMonth(next);
+
     setSelectedDate(next);
   };
 
@@ -114,6 +150,7 @@ export function CalendarPage() {
     const today = new Date();
 
     setMonth(today);
+
     setSelectedDate(today);
   };
 
@@ -127,6 +164,20 @@ export function CalendarPage() {
       setMonth(new Date(date.getFullYear(), date.getMonth(), 1));
     }
   };
+
+  const openRegister = (mode: RegisterMode) => {
+    setRegisterMode(mode);
+
+    setRegisterOpen(true);
+  };
+
+  const selectedDateLabel = new Intl.DateTimeFormat("es-MX", {
+    weekday: "long",
+
+    day: "numeric",
+
+    month: "long",
+  }).format(selectedDate);
 
   return (
     <main className="calendar-page">
@@ -213,13 +264,16 @@ export function CalendarPage() {
 
         <section className="calendar-selected">
           <div className="calendar-selected__header">
-            <h2>
-              {new Intl.DateTimeFormat("es-MX", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              }).format(selectedDate)}
-            </h2>
+            <div>
+              <h2>{selectedDateLabel}</h2>
+
+              <p>
+                {selectedFoodCount}{" "}
+                {selectedFoodCount === 1 ? "comida" : "comidas"} ·{" "}
+                {selectedBathroomCount} Bristol · {selectedMedicineCount}{" "}
+                {selectedMedicineCount === 1 ? "medicina" : "medicinas"}
+              </p>
+            </div>
 
             <span>
               {selectedEvents.length}{" "}
@@ -227,17 +281,71 @@ export function CalendarPage() {
             </span>
           </div>
 
+          <div className="calendar-register-actions">
+            <button
+              type="button"
+              className="calendar-register-action calendar-register-action--food"
+              onClick={() => openRegister("food")}
+            >
+              <Salad size={18} />
+
+              <span>Comida</span>
+            </button>
+
+            <button
+              type="button"
+              className="calendar-register-action calendar-register-action--bathroom"
+              onClick={() => openRegister("bathroom")}
+            >
+              <Activity size={18} />
+
+              <span>Bristol</span>
+            </button>
+
+            <button
+              type="button"
+              className="calendar-register-action calendar-register-action--medicine"
+              onClick={() => openRegister("medicine")}
+            >
+              <Pill size={18} />
+
+              <span>Medicina</span>
+            </button>
+          </div>
+
           {isLoading ? <Card className="calendar-empty">Cargando…</Card> : null}
 
-          {!isLoading && selectedEvents.length === 0 ? (
-            <Card className="calendar-empty">No hay registros este día.</Card>
+          {isError ? (
+            <Card className="calendar-empty">No pudimos cargar este mes.</Card>
           ) : null}
 
-          {!isLoading && selectedEvents.length > 0 ? (
+          {!isLoading && !isError && selectedEvents.length === 0 ? (
+            <Card className="calendar-empty">
+              <strong>No hay registros este día.</strong>
+
+              <span>
+                Puede agregar una comida, Bristol o Medicina sin salir del
+                calendario.
+              </span>
+            </Card>
+          ) : null}
+
+          {!isLoading && !isError && selectedEvents.length > 0 ? (
             <TimelineList events={selectedEvents} />
           ) : null}
         </section>
       </div>
+
+      {user ? (
+        <RegisterSheet
+          open={registerOpen}
+          mode={registerMode}
+          userId={user.id}
+          initialDate={withTimeOfDay(selectedDate)}
+          onModeChange={setRegisterMode}
+          onClose={() => setRegisterOpen(false)}
+        />
+      ) : null}
     </main>
   );
 }

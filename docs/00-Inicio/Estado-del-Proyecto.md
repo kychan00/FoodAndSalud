@@ -643,3 +643,39 @@ Patrones entra ahora en mantenimiento.
 
 El desarrollo principal continúa en la experiencia de registro diario y uso
 cotidiano de FoodAndSalud.
+
+## Fase 4.0 — Centro diario v1
+
+Comenzó la etapa de Experiencia diaria después del release de Patrones v1.
+
+### Timeline
+
+Las comidas pueden mostrar ahora los alimentos que contienen.
+
+### Hoy
+
+Los accesos de captura utilizan:
+
+día seleccionado + hora local actual.
+
+### Calendario
+
+El día seleccionado permite crear:
+
+- comida;
+- Bristol;
+- Medicina.
+
+Después de guardar:
+
+las consultas de timeline se invalidan y el día/mes se actualizan.
+
+### Arquitectura
+
+No se modifica la vista SQL `timeline_events`.
+
+El enriquecimiento de nombres de alimentos se realiza en el servicio de timeline.
+
+### Patrones
+
+Patrones v1 permanece estable y su quality gate continúa siendo obligatorio.

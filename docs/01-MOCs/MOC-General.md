@@ -64,3 +64,7 @@ estado: activo
 
 - [[Code-Splitting-y-Lazy-Loading]]
 - [[ADR-0021-Lazy-Loading-Por-Rutas]]
+
+## Experiencia diaria
+
+- [[MOC-Experiencia-Diaria]]

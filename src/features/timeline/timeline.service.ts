@@ -1,15 +1,18 @@
-import type { Database } from "../../lib/supabase/database.types";
 import { supabase } from "../../lib/supabase/client";
+
 import { getDayRange, getMonthRange } from "../../utils/date";
 
-export type TimelineEvent =
-  Database["public"]["Views"]["timeline_events"]["Row"];
+import { enrichTimelineFoodNames } from "./timeline.enrichment";
+
+import type { TimelineEvent, TimelineEventBase } from "./timeline.types";
+
+export type { TimelineEvent } from "./timeline.types";
 
 export async function getTimelineForRange(
   userId: string,
   start: Date,
   end: Date,
-) {
+): Promise<TimelineEvent[]> {
   const { data, error } = await supabase
     .from("timeline_events")
     .select("*")
@@ -24,7 +27,44 @@ export async function getTimelineForRange(
     throw error;
   }
 
-  return data ?? [];
+  const events = (data ?? []) as TimelineEventBase[];
+
+  const foodEntryIds = events
+    .filter((event) => event.event_type === "food" && Boolean(event.id))
+    .map((event) => event.id)
+    .filter((id): id is string => Boolean(id));
+
+  if (foodEntryIds.length === 0) {
+    return enrichTimelineFoodNames(events, [], []);
+  }
+
+  const { data: itemRows, error: itemError } = await supabase
+    .from("food_entry_items")
+    .select("food_entry_id,food_id,sort_order")
+    .eq("user_id", userId)
+    .in("food_entry_id", foodEntryIds);
+
+  if (itemError) {
+    throw itemError;
+  }
+
+  const foodIds = [...new Set((itemRows ?? []).map((item) => item.food_id))];
+
+  if (foodIds.length === 0) {
+    return enrichTimelineFoodNames(events, itemRows ?? [], []);
+  }
+
+  const { data: foodRows, error: foodError } = await supabase
+    .from("foods")
+    .select("id,name")
+    .eq("user_id", userId)
+    .in("id", foodIds);
+
+  if (foodError) {
+    throw foodError;
+  }
+
+  return enrichTimelineFoodNames(events, itemRows ?? [], foodRows ?? []);
 }
 
 export async function getDayTimeline(userId: string, date: Date) {

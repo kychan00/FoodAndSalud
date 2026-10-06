@@ -124,3 +124,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Release estable
 
 - [[Release-Patrones-v1]]
+
+## Experiencia diaria
+
+- [[ADR-0032-Enriquecimiento-de-Timeline-en-Cliente]]

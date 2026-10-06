@@ -8,6 +8,14 @@ export function localDateTimeToIso(value: string): string {
   return new Date(value).toISOString();
 }
 
+export function withTimeOfDay(date: Date, timeSource = new Date()) {
+  const result = new Date(date);
+
+  result.setHours(timeSource.getHours(), timeSource.getMinutes(), 0, 0);
+
+  return result;
+}
+
 export function getDayRange(date = new Date()) {
   const start = new Date(date);
 
@@ -65,6 +73,7 @@ export function getDateKey(value: Date | string) {
 export function formatEventTime(value: string) {
   return new Intl.DateTimeFormat("es-MX", {
     hour: "numeric",
+
     minute: "2-digit",
   }).format(new Date(value));
 }
@@ -72,6 +81,7 @@ export function formatEventTime(value: string) {
 export function formatFullDate(date: Date) {
   return new Intl.DateTimeFormat("es-MX", {
     day: "numeric",
+
     month: "long",
   }).format(date);
 }
@@ -79,6 +89,7 @@ export function formatFullDate(date: Date) {
 export function formatMonthTitle(date: Date) {
   const text = new Intl.DateTimeFormat("es-MX", {
     month: "long",
+
     year: "numeric",
   }).format(date);
 

@@ -172,3 +172,77 @@
   color: var(--text-secondary);
   text-align: center;
 }
+
+.calendar-selected__header > div:first-child {
+  min-width: 0;
+}
+
+.calendar-selected__header p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.calendar-register-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.calendar-register-action {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.calendar-register-action--food {
+  background: var(--color-food-soft);
+  color: var(--color-food);
+}
+
+.calendar-register-action--bathroom {
+  background: var(--color-bathroom-soft);
+  color: var(--color-bathroom);
+}
+
+.calendar-register-action--medicine {
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+}
+
+.calendar-register-action:active {
+  transform: scale(0.98);
+}
+
+.calendar-empty {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.calendar-empty strong {
+  color: var(--text-primary);
+}
+
+.calendar-empty span {
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 360px) {
+  .calendar-register-action {
+    gap: 4px;
+    font-size: 0.64rem;
+  }
+}

@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 import { DateStripCalendar } from "../../../components/date/DateStripCalendar";
 import { Card } from "../../../components/ui/Card";
-import { formatFullDate, formatLongDay, isToday } from "../../../utils/date";
+import {
+  formatFullDate,
+  formatLongDay,
+  isToday,
+  withTimeOfDay,
+} from "../../../utils/date";
 import { useAuth } from "../../auth/useAuth";
 import {
   RegisterSheet,
@@ -207,7 +212,7 @@ export function TodayPage() {
           open={registerOpen}
           mode={registerMode}
           userId={user.id}
-          initialDate={selectedDate}
+          initialDate={withTimeOfDay(selectedDate)}
           onModeChange={setRegisterMode}
           onClose={() => setRegisterOpen(false)}
         />

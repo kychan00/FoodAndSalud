@@ -1,52 +1,19 @@
 import { Activity, Pill, Salad } from "lucide-react";
 
 import { formatEventTime } from "../../../utils/date";
-import type { TimelineEvent } from "../timeline.service";
+
+import {
+  getTimelineEventClass,
+  getTimelineEventDetail,
+  getTimelineEventTitle,
+} from "../timeline.presentation";
+
+import type { TimelineEvent } from "../timeline.types";
 
 import "./TimelineList.css";
 
 interface TimelineListProps {
   events: TimelineEvent[];
-}
-
-const mealLabels: Record<string, string> = {
-  breakfast: "Desayuno",
-  lunch: "Comida",
-  dinner: "Cena",
-  snack: "Colación",
-  other: "Comida",
-};
-
-function getEventTitle(event: TimelineEvent) {
-  if (event.event_type === "food") {
-    return mealLabels[event.event_subtype ?? ""] ?? "Alimento";
-  }
-
-  if (event.event_type === "bathroom") {
-    const type = event.event_subtype?.replace("bristol_", "");
-
-    return type ? `Baño · Bristol ${type}` : "Baño";
-  }
-
-  if (event.event_type === "medicine") {
-    return event.event_subtype
-      ? `Medicina · ${event.event_subtype}`
-      : "Medicina";
-  }
-
-  return "Registro";
-}
-
-function getEventClass(event: TimelineEvent) {
-  if (event.event_type === "food") {
-    return "food";
-  }
-
-  if (event.event_type === "bathroom") {
-    return "bathroom";
-  }
-
-  return "medicine";
 }
 
 function getEventIcon(event: TimelineEvent) {
@@ -65,7 +32,9 @@ export function TimelineList({ events }: TimelineListProps) {
   return (
     <div className="timeline-list">
       {events.map((event) => {
-        const eventClass = getEventClass(event);
+        const eventClass = getTimelineEventClass(event);
+
+        const detail = getTimelineEventDetail(event);
 
         return (
           <article
@@ -79,7 +48,11 @@ export function TimelineList({ events }: TimelineListProps) {
             </span>
 
             <div className="timeline-event__body">
-              <strong>{getEventTitle(event)}</strong>
+              <strong>{getTimelineEventTitle(event)}</strong>
+
+              {detail ? (
+                <span className="timeline-event__detail">{detail}</span>
+              ) : null}
 
               {event.notes ? (
                 <span className="timeline-event__notes">{event.notes}</span>

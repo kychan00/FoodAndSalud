@@ -171,3 +171,7 @@ repetido ocho veces.
 ## Patrones v1
 
 - [[Auditoria-Patrones-v1]]
+
+## Experiencia diaria
+
+- [[Prueba-Centro-Diario-v1]]
