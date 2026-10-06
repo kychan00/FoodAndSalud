@@ -59,3 +59,8 @@ estado: activo
 ## Patrones
 
 - [[MOC-Patrones]]
+
+## Rendimiento
+
+- [[Code-Splitting-y-Lazy-Loading]]
+- [[ADR-0021-Lazy-Loading-Por-Rutas]]

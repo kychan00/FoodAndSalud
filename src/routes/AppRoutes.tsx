@@ -1,44 +1,134 @@
+import { lazy, Suspense, type ReactNode } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AppShell } from "../components/layout/AppShell";
-
+import { RouteLoading } from "../components/ui/RouteLoading";
 import { ProtectedRoute } from "../features/auth/components/ProtectedRoute";
 
-import { CheckEmailPage } from "../features/auth/pages/CheckEmailPage";
+const LoginPage = lazy(() =>
+  import("../features/auth/pages/LoginPage").then((module) => ({
+    default: module.LoginPage,
+  })),
+);
 
-import { ForgotPasswordPage } from "../features/auth/pages/ForgotPasswordPage";
+const SignUpPage = lazy(() =>
+  import("../features/auth/pages/SignUpPage").then((module) => ({
+    default: module.SignUpPage,
+  })),
+);
 
-import { LoginPage } from "../features/auth/pages/LoginPage";
+const CheckEmailPage = lazy(() =>
+  import("../features/auth/pages/CheckEmailPage").then((module) => ({
+    default: module.CheckEmailPage,
+  })),
+);
 
-import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
+const ForgotPasswordPage = lazy(() =>
+  import("../features/auth/pages/ForgotPasswordPage").then((module) => ({
+    default: module.ForgotPasswordPage,
+  })),
+);
 
-import { SignUpPage } from "../features/auth/pages/SignUpPage";
+const ResetPasswordPage = lazy(() =>
+  import("../features/auth/pages/ResetPasswordPage").then((module) => ({
+    default: module.ResetPasswordPage,
+  })),
+);
 
-import { CalendarPage } from "../features/calendar/pages/CalendarPage";
+const TodayPage = lazy(() =>
+  import("../features/today/pages/TodayPage").then((module) => ({
+    default: module.TodayPage,
+  })),
+);
 
-import { FoodDetailPage } from "../features/patterns/pages/FoodDetailPage";
+const CalendarPage = lazy(() =>
+  import("../features/calendar/pages/CalendarPage").then((module) => ({
+    default: module.CalendarPage,
+  })),
+);
 
-import { PatternLabFoodDetailPage } from "../features/patterns/pages/PatternLabFoodDetailPage";
+const PatternsPage = lazy(() =>
+  import("../features/patterns/pages/PatternsPage").then((module) => ({
+    default: module.PatternsPage,
+  })),
+);
 
-import { PatternLabPage } from "../features/patterns/pages/PatternLabPage";
+const FoodDetailPage = lazy(() =>
+  import("../features/patterns/pages/FoodDetailPage").then((module) => ({
+    default: module.FoodDetailPage,
+  })),
+);
 
-import { PatternsPage } from "../features/patterns/pages/PatternsPage";
+const PatternLabPage = import.meta.env.DEV
+  ? lazy(() =>
+      import("../features/patterns/pages/PatternLabPage").then((module) => ({
+        default: module.PatternLabPage,
+      })),
+    )
+  : null;
 
-import { TodayPage } from "../features/today/pages/TodayPage";
+const PatternLabFoodDetailPage = import.meta.env.DEV
+  ? lazy(() =>
+      import("../features/patterns/pages/PatternLabFoodDetailPage").then(
+        (module) => ({
+          default: module.PatternLabFoodDetailPage,
+        }),
+      ),
+    )
+  : null;
+
+function LazyPage({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<RouteLoading />}>{children}</Suspense>;
+}
 
 export function AppRoutes() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={
+            <LazyPage>
+              <LoginPage />
+            </LazyPage>
+          }
+        />
 
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route
+          path="/signup"
+          element={
+            <LazyPage>
+              <SignUpPage />
+            </LazyPage>
+          }
+        />
 
-        <Route path="/check-email" element={<CheckEmailPage />} />
+        <Route
+          path="/check-email"
+          element={
+            <LazyPage>
+              <CheckEmailPage />
+            </LazyPage>
+          }
+        />
 
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route
+          path="/forgot-password"
+          element={
+            <LazyPage>
+              <ForgotPasswordPage />
+            </LazyPage>
+          }
+        />
 
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route
+          path="/reset-password"
+          element={
+            <LazyPage>
+              <ResetPasswordPage />
+            </LazyPage>
+          }
+        />
 
         <Route
           element={
@@ -47,19 +137,49 @@ export function AppRoutes() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<TodayPage />} />
+          <Route
+            index
+            element={
+              <LazyPage>
+                <TodayPage />
+              </LazyPage>
+            }
+          />
 
-          <Route path="/calendar" element={<CalendarPage />} />
+          <Route
+            path="/calendar"
+            element={
+              <LazyPage>
+                <CalendarPage />
+              </LazyPage>
+            }
+          />
 
-          <Route path="/patterns" element={<PatternsPage />} />
+          <Route
+            path="/patterns"
+            element={
+              <LazyPage>
+                <PatternsPage />
+              </LazyPage>
+            }
+          />
 
-          <Route path="/patterns/food/:foodId" element={<FoodDetailPage />} />
+          <Route
+            path="/patterns/food/:foodId"
+            element={
+              <LazyPage>
+                <FoodDetailPage />
+              </LazyPage>
+            }
+          />
 
           <Route
             path="/qa/patterns"
             element={
-              import.meta.env.DEV ? (
-                <PatternLabPage />
+              import.meta.env.DEV && PatternLabPage ? (
+                <LazyPage>
+                  <PatternLabPage />
+                </LazyPage>
               ) : (
                 <Navigate to="/patterns" replace />
               )
@@ -69,8 +189,10 @@ export function AppRoutes() {
           <Route
             path="/qa/patterns/:scenarioId/food/:foodId"
             element={
-              import.meta.env.DEV ? (
-                <PatternLabFoodDetailPage />
+              import.meta.env.DEV && PatternLabFoodDetailPage ? (
+                <LazyPage>
+                  <PatternLabFoodDetailPage />
+                </LazyPage>
               ) : (
                 <Navigate to="/patterns" replace />
               )

@@ -122,3 +122,7 @@ repetido ocho veces.
 ## TypeScript y fixtures
 
 - [[BUG-0007-Type-Widening-Fixture-QA]]
+
+## Rendimiento
+
+- [[Prueba-Bundle-Produccion]]

@@ -299,3 +299,24 @@ Cuando dos alimentos aparecen siempre juntos, FoodAndSalud declara que no puede
 separarlos con la información disponible.
 
 No se asigna causalidad automática.
+
+## Fase 3.3 — Code Splitting
+
+La aplicación adopta lazy loading por rutas.
+
+Objetivo principal:
+
+reducir el JavaScript necesario durante el arranque.
+
+Fronteras dinámicas:
+
+- autenticación;
+- Hoy;
+- Calendario;
+- Patrones;
+- detalle de alimento.
+
+El Laboratorio QA usa imports dinámicos condicionados al entorno de desarrollo.
+
+Recharts queda asociado a las rutas que realmente utilizan gráficas en lugar de
+ser una dependencia obligatoria del arranque inicial.

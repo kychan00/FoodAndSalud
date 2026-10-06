@@ -271,3 +271,17 @@ estado: activo
 - [ ] Comparaciones con ventanas 6 / 12 / 24 h
 
 - [x] BUG-0007 type widening en fixture QA
+
+## Fase 3.3 — Rendimiento y Code Splitting
+
+- [x] Lazy loading Auth
+- [x] Lazy loading Hoy
+- [x] Lazy loading Calendario
+- [x] Lazy loading Patrones
+- [x] Lazy loading detalle de alimento
+- [x] Separar Recharts del arranque inicial
+- [x] QA mediante import dinámico DEV
+- [x] Fallback reutilizable
+- [x] Verificar tamaño del bundle inicial
+- [x] Verificar QA ausente de producción
+- [x] Validación visual de navegación
