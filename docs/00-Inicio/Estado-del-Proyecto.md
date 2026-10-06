@@ -320,3 +320,37 @@ El Laboratorio QA usa imports dinámicos condicionados al entorno de desarrollo.
 
 Recharts queda asociado a las rutas que realmente utilizan gráficas en lugar de
 ser una dependencia obligatoria del arranque inicial.
+
+## Fase 3.4 — Combinaciones multiventana
+
+El análisis:
+
+alimento + acompañante
+vs
+alimento sin acompañante
+
+ya no se limita a 24 horas.
+
+Ahora compara:
+
+- 6 h;
+- 12 h;
+- 24 h.
+
+Esto permite observar cuándo empieza a aparecer una diferencia temporal.
+
+Ejemplo QA:
+
+Café + Leche:
+
+6 h → 0%
+12 h → 100%
+24 h → 100%
+
+Café sin Leche:
+
+6 h → 0%
+12 h → 0%
+24 h → 0%
+
+La señal continúa siendo observacional y no causal.

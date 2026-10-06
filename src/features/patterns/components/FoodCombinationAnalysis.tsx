@@ -1,5 +1,6 @@
 import {
   CircleHelp,
+  Clock3,
   Link2,
   Split,
   TrendingDown,
@@ -13,6 +14,8 @@ import { buildFoodCombinationReport } from "../combination.engine";
 import type { CombinationStatus } from "../combination.types";
 
 import type { FoodDetailReport } from "../foodDetail.types";
+
+import { FoodCombinationWindowChart } from "./FoodCombinationWindowChart";
 
 import "./FoodCombinationAnalysis.css";
 
@@ -55,42 +58,23 @@ function getStatusIcon(status: CombinationStatus) {
   }
 }
 
-function RateBar({
-  label,
-  rate,
-  evaluable,
-  adverse,
-}: {
-  label: string;
-  rate: number;
-  evaluable: number;
-  adverse: number;
-}) {
-  const percentage = Math.round(rate * 100);
+function getWindowInterpretation(status: CombinationStatus) {
+  switch (status) {
+    case "higher_with":
+      return "Mayor con combinación";
 
-  return (
-    <div className="combination-rate">
-      <div className="combination-rate__header">
-        <span>{label}</span>
+    case "lower_with":
+      return "Menor con combinación";
 
-        <strong>{evaluable > 0 ? `${percentage}%` : "—"}</strong>
-      </div>
+    case "similar":
+      return "Parecida";
 
-      <div className="combination-rate__track">
-        <span
-          style={{
-            width: evaluable > 0 ? `${percentage}%` : "0%",
-          }}
-        />
-      </div>
+    case "inseparable":
+      return "Inseparable";
 
-      <small>
-        {evaluable > 0
-          ? `${adverse} de ${evaluable} evaluables`
-          : "Sin exposiciones evaluables"}
-      </small>
-    </div>
-  );
+    default:
+      return "Pocos datos";
+  }
 }
 
 export function FoodCombinationAnalysis({
@@ -171,20 +155,35 @@ export function FoodCombinationAnalysis({
               </span>
             </div>
 
-            <div className="food-combination-bars">
-              <RateBar
-                label={`${report.foodName} + ${comparison.coFoodName}`}
-                rate={comparison.together.adverseRate}
-                evaluable={comparison.together.evaluableExposures}
-                adverse={comparison.together.adverseExposures}
-              />
+            <FoodCombinationWindowChart
+              foodName={report.foodName}
+              comparison={comparison}
+            />
 
-              <RateBar
-                label={`${report.foodName} sin ${comparison.coFoodName}`}
-                rate={comparison.without.adverseRate}
-                evaluable={comparison.without.evaluableExposures}
-                adverse={comparison.without.adverseExposures}
-              />
+            <div className="combination-window-summary">
+              {comparison.windows.map((window) => (
+                <div
+                  key={window.hours}
+                  className="combination-window-summary__item"
+                >
+                  <span>
+                    <Clock3 size={14} />
+                    {window.hours} h
+                  </span>
+
+                  <strong data-status={window.status}>
+                    {getWindowInterpretation(window.status)}
+                  </strong>
+
+                  <small>
+                    {window.difference === null
+                      ? "Sin comparación"
+                      : `${window.difference > 0 ? "+" : ""}${Math.round(
+                          window.difference * 100,
+                        )} pp`}
+                  </small>
+                </div>
+              ))}
             </div>
 
             {comparison.status === "inseparable" ? (
@@ -204,34 +203,26 @@ export function FoodCombinationAnalysis({
 
             {comparison.status === "higher_with" ? (
               <p className="food-combination-note">
-                La coincidencia temporal es mayor cuando {report.foodName} se
-                registra junto con {comparison.coFoodName}. Esto sigue siendo
-                una asociación observacional.
+                Durante las primeras 24 horas la coincidencia temporal es mayor
+                cuando {report.foodName} se registra junto con{" "}
+                {comparison.coFoodName}. Revise las ventanas para ver cuándo
+                empieza a aparecer la diferencia.
               </p>
             ) : null}
 
             {comparison.status === "lower_with" ? (
               <p className="food-combination-note">
-                La coincidencia temporal es menor cuando aparece{" "}
-                {comparison.coFoodName}. Esto no implica un efecto protector.
+                Durante 24 horas la coincidencia temporal es menor cuando
+                aparece {comparison.coFoodName}. Esto no implica un efecto
+                protector.
               </p>
             ) : null}
 
             {comparison.status === "similar" ? (
               <p className="food-combination-note">
-                La frecuencia observada es parecida con y sin{" "}
-                {comparison.coFoodName}.
+                Durante 24 horas las frecuencias observadas son parecidas con y
+                sin {comparison.coFoodName}.
               </p>
-            ) : null}
-
-            {comparison.difference !== null ? (
-              <div className="food-combination-difference">
-                Diferencia observada:{" "}
-                <strong>
-                  {comparison.difference > 0 ? "+" : ""}
-                  {Math.round(comparison.difference * 100)} puntos porcentuales
-                </strong>
-              </div>
             ) : null}
           </Card>
         ))}

@@ -45,3 +45,13 @@ fecha: 2026-10-06
 ## Bugs QA
 
 - [[BUG-0007-Type-Widening-Fixture-QA]]
+
+## Combinaciones temporales
+
+- [[Combinaciones-por-Ventana]]
+- [[ADR-0022-Comparaciones-Multiventana]]
+- [[Prueba-Combinaciones-Multiventana]]
+
+## Bugs QA
+
+- [[BUG-0008-Marcador-Ambiguo-Registro-QA]]

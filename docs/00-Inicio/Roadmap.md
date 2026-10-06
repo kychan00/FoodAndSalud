@@ -205,7 +205,7 @@ estado: activo
 - [x] BUG-0005 horario de fixtures
 - [x] Tests de fechas QA
 - [x] Documentación de gráficas
-- [ ] Validación visual de los seis escenarios
+- [x] Validación visual de los seis escenarios
 - [ ] Llevar gráficas aprobadas a Patrones reales
 
 ## Fase 3.1 — Detalle de alimento
@@ -285,3 +285,23 @@ estado: activo
 - [x] Verificar tamaño del bundle inicial
 - [x] Verificar QA ausente de producción
 - [x] Validación visual de navegación
+
+## Fase 3.4 — Combinaciones 6 / 12 / 24 h
+
+- [x] Estadísticas de combinación a 6 h
+- [x] Estadísticas de combinación a 12 h
+- [x] Estadísticas de combinación a 24 h
+- [x] Estado independiente por ventana
+- [x] Diferencia porcentual por ventana
+- [x] Gráfica agrupada
+- [x] Resumen visual 6 / 12 / 24
+- [x] Caso temprano QA
+- [x] Caso tardío QA
+- [x] Detectar diferencia que aparece después de 6 h
+- [x] Mantener no evaluables correctamente
+- [x] Tests unitarios
+- [x] Tests QA
+- [x] Documentación Obsidian
+- [ ] Validación visual
+
+- [x] BUG-0008 registro del escenario QA tardío

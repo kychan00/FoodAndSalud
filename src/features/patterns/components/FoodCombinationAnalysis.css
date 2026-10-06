@@ -205,3 +205,108 @@
     justify-self: start;
   }
 }
+
+.combination-window-chart {
+  overflow: hidden;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.combination-window-chart__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.combination-window-chart__heading strong {
+  font-size: 0.77rem;
+}
+
+.combination-window-chart__heading span {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+
+.combination-window-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.combination-window-chart__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+}
+
+.combination-window-chart__legend i {
+  display: block;
+  width: 14px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+}
+
+.combination-window-chart__legend-together {
+  background: var(--color-insight);
+}
+
+.combination-window-chart__legend-without {
+  background: var(--color-food);
+}
+
+.combination-window-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.combination-window-summary__item {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+}
+
+.combination-window-summary__item > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.combination-window-summary__item > strong {
+  font-size: 0.66rem;
+  line-height: 1.3;
+}
+
+.combination-window-summary__item > strong[data-status="higher_with"] {
+  color: var(--color-danger);
+}
+
+.combination-window-summary__item > strong[data-status="lower_with"] {
+  color: var(--color-success);
+}
+
+.combination-window-summary__item > strong[data-status="inseparable"] {
+  color: var(--color-insight);
+}
+
+.combination-window-summary__item > small {
+  color: var(--text-muted);
+  font-size: 0.61rem;
+}
+
+@media (max-width: 360px) {
+  .combination-window-summary {
+    grid-template-columns: 1fr;
+  }
+}

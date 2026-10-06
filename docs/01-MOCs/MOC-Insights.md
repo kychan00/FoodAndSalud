@@ -81,3 +81,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Analisis-de-Combinaciones]]
 - [[ADR-0020-Comparar-Contextos-No-Culpables]]
+
+## Ventanas de combinaciones
+
+- [[Combinaciones-por-Ventana]]
+- [[ADR-0022-Comparaciones-Multiventana]]

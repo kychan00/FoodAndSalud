@@ -1,4 +1,7 @@
-import { combinationDiscriminationScenario } from "./combinationScenario";
+import {
+  combinationDiscriminationScenario,
+  delayedCombinationScenario,
+} from "./combinationScenario";
 
 import type {
   AssociationSignal,
@@ -314,6 +317,7 @@ function buildMixedMealScenario(): PatternQaScenario {
 
 export const patternQaScenarios: PatternQaScenario[] = [
   combinationDiscriminationScenario,
+  delayedCombinationScenario,
   buildHighCoffeeScenario(),
   buildInsufficientScenario(),
   buildMediumMilkScenario(),

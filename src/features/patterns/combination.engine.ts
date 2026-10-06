@@ -3,17 +3,19 @@ import { isBathroomAdverse } from "./association.engine";
 import type { BathroomObservation } from "./association.types";
 
 import type {
+  CombinationStats,
+  CombinationStatus,
+  CombinationWindowComparison,
+  CombinationWindowHours,
+  FoodCombinationReport,
+} from "./combination.types";
+
+import type {
   FoodDetailExposureInput,
   FoodDetailReport,
 } from "./foodDetail.types";
 
-import type {
-  CombinationStats,
-  CombinationStatus,
-  FoodCombinationReport,
-} from "./combination.types";
-
-const WINDOW_HOURS = 24;
+const WINDOWS: CombinationWindowHours[] = [6, 12, 24];
 
 function elapsedHours(start: string, end: string) {
   return (new Date(end).getTime() - new Date(start).getTime()) / 3_600_000;
@@ -22,6 +24,7 @@ function elapsedHours(start: string, end: string) {
 function getStats(
   exposures: FoodDetailExposureInput[],
   bathrooms: BathroomObservation[],
+  hours: CombinationWindowHours,
 ): CombinationStats {
   let evaluableExposures = 0;
 
@@ -31,7 +34,7 @@ function getStats(
     const linked = bathrooms.filter((bathroom) => {
       const elapsed = elapsedHours(exposure.eatenAt, bathroom.occurredAt);
 
-      return elapsed > 0 && elapsed <= WINDOW_HOURS;
+      return elapsed > 0 && elapsed <= hours;
     });
 
     if (linked.length === 0) {
@@ -83,6 +86,43 @@ function getStatus(
   return "similar";
 }
 
+function buildWindowComparison({
+  hours,
+  togetherExposures,
+  withoutExposures,
+  bathrooms,
+  allExposureCount,
+}: {
+  hours: CombinationWindowHours;
+
+  togetherExposures: FoodDetailExposureInput[];
+
+  withoutExposures: FoodDetailExposureInput[];
+
+  bathrooms: BathroomObservation[];
+
+  allExposureCount: number;
+}): CombinationWindowComparison {
+  const together = getStats(togetherExposures, bathrooms, hours);
+
+  const without = getStats(withoutExposures, bathrooms, hours);
+
+  const status = getStatus(together, without, allExposureCount);
+
+  const difference =
+    together.evaluableExposures > 0 && without.evaluableExposures > 0
+      ? together.adverseRate - without.adverseRate
+      : null;
+
+  return {
+    hours,
+    together,
+    without,
+    difference,
+    status,
+  };
+}
+
 export function buildFoodCombinationReport(
   report: FoodDetailReport,
 ): FoodCombinationReport {
@@ -100,7 +140,19 @@ export function buildFoodCombinationReport(
     (exposure) => exposure.coFoods.length === 0,
   );
 
-  const exactSolo = getStats(exactSoloExposures, report.bathrooms);
+  const exactSoloWindows = WINDOWS.map((hours) => ({
+    hours,
+
+    stats: getStats(exactSoloExposures, report.bathrooms, hours),
+  }));
+
+  const exactSolo = exactSoloWindows.find((item) => item.hours === 24)
+    ?.stats ?? {
+    totalExposures: 0,
+    evaluableExposures: 0,
+    adverseExposures: 0,
+    adverseRate: 0,
+  };
 
   const coFoodMap = new Map<string, string>();
 
@@ -121,29 +173,40 @@ export function buildFoodCombinationReport(
           !exposure.coFoods.some((item) => item.foodId === coFoodId),
       );
 
-      const together = getStats(togetherExposures, report.bathrooms);
+      const windows = WINDOWS.map((hours) =>
+        buildWindowComparison({
+          hours,
+          togetherExposures,
+          withoutExposures,
+          bathrooms: report.bathrooms,
+          allExposureCount: exposures.length,
+        }),
+      );
 
-      const without = getStats(withoutExposures, report.bathrooms);
+      const primary = windows.find((item) => item.hours === 24);
 
-      const status = getStatus(together, without, exposures.length);
-
-      const difference =
-        together.evaluableExposures > 0 && without.evaluableExposures > 0
-          ? together.adverseRate - without.adverseRate
-          : null;
+      if (!primary) {
+        throw new Error("Missing 24 hour combination window.");
+      }
 
       return {
         coFoodId,
         coFoodName,
 
         share:
-          exposures.length > 0 ? together.totalExposures / exposures.length : 0,
+          exposures.length > 0
+            ? togetherExposures.length / exposures.length
+            : 0,
 
-        together,
-        without,
-        difference,
+        together: primary.together,
 
-        status,
+        without: primary.without,
+
+        difference: primary.difference,
+
+        status: primary.status,
+
+        windows,
       };
     })
     .sort((left, right) => {
@@ -162,6 +225,8 @@ export function buildFoodCombinationReport(
     totalExposures: report.totalExposures,
 
     exactSolo,
+
+    exactSoloWindows,
 
     comparisons,
   };

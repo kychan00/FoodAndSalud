@@ -126,3 +126,11 @@ repetido ocho veces.
 ## Rendimiento
 
 - [[Prueba-Bundle-Produccion]]
+
+## Combinaciones temporales
+
+- [[Prueba-Combinaciones-Multiventana]]
+
+## Registro de escenarios QA
+
+- [[BUG-0008-Marcador-Ambiguo-Registro-QA]]

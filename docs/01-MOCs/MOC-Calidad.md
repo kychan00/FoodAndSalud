@@ -69,3 +69,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 
 - [[Code-Splitting-y-Lazy-Loading]]
 - [[ADR-0021-Lazy-Loading-Por-Rutas]]
+
+## Automatización estructural
+
+- [[BUG-0008-Marcador-Ambiguo-Registro-QA]]
