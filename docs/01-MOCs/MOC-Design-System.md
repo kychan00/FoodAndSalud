@@ -34,3 +34,9 @@ Mantener una interfaz consistente, legible, accesible y reutilizable.
 
 La experiencia debe tener la facilidad de lectura y clasificación visual
 de aplicaciones como Flo, sin copiar su identidad visual.
+
+## Implementación
+
+- [[Bottom-Sheet]]
+
+- [[Pantalla-Hoy-Estilo-Flo]]

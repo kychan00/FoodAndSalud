@@ -1,0 +1,230 @@
+.today-page {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #fbf1ed 0%,
+    #fbf7f5 53%,
+    var(--surface-page) 100%
+  );
+}
+
+.today-page__background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 95% 13%,
+      rgb(236 202 194 / 38%),
+      transparent 35%
+    ),
+    radial-gradient(ellipse at 0% 47%, rgb(242 218 210 / 45%), transparent 34%),
+    radial-gradient(ellipse at 83% 64%, rgb(236 225 235 / 48%), transparent 33%);
+}
+
+.today-page__content {
+  position: relative;
+  width: min(100%, 500px);
+  margin: 0 auto;
+  padding: max(var(--space-5), env(safe-area-inset-top)) var(--space-4)
+    var(--space-8);
+}
+
+.today-topbar {
+  display: grid;
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    48px;
+  align-items: center;
+  min-height: 52px;
+}
+
+.today-avatar,
+.today-calendar-button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+}
+
+.today-avatar {
+  background: var(--color-bathroom-soft);
+  color: var(--color-bathroom);
+  font-weight: 900;
+}
+
+.today-calendar-button {
+  justify-self: end;
+  background: rgb(255 255 255 / 70%);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.today-brand {
+  justify-self: center;
+  color: var(--color-primary);
+  font-size: 1.18rem;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.today-brand span {
+  color: var(--color-food);
+}
+
+.today-date {
+  padding: var(--space-5) 0 var(--space-5);
+  text-align: center;
+}
+
+.today-date p {
+  margin: 0 0 var(--space-1);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.today-date h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 7vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.today-focus {
+  display: grid;
+  justify-items: center;
+  min-height: 250px;
+  align-content: center;
+  padding: var(--space-7) var(--space-4) var(--space-6);
+  text-align: center;
+}
+
+.today-focus__label {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+
+.today-focus__value {
+  margin: var(--space-2) 0 0;
+  font-size: clamp(2.5rem, 13vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.065em;
+}
+
+.today-focus__description {
+  max-width: 360px;
+  margin: var(--space-5) 0 0;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.today-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-2) 0 var(--space-7);
+}
+
+.today-action {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  cursor: pointer;
+}
+
+.today-action__circle {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: 0 7px 22px rgb(80 67 72 / 8%);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.today-action:active .today-action__circle {
+  transform: scale(0.95);
+}
+
+.today-action--food .today-action__circle {
+  background: var(--color-food);
+  color: white;
+}
+
+.today-action--bathroom .today-action__circle {
+  background: var(--color-bathroom-soft);
+  color: var(--color-bathroom);
+}
+
+.today-action--medicine .today-action__circle {
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+}
+
+.today-timeline {
+  padding-bottom: var(--space-5);
+}
+
+.today-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.today-section-title h2 {
+  margin: 0;
+  font-size: 1.22rem;
+}
+
+.today-section-title span {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.today-state-card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.today-state-card strong {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+@media (max-width: 370px) {
+  .today-action__circle {
+    width: 62px;
+    height: 62px;
+  }
+
+  .today-action {
+    font-size: 0.72rem;
+  }
+}

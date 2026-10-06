@@ -42,3 +42,7 @@ Tacos al pastor
 
 La aplicación no deberá obligar al usuario a registrar siempre ese nivel
 de detalle para poder guardar rápidamente una comida.
+
+## Implementación
+
+- [[Registro-de-Alimentos]]

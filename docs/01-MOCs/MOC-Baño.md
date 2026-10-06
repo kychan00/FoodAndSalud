@@ -28,3 +28,7 @@ Se utilizarán valores estructurados del 1 al 7.
 
 El valor numérico permitirá realizar comparaciones estadísticas y estudiar
 cambios posteriores a determinados alimentos.
+
+## Implementación
+
+- [[Registro-de-Baño]]

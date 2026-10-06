@@ -1,0 +1,9 @@
+.app-shell {
+  min-height: 100dvh;
+  background: var(--surface-page);
+}
+
+.app-shell__content {
+  min-height: 100dvh;
+  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+}

@@ -50,3 +50,7 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 - tiempo medio hasta el evento
 - baseline personal
 - diferencia respecto al baseline
+
+## Implementación
+
+- [[Patrones]]

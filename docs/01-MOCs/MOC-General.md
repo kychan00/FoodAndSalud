@@ -37,3 +37,10 @@ estado: activo
 
 - [[MOC-Seguridad]]
 - [[MOC-Calidad]]
+
+## Experiencia principal
+
+- [[Pantalla-Hoy-Estilo-Flo]]
+- [[Calendario]]
+- [[Patrones]]
+- [[Medicina]]

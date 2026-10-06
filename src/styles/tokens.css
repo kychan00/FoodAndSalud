@@ -103,3 +103,16 @@
   --content-max-width: 720px;
   --mobile-nav-height: 72px;
 }
+
+:root {
+  /* =========================================================
+     OVERLAYS
+     ========================================================= */
+
+  --overlay-backdrop: rgb(48 44 47 / 42%);
+
+  --shadow-sheet: 0 -8px 40px rgb(48 44 47 / 18%);
+
+  --z-sheet-backdrop: 90;
+  --z-sheet: 100;
+}

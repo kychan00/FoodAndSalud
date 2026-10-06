@@ -71,8 +71,8 @@ estado: activo
 
 ## Fase 4 — Alimentos
 
-- [ ] Crear alimento
-- [ ] Registrar comida
+- [x] Crear alimento
+- [x] Registrar comida
 - [ ] Cantidades
 - [ ] Unidades
 - [ ] Categorías
@@ -83,19 +83,19 @@ estado: activo
 
 ## Fase 5 — Baño
 
-- [ ] Registro
-- [ ] Escala Bristol
-- [ ] Urgencia
-- [ ] Dolor
-- [ ] Notas
+- [x] Registro
+- [x] Escala Bristol
+- [x] Urgencia
+- [x] Dolor
+- [x] Notas
 - [ ] Historial
 - [ ] Edición
 - [ ] Eliminación
 
 ## Fase 6 — Timeline
 
-- [ ] Timeline diario
-- [ ] Unificar eventos
+- [x] Timeline diario
+- [x] Unificar eventos
 - [ ] Navegación por fecha
 - [ ] Filtros
 - [ ] Vista semanal
@@ -128,3 +128,18 @@ estado: activo
 - [ ] Accesibilidad
 - [ ] Refinamiento UX
 - [ ] Rendimiento
+
+## Fase 2.1 — Experiencia Mobile
+
+- [x] Navegación inferior
+- [x] Tab Hoy
+- [x] Calendario horizontal
+- [x] Acción Registrar comida
+- [x] Acción Registrar Bristol
+- [x] Acción Medicina visible
+- [x] Calendario mensual
+- [x] Marcadores de eventos por día
+- [x] Tab Patrones
+- [x] Resumen inicial de 30 días
+- [ ] Persistencia de Medicina
+- [ ] Análisis alimento → síntomas
