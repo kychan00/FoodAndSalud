@@ -224,3 +224,69 @@ export async function deleteMedicineEntry(userId: string, entryId: string) {
     throw error;
   }
 }
+
+export interface CreateMedicineEntryFromScheduleInput {
+  userId: string;
+
+  medicineId: string;
+
+  scheduleId: string;
+
+  scheduledFor: string;
+
+  takenAt: string;
+
+  dose?: number;
+
+  unit?: string;
+
+  reason?: string;
+
+  notes?: string;
+}
+
+export async function createMedicineEntryFromScheduleOccurrence({
+  userId,
+  medicineId,
+  scheduleId,
+  scheduledFor,
+  takenAt,
+  dose,
+  unit,
+  reason,
+  notes,
+}: CreateMedicineEntryFromScheduleInput) {
+  const { data, error } = await supabase
+    .from("medicine_entries")
+    .insert({
+      user_id: userId,
+
+      medicine_id: medicineId,
+
+      schedule_id: scheduleId,
+
+      scheduled_for: scheduledFor,
+
+      taken_at: takenAt,
+
+      dose: dose ?? null,
+
+      unit: dose === undefined ? null : unit?.trim() || null,
+
+      reason: reason?.trim() || null,
+
+      notes: notes?.trim() || null,
+    })
+    .select("id")
+    .single();
+
+  if (error?.code === "23505") {
+    throw new Error("Esta toma programada ya fue registrada.");
+  }
+
+  if (error || !data) {
+    throw error ?? new Error("No se pudo registrar la toma.");
+  }
+
+  return data.id;
+}

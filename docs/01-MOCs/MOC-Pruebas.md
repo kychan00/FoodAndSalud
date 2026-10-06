@@ -195,3 +195,7 @@ repetido ocho veces.
 ## Programación de Medicina
 
 - [[Prueba-Programacion-de-Medicina-v1]]
+
+## Medicina programada en Calendario
+
+- [[Prueba-Medicina-Programada-en-Calendario-v1]]

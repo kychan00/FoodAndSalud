@@ -152,3 +152,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Programación de Medicina
 
 - [[ADR-0037-Programado-No-Equivale-a-Tomado]]
+
+## Ocurrencias programadas
+
+- [[ADR-0038-Ocurrencias-Programadas-Derivadas]]

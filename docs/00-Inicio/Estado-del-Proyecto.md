@@ -893,3 +893,56 @@ quedan para Fase 4.5B.
 ### Patrones
 
 Patrones v1 continúa leyendo únicamente tomas reales.
+
+## Fase 4.5B — Medicina programada en Calendario
+
+El Calendario puede representar las ocurrencias derivadas de una programación
+de Medicina.
+
+### Estado Programado
+
+No representa una toma.
+
+No aparece en Timeline.
+
+No entra a Patrones.
+
+### Estado Registrada
+
+Al elegir:
+
+`Registrar como tomada`
+
+se crea un `medicine_entry`.
+
+Se conserva:
+
+- hora programada;
+- hora real;
+- schedule_id.
+
+### Calendario
+
+Los días con ocurrencias pendientes muestran un indicador visual distinto de
+las tomas reales.
+
+### Modelo
+
+Las ocurrencias futuras no se materializan en una tabla.
+
+Se calculan para el rango mensual requerido.
+
+### Regresión
+
+Patrones v1 continúa dependiendo exclusivamente de tomas realmente registradas.
+
+### Pendiente
+
+La gestión completa de programaciones:
+
+- editar;
+- finalizar antes de tiempo;
+- eliminar;
+- exportar a calendario externo;
+
+queda fuera de 4.5B.

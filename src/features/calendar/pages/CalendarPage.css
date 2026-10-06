@@ -246,3 +246,13 @@
     font-size: 0.64rem;
   }
 }
+
+.calendar-dot--medicine-scheduled {
+  box-sizing: border-box;
+  border: 1.5px solid var(--color-insight);
+  background: transparent;
+}
+
+.calendar-empty--recorded {
+  padding-block: var(--space-4);
+}

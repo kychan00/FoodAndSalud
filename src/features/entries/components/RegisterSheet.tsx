@@ -57,6 +57,14 @@ export function RegisterSheet({
       queryClient.invalidateQueries({
         queryKey: ["daily-suggestions"],
       }),
+
+      queryClient.invalidateQueries({
+        queryKey: ["medicine-schedules"],
+      }),
+
+      queryClient.invalidateQueries({
+        queryKey: ["medicine-schedule-calendar"],
+      }),
     ]);
 
     handleClose();
@@ -130,7 +138,7 @@ export function RegisterSheet({
             <span className="register-choice__body">
               <strong>Medicina</strong>
 
-              <span>Medicamento, suplemento o remedio</span>
+              <span>Toma individual o programación</span>
             </span>
 
             <ChevronRight size={21} />

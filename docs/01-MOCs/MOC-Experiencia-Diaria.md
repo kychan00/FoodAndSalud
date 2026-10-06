@@ -51,3 +51,7 @@ estado: activo
 ## Programación de Medicina
 
 - [[Programacion-de-Medicina-v1]]
+
+## Medicina programada en Calendario
+
+- [[Medicina-Programada-en-Calendario-v1]]

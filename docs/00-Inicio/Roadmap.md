@@ -710,12 +710,12 @@ estado: activo
 
 ### Fase 4.5B — Calendario y toma real
 
-- [ ] Expandir horarios en Calendario
-- [ ] Indicador visual Programado
-- [ ] Diferenciar programado de registrado
-- [ ] Registrar una ocurrencia como tomada
-- [ ] Permitir corregir hora real
-- [ ] Vincular schedule_id
-- [ ] Vincular scheduled_for
-- [ ] Refrescar estado del Calendario
-- [ ] Validación móvil
+- [x] Expandir horarios en Calendario
+- [x] Indicador visual Programado
+- [x] Diferenciar programado de registrado
+- [x] Registrar una ocurrencia como tomada
+- [x] Permitir corregir hora real
+- [x] Vincular schedule_id
+- [x] Vincular scheduled_for
+- [x] Refrescar estado del Calendario
+- [x] Validación móvil

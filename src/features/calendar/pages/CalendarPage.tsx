@@ -14,18 +14,26 @@ import {
 
 import { useAuth } from "../../auth/useAuth";
 
+import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
+
 import {
   RegisterSheet,
   type RegisterMode,
 } from "../../entries/components/RegisterSheet";
 
-import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
+import { MedicineScheduleDayList } from "../../medicine/components/MedicineScheduleDayList";
+
+import { MedicineScheduledIntakeSheet } from "../../medicine/components/MedicineScheduledIntakeSheet";
+
+import type { MedicineScheduleCalendarItem } from "../../medicine/medicineSchedule.calendar";
+
+import { useMedicineScheduleCalendar } from "../../medicine/useMedicineScheduleCalendar";
 
 import { TimelineList } from "../../timeline/components/TimelineList";
 
-import { useMonthTimeline } from "../../timeline/useMonthTimeline";
-
 import type { TimelineEvent } from "../../timeline/timeline.types";
+
+import { useMonthTimeline } from "../../timeline/useMonthTimeline";
 
 import "./CalendarPage.css";
 
@@ -74,11 +82,20 @@ export function CalendarPage() {
   const [selectedTimelineEvent, setSelectedTimelineEvent] =
     useState<TimelineEvent | null>(null);
 
+  const [selectedScheduledItem, setSelectedScheduledItem] =
+    useState<MedicineScheduleCalendarItem | null>(null);
+
   const {
     data: events = [],
     isLoading,
     isError,
   } = useMonthTimeline(user?.id, month);
+
+  const {
+    data: scheduleItems = [],
+    isLoading: scheduleLoading,
+    isError: scheduleError,
+  } = useMedicineScheduleCalendar(user?.id, month);
 
   const cells = useMemo(() => getCalendarCells(month), [month]);
 
@@ -127,10 +144,30 @@ export function CalendarPage() {
     return result;
   }, [events]);
 
+  const pendingSchedulesByDay = useMemo(() => {
+    const result = new Map<string, number>();
+
+    for (const item of scheduleItems) {
+      if (item.status !== "scheduled") {
+        continue;
+      }
+
+      const key = getDateKey(item.scheduledFor);
+
+      result.set(key, (result.get(key) ?? 0) + 1);
+    }
+
+    return result;
+  }, [scheduleItems]);
+
   const selectedEvents = events.filter((event) =>
     event.occurred_at
       ? isSameLocalDay(new Date(event.occurred_at), selectedDate)
       : false,
+  );
+
+  const selectedScheduledItems = scheduleItems.filter((item) =>
+    isSameLocalDay(new Date(item.scheduledFor), selectedDate),
   );
 
   const selectedFoodCount = selectedEvents.filter(
@@ -143,6 +180,10 @@ export function CalendarPage() {
 
   const selectedMedicineCount = selectedEvents.filter(
     (event) => event.event_type === "medicine",
+  ).length;
+
+  const selectedPendingCount = selectedScheduledItems.filter(
+    (item) => item.status === "scheduled",
   ).length;
 
   const moveMonth = (amount: number) => {
@@ -185,6 +226,10 @@ export function CalendarPage() {
 
     month: "long",
   }).format(selectedDate);
+
+  const anyLoading = isLoading || scheduleLoading;
+
+  const anyError = isError || scheduleError;
 
   return (
     <main className="calendar-page">
@@ -234,6 +279,8 @@ export function CalendarPage() {
 
               const counts = eventsByDay.get(key);
 
+              const pendingSchedules = pendingSchedulesByDay.get(key) ?? 0;
+
               const outside =
                 date.getMonth() !== month.getMonth() ||
                 date.getFullYear() !== month.getFullYear();
@@ -262,6 +309,10 @@ export function CalendarPage() {
                     {counts?.medicine ? (
                       <i className="calendar-dot calendar-dot--medicine" />
                     ) : null}
+
+                    {pendingSchedules ? (
+                      <i className="calendar-dot calendar-dot--medicine-scheduled" />
+                    ) : null}
                   </span>
                 </button>
               );
@@ -278,7 +329,14 @@ export function CalendarPage() {
                 {selectedFoodCount}{" "}
                 {selectedFoodCount === 1 ? "comida" : "comidas"} ·{" "}
                 {selectedBathroomCount} Bristol · {selectedMedicineCount}{" "}
-                {selectedMedicineCount === 1 ? "medicina" : "medicinas"}
+                {selectedMedicineCount === 1
+                  ? "toma registrada"
+                  : "tomas registradas"}
+                {selectedPendingCount > 0
+                  ? ` · ${selectedPendingCount} programada${
+                      selectedPendingCount === 1 ? "" : "s"
+                    }`
+                  : ""}
               </p>
             </div>
 
@@ -320,13 +378,27 @@ export function CalendarPage() {
             </button>
           </div>
 
-          {isLoading ? <Card className="calendar-empty">Cargando…</Card> : null}
-
-          {isError ? (
-            <Card className="calendar-empty">No pudimos cargar este mes.</Card>
+          {anyLoading ? (
+            <Card className="calendar-empty">Cargando…</Card>
           ) : null}
 
-          {!isLoading && !isError && selectedEvents.length === 0 ? (
+          {anyError ? (
+            <Card className="calendar-empty">
+              No pudimos cargar completamente este mes.
+            </Card>
+          ) : null}
+
+          {!anyLoading && !anyError ? (
+            <MedicineScheduleDayList
+              items={selectedScheduledItems}
+              onSelect={(item) => setSelectedScheduledItem(item)}
+            />
+          ) : null}
+
+          {!anyLoading &&
+          !anyError &&
+          selectedEvents.length === 0 &&
+          selectedScheduledItems.length === 0 ? (
             <Card className="calendar-empty">
               <strong>No hay registros este día.</strong>
 
@@ -337,7 +409,21 @@ export function CalendarPage() {
             </Card>
           ) : null}
 
-          {!isLoading && !isError && selectedEvents.length > 0 ? (
+          {!anyLoading &&
+          !anyError &&
+          selectedEvents.length === 0 &&
+          selectedScheduledItems.length > 0 ? (
+            <Card className="calendar-empty calendar-empty--recorded">
+              <strong>Todavía no hay registros realizados.</strong>
+
+              <span>
+                Las tarjetas de arriba son horarios programados, no tomas
+                registradas.
+              </span>
+            </Card>
+          ) : null}
+
+          {!anyLoading && !anyError && selectedEvents.length > 0 ? (
             <TimelineList
               events={selectedEvents}
               onEventAction={setSelectedTimelineEvent}
@@ -352,6 +438,14 @@ export function CalendarPage() {
           event={selectedTimelineEvent}
           userId={user.id}
           onClose={() => setSelectedTimelineEvent(null)}
+        />
+      ) : null}
+
+      {user ? (
+        <MedicineScheduledIntakeSheet
+          item={selectedScheduledItem}
+          userId={user.id}
+          onClose={() => setSelectedScheduledItem(null)}
         />
       ) : null}
 

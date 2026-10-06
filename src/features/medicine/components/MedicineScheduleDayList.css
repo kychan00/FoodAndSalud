@@ -1,0 +1,132 @@
+.medicine-day-schedule {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.medicine-day-schedule__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.medicine-day-schedule__heading > div {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-insight);
+}
+
+.medicine-day-schedule__heading strong {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+}
+
+.medicine-day-schedule__heading > span {
+  color: var(--text-muted);
+  font-size: 0.66rem;
+}
+
+.medicine-day-schedule__list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.medicine-day-item {
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+  gap: var(--space-3);
+  width: 100%;
+  align-items: center;
+  min-height: 68px;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  font-family: inherit;
+  text-align: left;
+}
+
+button.medicine-day-item {
+  cursor: pointer;
+}
+
+.medicine-day-item--scheduled {
+  border: 1px dashed rgb(138 125 165 / 48%);
+  background: rgb(238 234 244 / 58%);
+  color: var(--text-primary);
+}
+
+.medicine-day-item--recorded {
+  border: 1px solid rgb(111 155 135 / 24%);
+  background: rgb(111 155 135 / 8%);
+}
+
+.medicine-day-item__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.medicine-day-item--scheduled .medicine-day-item__icon {
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+}
+
+.medicine-day-item--recorded .medicine-day-item__icon {
+  background: rgb(111 155 135 / 14%);
+  color: var(--color-success);
+}
+
+.medicine-day-item__body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.medicine-day-item__status {
+  color: var(--text-muted);
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.medicine-day-item__body strong {
+  overflow: hidden;
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.medicine-day-item__body small {
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  line-height: 1.4;
+}
+
+.medicine-day-item__action {
+  color: var(--color-insight);
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.medicine-day-item--scheduled:active {
+  transform: scale(0.985);
+}
+
+@media (max-width: 360px) {
+  .medicine-day-item {
+    grid-template-columns:
+      auto
+      minmax(0, 1fr);
+  }
+
+  .medicine-day-item__action {
+    grid-column: 2;
+  }
+}
