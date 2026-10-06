@@ -57,12 +57,17 @@ estado: activo
 
 ## Fase 3 — Autenticación
 
-- [ ] Google OAuth
-- [ ] Callback OAuth
-- [ ] Persistencia de sesión
-- [ ] Protected routes
-- [ ] Perfil
-- [ ] Logout
+- [x] Cliente Supabase
+- [x] Registro con email y contraseña
+- [x] Pantalla de verificación
+- [x] Login
+- [x] Persistencia de sesión
+- [x] Protected routes
+- [x] Logout
+- [x] Solicitud de recuperación de contraseña
+- [x] Cambio de contraseña
+- [x] Probar correo real de confirmación
+- [x] Verificar creación automática de profile
 
 ## Fase 4 — Alimentos
 

@@ -39,3 +39,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Bugs documentados
 
 - [[BUG-0001-Docker-Supabase-Read-Only-Memory]]
+
+## Pruebas End-to-End
+
+- [[Prueba-Auth-End-to-End]]

@@ -16,6 +16,7 @@ estado: activo
 - [[ADR-0003-GitHub-Pages]]
 - [[ADR-0004-RLS-por-usuario]]
 - [[ADR-0005-Design-Tokens]]
+- [[ADR-0012-Mobile-First]]
 
 ## Áreas
 

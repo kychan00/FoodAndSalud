@@ -7,30 +7,94 @@ actualizado: 2026-10-06
 
 ## Estado actual
 
-Fase 0 — Fundamentos.
+Fase 1 — Autenticación completada.
 
-## Completado
+## Arquitectura
 
-- Repositorio GitHub creado.
-- Proyecto Supabase creado.
-- React + TypeScript + Vite instalado.
-- ESLint configurado.
-- Dependencias base instaladas.
-- Estructura modular definida.
-- Vault de Obsidian creado dentro de `docs/`.
-- Arquitectura inicial documentada.
-- ADR iniciales definidos.
-- Tokens visuales iniciales creados.
+Frontend:
 
-## En curso
+- React
+- TypeScript
+- Vite
+- React Router
+- TanStack Query
+- React Hook Form
+- Zod
 
-- Modelo de datos.
-- Arquitectura Supabase.
-- Seguridad mediante RLS.
-- Design System.
-- Estrategia de pruebas.
+Backend:
+
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Row Level Security
+
+Documentación:
+
+- Obsidian
+- MOCs
+- ADR
+- Bugs
+- Pruebas
+- Releases
+
+## Diseño
+
+FoodAndSalud es Mobile First.
+
+La aplicación está diseñada principalmente para utilizarse desde teléfono.
+
+En escritorio el contenido permanecerá centrado y no se intentará llenar
+innecesariamente todo el ancho disponible.
+
+## Base de datos
+
+Tablas:
+
+- profiles
+- foods
+- food_entries
+- food_entry_items
+- bathroom_entries
+
+Vista:
+
+- timeline_events
+
+## Autenticación completada
+
+- registro mediante email;
+- contraseña;
+- confirmación de correo;
+- login;
+- persistencia de sesión;
+- rutas protegidas;
+- logout;
+- recuperación de contraseña;
+- creación automática de profile.
+
+## Prueba End-to-End
+
+Se realizó una prueba real utilizando Supabase remoto.
+
+Resultado:
+
+Aprobada.
+
+Se confirmó:
+
+- auth.users;
+- correo recibido;
+- correo confirmado;
+- sesión creada;
+- Home accesible;
+- public.profiles creado mediante trigger.
 
 ## Próximo hito
 
-Definir y documentar el esquema PostgreSQL completo antes de construir
-las primeras pantallas funcionales.
+Construcción de las funcionalidades principales:
+
+1. navegación móvil;
+2. acción Registrar;
+3. registro de alimentos;
+4. registro de baño;
+5. timeline diario.

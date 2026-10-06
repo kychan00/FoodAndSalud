@@ -9,6 +9,7 @@
 }
 
 html {
+  min-width: 320px;
   background: var(--surface-page);
 }
 
@@ -27,4 +28,23 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-loading {
+  display: grid;
+  min-height: 100dvh;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  background: var(--surface-page);
+  color: var(--text-secondary);
 }

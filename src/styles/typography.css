@@ -1,6 +1,27 @@
-/*
- * FoodAndSalud Typography
- *
- * Los estilos tipográficos definitivos se definirán durante
- * la Fase 1 del Design System.
- */
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Segoe UI",
+    sans-serif;
+
+  font-synthesis: none;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+strong {
+  color: var(--text-primary);
+}

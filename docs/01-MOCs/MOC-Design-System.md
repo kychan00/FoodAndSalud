@@ -13,9 +13,10 @@ Mantener una interfaz consistente, legible, accesible y reutilizable.
 
 `src/styles/tokens.css`
 
-## Documento principal
+## Documentos principales
 
 - [[Design-Tokens]]
+- [[Mobile-First]]
 
 ## Categorías
 

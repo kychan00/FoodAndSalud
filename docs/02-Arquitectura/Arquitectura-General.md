@@ -52,7 +52,7 @@ Supabase proporciona:
 
 - PostgreSQL
 - Auth
-- Google OAuth
+- Email/password authentication
 - API
 - Row Level Security
 - funciones SQL
@@ -178,10 +178,10 @@ RLS
 Usuario
    │
    ▼
-Continuar con Google
+Registro / Login
    │
    ▼
-Google OAuth
+Email + contraseña
    │
    ▼
 Supabase Auth
