@@ -2,15 +2,15 @@ import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Card } from "../../../components/ui/Card";
-import { useAuth } from "../../auth/useAuth";
-import { TimelineList } from "../../timeline/components/TimelineList";
-import { useMonthTimeline } from "../../timeline/useMonthTimeline";
 import {
   formatMonthTitle,
   getDateKey,
   isSameLocalDay,
   isToday,
 } from "../../../utils/date";
+import { useAuth } from "../../auth/useAuth";
+import { TimelineList } from "../../timeline/components/TimelineList";
+import { useMonthTimeline } from "../../timeline/useMonthTimeline";
 
 import "./CalendarPage.css";
 
@@ -62,6 +62,7 @@ export function CalendarPage() {
       {
         food: number;
         bathroom: number;
+        medicine: number;
       }
     >();
 
@@ -75,6 +76,7 @@ export function CalendarPage() {
       const current = result.get(key) ?? {
         food: 0,
         bathroom: 0,
+        medicine: 0,
       };
 
       if (event.event_type === "food") {
@@ -83,6 +85,10 @@ export function CalendarPage() {
 
       if (event.event_type === "bathroom") {
         current.bathroom += 1;
+      }
+
+      if (event.event_type === "medicine") {
+        current.medicine += 1;
       }
 
       result.set(key, current);
@@ -109,6 +115,17 @@ export function CalendarPage() {
 
     setMonth(today);
     setSelectedDate(today);
+  };
+
+  const selectDate = (date: Date) => {
+    setSelectedDate(date);
+
+    if (
+      date.getMonth() !== month.getMonth() ||
+      date.getFullYear() !== month.getFullYear()
+    ) {
+      setMonth(new Date(date.getFullYear(), date.getMonth(), 1));
+    }
   };
 
   return (
@@ -159,7 +176,9 @@ export function CalendarPage() {
 
               const counts = eventsByDay.get(key);
 
-              const outside = date.getMonth() !== month.getMonth();
+              const outside =
+                date.getMonth() !== month.getMonth() ||
+                date.getFullYear() !== month.getFullYear();
 
               return (
                 <button
@@ -169,7 +188,7 @@ export function CalendarPage() {
                   data-selected={isSameLocalDay(date, selectedDate)}
                   data-today={isToday(date)}
                   data-outside={outside}
-                  onClick={() => setSelectedDate(date)}
+                  onClick={() => selectDate(date)}
                 >
                   <span>{date.getDate()}</span>
 
@@ -180,6 +199,10 @@ export function CalendarPage() {
 
                     {counts?.bathroom ? (
                       <i className="calendar-dot calendar-dot--bathroom" />
+                    ) : null}
+
+                    {counts?.medicine ? (
+                      <i className="calendar-dot calendar-dot--medicine" />
                     ) : null}
                   </span>
                 </button>
@@ -198,7 +221,10 @@ export function CalendarPage() {
               }).format(selectedDate)}
             </h2>
 
-            <span>{selectedEvents.length} registros</span>
+            <span>
+              {selectedEvents.length}{" "}
+              {selectedEvents.length === 1 ? "registro" : "registros"}
+            </span>
           </div>
 
           {isLoading ? <Card className="calendar-empty">Cargando…</Card> : null}

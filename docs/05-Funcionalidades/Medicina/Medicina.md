@@ -1,6 +1,6 @@
 ---
 tipo: funcionalidad
-estado: planeada
+estado: desplegado
 fecha: 2026-10-06
 ---
 
@@ -8,37 +8,60 @@ fecha: 2026-10-06
 
 ## Objetivo
 
-Permitir registrar medicamentos, suplementos y remedios utilizados.
+Registrar medicamentos, suplementos y remedios utilizados por el usuario.
 
-## Estado
+## Datos
 
-Planeado.
-
-La acción ya existe visualmente en Hoy.
-
-Todavía no persiste información.
-
-## Datos futuros
-
-Se evaluará registrar:
+Cada evento puede contener:
 
 - nombre;
+- fecha y hora;
 - dosis;
 - unidad;
-- hora;
 - motivo;
 - notas.
 
-## Integración futura
+## Ejemplos
 
-Los eventos de medicina deberán poder aparecer en:
+Omeprazol
+20 mg
 
-- Hoy;
-- Calendario;
-- Timeline;
-- Patrones.
+Probiótico
+1 cápsula
 
-## Regla
+Paracetamol
+500 mg
 
-No implementar persistencia hasta diseñar su modelo de datos y migración
-correspondiente.
+## Catálogo
+
+El nombre no se duplica como una entidad nueva en cada registro.
+
+FoodAndSalud reutiliza:
+
+`medicine_id`
+
+## Timeline
+
+Los registros aparecen junto a:
+
+- comidas;
+- Bristol.
+
+## Calendario
+
+Los días con Medicina tendrán un marcador propio.
+
+## Patrones
+
+Medicina será una variable importante al estudiar posibles asociaciones.
+
+FoodAndSalud no deberá asumir que un cambio digestivo fue causado por un
+alimento si también existió un medicamento cercano temporalmente.
+
+## Producción
+
+El modelo de Medicina está desplegado en Supabase remoto mediante:
+
+`20261006190000_add_medicine_tracking.sql`
+
+La validación funcional End-to-End se realiza después del deploy.

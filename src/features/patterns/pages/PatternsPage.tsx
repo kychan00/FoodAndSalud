@@ -1,4 +1,10 @@
-import { Activity, ChartNoAxesCombined, Salad, Sparkles } from "lucide-react";
+import {
+  Activity,
+  ChartNoAxesCombined,
+  Pill,
+  Salad,
+  Sparkles,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Card } from "../../../components/ui/Card";
@@ -73,6 +79,16 @@ export function PatternsPage() {
               </Card>
 
               <Card className="pattern-metric">
+                <span className="pattern-metric__icon pattern-metric__icon--medicine">
+                  <Pill size={21} />
+                </span>
+
+                <strong>{data.medicineEntries}</strong>
+
+                <span>Medicina</span>
+              </Card>
+
+              <Card className="pattern-metric">
                 <span className="pattern-metric__icon pattern-metric__icon--insight">
                   <Sparkles size={21} />
                 </span>
@@ -103,8 +119,8 @@ export function PatternsPage() {
 
                 <p>
                   {data.totalEvents < 10
-                    ? "Registre varios días de comidas y evacuaciones. FoodAndSalud necesita historial antes de sugerir asociaciones."
-                    : `En los últimos 30 días hay ${data.totalEvents} eventos registrados. La siguiente fase analizará qué alimentos aparecen antes de cambios Bristol, urgencia o dolor.`}
+                    ? "Registre varios días de comidas, Bristol y Medicina. FoodAndSalud necesita historial antes de sugerir asociaciones."
+                    : `En los últimos 30 días hay ${data.totalEvents} eventos. Analizaremos asociaciones temporales entre alimentos, Medicina y respuesta digestiva.`}
                 </p>
               </div>
             </Card>
@@ -118,8 +134,8 @@ export function PatternsPage() {
                 </strong>
 
                 <span>
-                  Este dato se utilizará más adelante para buscar asociaciones
-                  temporales con alimentos.
+                  Este dato se utilizará para buscar asociaciones temporales con
+                  alimentos y Medicina.
                 </span>
               </Card>
             ) : null}

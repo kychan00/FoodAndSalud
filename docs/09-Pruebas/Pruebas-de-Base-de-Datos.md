@@ -1,50 +1,64 @@
 ---
 tipo: pruebas
 estado: activo
+actualizado: 2026-10-06
 ---
 
 # Pruebas de Base de Datos
 
-## Objetivos
+## Objetivo
 
-Las pruebas de PostgreSQL deben verificar:
+Validar que el esquema PostgreSQL de FoodAndSalud puede reconstruirse desde
+cero únicamente mediante las migraciones versionadas.
 
-- estructura
-- constraints
-- índices críticos
-- RLS
-- aislamiento entre usuarios
-- funciones SQL
+## Flujo obligatorio
 
-## Herramienta
+Después de crear una nueva migración:
 
-pgTAP mediante Supabase CLI.
+    supabase start
+        ↓
+    supabase db reset
+        ↓
+    aplicar todas las migraciones
+        ↓
+    pgTAP
+        ↓
+    db lint
+        ↓
+    generar database.types.ts
+        ↓
+    lint frontend
+        ↓
+    build frontend
+        ↓
+    db push --dry-run
 
-## Ubicación
+## pgTAP
+
+Los archivos se encuentran en:
 
 `supabase/tests/database/`
 
-## Comando
+Actualmente:
 
-```bash
-npm run supabase:test
-```
+- 001_schema_test.sql
+- 002_medicine_schema_test.sql
 
-## Primera prueba
+## Regla
 
-`001_schema_test.sql`
+Un test de existencia de objetos no debe provocar una excepción antes de que
+pgTAP pueda informar el fallo.
 
-verifica:
+Evitar casts `::regclass` cuando el objeto podría no existir.
 
-- existencia de las cinco tablas principales;
-- RLS habilitado en cada tabla privada.
+## Producción
 
-## Siguiente fase
+Las migraciones no se aplican al Supabase remoto hasta que:
 
-Agregar pruebas explícitas de:
-
-- usuario A puede leer sus datos;
-- usuario B no puede leer datos de A;
-- usuario B no puede modificar datos de A;
-- usuario anónimo no puede acceder;
-- relaciones cruzadas entre usuarios fallan.
+- db reset local pase;
+- pgTAP pase;
+- db lint pase;
+- TypeScript compile;
+- ESLint pase;
+- build pase;
+- dry-run remoto muestre únicamente las migraciones esperadas.

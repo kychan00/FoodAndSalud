@@ -88,3 +88,58 @@ Persistencia pendiente.
 4. validar Patrones;
 5. diseñar modelo de Medicina;
 6. comenzar asociaciones alimento → respuesta digestiva.
+
+## Fase 2.2 — Medicina
+
+El tercer dominio de eventos ya está implementado localmente.
+
+Arquitectura:
+
+medicines
+↓
+medicine_entries
+↓
+timeline_events
+├── Hoy
+├── Calendario
+└── Patrones
+
+Validación de base realizada:
+
+- db reset correcto;
+- migración inicial aplicada;
+- migración Medicina aplicada;
+- 18 pruebas pgTAP aprobadas;
+- db lint sin errores;
+- tipos TypeScript generados.
+
+Pendiente:
+
+- dry-run remoto;
+- deploy de migración;
+- prueba End-to-End real de Medicina.
+
+## Deploy Fase 2.2
+
+La migración de Medicina fue aplicada al Supabase remoto.
+
+Producción contiene ahora:
+
+- profiles
+- foods
+- food_entries
+- food_entry_items
+- bathroom_entries
+- medicines
+- medicine_entries
+- timeline_events
+
+Pendiente antes de cerrar Fase 2.2:
+
+- E2E Comida;
+- E2E Bristol;
+- E2E Medicina;
+- Calendario;
+- Patrones;
+- persistencia;
+- prueba de fecha histórica.

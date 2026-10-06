@@ -2,9 +2,9 @@ import { Activity, ChevronRight, Pill, Salad } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { BottomSheet } from "../../../components/ui/BottomSheet";
-import { Button } from "../../../components/ui/Button";
 import { BathroomRegistrationForm } from "../../bathroom/components/BathroomRegistrationForm";
 import { FoodRegistrationForm } from "../../foods/components/FoodRegistrationForm";
+import { MedicineRegistrationForm } from "../../medicine/components/MedicineRegistrationForm";
 
 import "./RegisterSheet.css";
 
@@ -14,6 +14,7 @@ interface RegisterSheetProps {
   open: boolean;
   mode: RegisterMode;
   userId: string;
+  initialDate: Date;
   onModeChange: (mode: RegisterMode) => void;
   onClose: () => void;
 }
@@ -22,6 +23,7 @@ export function RegisterSheet({
   open,
   mode,
   userId,
+  initialDate,
   onModeChange,
   onClose,
 }: RegisterSheetProps) {
@@ -29,7 +31,6 @@ export function RegisterSheet({
 
   const handleClose = () => {
     onModeChange("choice");
-
     onClose();
   };
 
@@ -115,7 +116,7 @@ export function RegisterSheet({
             <span className="register-choice__body">
               <strong>Medicina</strong>
 
-              <span>Medicamentos y remedios</span>
+              <span>Medicamento, suplemento o remedio</span>
             </span>
 
             <ChevronRight size={21} />
@@ -126,6 +127,7 @@ export function RegisterSheet({
       {mode === "food" ? (
         <FoodRegistrationForm
           userId={userId}
+          initialDate={initialDate}
           onSaved={() => void handleSaved()}
           onCancel={() => onModeChange("choice")}
         />
@@ -134,37 +136,19 @@ export function RegisterSheet({
       {mode === "bathroom" ? (
         <BathroomRegistrationForm
           userId={userId}
+          initialDate={initialDate}
           onSaved={() => void handleSaved()}
           onCancel={() => onModeChange("choice")}
         />
       ) : null}
 
       {mode === "medicine" ? (
-        <div className="medicine-preview">
-          <span className="medicine-preview__icon">
-            <Pill size={30} />
-          </span>
-
-          <h3>Medicina</h3>
-
-          <p>
-            Este módulo quedará preparado para registrar medicamentos,
-            suplementos y remedios.
-          </p>
-
-          <p className="medicine-preview__note">
-            Primero terminaremos el núcleo Alimentos + Bristol + Calendario.
-          </p>
-
-          <Button
-            type="button"
-            variant="secondary"
-            fullWidth
-            onClick={() => onModeChange("choice")}
-          >
-            Volver
-          </Button>
-        </div>
+        <MedicineRegistrationForm
+          userId={userId}
+          initialDate={initialDate}
+          onSaved={() => void handleSaved()}
+          onCancel={() => onModeChange("choice")}
+        />
       ) : null}
     </BottomSheet>
   );

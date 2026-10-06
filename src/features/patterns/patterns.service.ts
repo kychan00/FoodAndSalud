@@ -4,6 +4,7 @@ export interface PatternSummary {
   totalEvents: number;
   foodEntries: number;
   bathroomEntries: number;
+  medicineEntries: number;
   averageBristol: number | null;
   bristolHighCount: number;
 }
@@ -25,6 +26,10 @@ export async function getPatternSummary(
     (event) => event.event_type === "bathroom",
   );
 
+  const medicineEntries = events.filter(
+    (event) => event.event_type === "medicine",
+  );
+
   const bristolValues = bathroomEntries
     .map((event) => Number(event.event_subtype?.replace("bristol_", "")))
     .filter((value) => Number.isFinite(value));
@@ -39,13 +44,10 @@ export async function getPatternSummary(
 
   return {
     totalEvents: events.length,
-
     foodEntries: foodEntries.length,
-
     bathroomEntries: bathroomEntries.length,
-
+    medicineEntries: medicineEntries.length,
     averageBristol,
-
     bristolHighCount,
   };
 }

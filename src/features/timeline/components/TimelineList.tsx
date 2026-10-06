@@ -1,4 +1,4 @@
-import { Activity, Salad } from "lucide-react";
+import { Activity, Pill, Salad } from "lucide-react";
 
 import { formatEventTime } from "../../../utils/date";
 import type { TimelineEvent } from "../timeline.service";
@@ -28,14 +28,44 @@ function getEventTitle(event: TimelineEvent) {
     return type ? `Baño · Bristol ${type}` : "Baño";
   }
 
+  if (event.event_type === "medicine") {
+    return event.event_subtype
+      ? `Medicina · ${event.event_subtype}`
+      : "Medicina";
+  }
+
   return "Registro";
+}
+
+function getEventClass(event: TimelineEvent) {
+  if (event.event_type === "food") {
+    return "food";
+  }
+
+  if (event.event_type === "bathroom") {
+    return "bathroom";
+  }
+
+  return "medicine";
+}
+
+function getEventIcon(event: TimelineEvent) {
+  if (event.event_type === "food") {
+    return <Salad size={20} />;
+  }
+
+  if (event.event_type === "bathroom") {
+    return <Activity size={20} />;
+  }
+
+  return <Pill size={20} />;
 }
 
 export function TimelineList({ events }: TimelineListProps) {
   return (
     <div className="timeline-list">
       {events.map((event) => {
-        const isFood = event.event_type === "food";
+        const eventClass = getEventClass(event);
 
         return (
           <article
@@ -43,13 +73,9 @@ export function TimelineList({ events }: TimelineListProps) {
             className="timeline-event"
           >
             <span
-              className={
-                isFood
-                  ? "timeline-event__icon timeline-event__icon--food"
-                  : "timeline-event__icon timeline-event__icon--bathroom"
-              }
+              className={`timeline-event__icon timeline-event__icon--${eventClass}`}
             >
-              {isFood ? <Salad size={20} /> : <Activity size={20} />}
+              {getEventIcon(event)}
             </span>
 
             <div className="timeline-event__body">

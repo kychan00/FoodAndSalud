@@ -10,6 +10,7 @@ import "./FoodRegistrationForm.css";
 
 interface FoodRegistrationFormProps {
   userId: string;
+  initialDate: Date;
   onSaved: () => void;
   onCancel: () => void;
 }
@@ -46,12 +47,13 @@ function normalizeKey(value: string) {
 
 export function FoodRegistrationForm({
   userId,
+  initialDate,
   onSaved,
   onCancel,
 }: FoodRegistrationFormProps) {
   const [mealType, setMealType] = useState<MealType>("lunch");
 
-  const [eatenAt, setEatenAt] = useState(toLocalDateTimeInput());
+  const [eatenAt, setEatenAt] = useState(toLocalDateTimeInput(initialDate));
 
   const [foodInput, setFoodInput] = useState("");
 
@@ -99,19 +101,21 @@ export function FoodRegistrationForm({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    let namesToSave = [...foodNames];
+
     if (foodInput.trim()) {
       const value = foodInput.trim().replace(/\s+/g, " ");
 
-      const exists = foodNames.some(
+      const exists = namesToSave.some(
         (food) => normalizeKey(food) === normalizeKey(value),
       );
 
       if (!exists) {
-        foodNames.push(value);
+        namesToSave = [...namesToSave, value];
       }
     }
 
-    if (foodNames.length === 0) {
+    if (namesToSave.length === 0) {
       setError("Agregue al menos un alimento.");
       return;
     }
@@ -125,7 +129,7 @@ export function FoodRegistrationForm({
         eatenAt: localDateTimeToIso(eatenAt),
         mealType,
         notes,
-        foodNames,
+        foodNames: namesToSave,
       });
 
       onSaved();

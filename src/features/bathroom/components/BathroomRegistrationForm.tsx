@@ -9,6 +9,7 @@ import "./BathroomRegistrationForm.css";
 
 interface BathroomRegistrationFormProps {
   userId: string;
+  initialDate: Date;
   onSaved: () => void;
   onCancel: () => void;
 }
@@ -48,10 +49,13 @@ const levelOptions = [0, 1, 2, 3, 4];
 
 export function BathroomRegistrationForm({
   userId,
+  initialDate,
   onSaved,
   onCancel,
 }: BathroomRegistrationFormProps) {
-  const [occurredAt, setOccurredAt] = useState(toLocalDateTimeInput());
+  const [occurredAt, setOccurredAt] = useState(
+    toLocalDateTimeInput(initialDate),
+  );
 
   const [bristolType, setBristolType] = useState(4);
 

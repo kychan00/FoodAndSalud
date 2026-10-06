@@ -42,7 +42,7 @@
 
 .patterns-metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-2);
 }
 
@@ -72,9 +72,14 @@
   color: var(--color-bathroom);
 }
 
-.pattern-metric__icon--insight {
+.pattern-metric__icon--medicine {
   background: var(--color-insight-soft);
   color: var(--color-insight);
+}
+
+.pattern-metric__icon--insight {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .pattern-metric strong {
@@ -145,10 +150,4 @@
   padding: var(--space-6);
   color: var(--text-secondary);
   text-align: center;
-}
-
-@media (max-width: 360px) {
-  .patterns-metrics {
-    grid-template-columns: 1fr;
-  }
 }

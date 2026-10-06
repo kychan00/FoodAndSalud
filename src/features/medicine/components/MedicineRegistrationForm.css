@@ -1,0 +1,48 @@
+.medicine-form__hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--color-insight-soft);
+}
+
+.medicine-form__hero > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: white;
+  color: var(--color-insight);
+}
+
+.medicine-form__hero div {
+  display: grid;
+  gap: 4px;
+}
+
+.medicine-form__hero strong {
+  font-size: 0.95rem;
+}
+
+.medicine-form__hero p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}
+
+.medicine-dose-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(115px, 0.65fr);
+  gap: var(--space-2);
+}
+
+@media (max-width: 340px) {
+  .medicine-dose-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -195,6 +195,86 @@ export type Database = {
         };
         Relationships: [];
       };
+      medicine_entries: {
+        Row: {
+          created_at: string;
+          dose: number | null;
+          id: string;
+          medicine_id: string;
+          notes: string | null;
+          reason: string | null;
+          taken_at: string;
+          unit: string | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          dose?: number | null;
+          id?: string;
+          medicine_id: string;
+          notes?: string | null;
+          reason?: string | null;
+          taken_at: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          dose?: number | null;
+          id?: string;
+          medicine_id?: string;
+          notes?: string | null;
+          reason?: string | null;
+          taken_at?: string;
+          unit?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "medicine_entries_medicine_user_fk";
+            columns: ["medicine_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "medicines";
+            referencedColumns: ["id", "user_id"];
+          },
+        ];
+      };
+      medicines: {
+        Row: {
+          archived_at: string | null;
+          created_at: string;
+          default_unit: string | null;
+          id: string;
+          is_favorite: boolean;
+          name: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          archived_at?: string | null;
+          created_at?: string;
+          default_unit?: string | null;
+          id?: string;
+          is_favorite?: boolean;
+          name: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          archived_at?: string | null;
+          created_at?: string;
+          default_unit?: string | null;
+          id?: string;
+          is_favorite?: boolean;
+          name?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;

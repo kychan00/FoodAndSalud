@@ -39,6 +39,7 @@
   background: rgb(255 255 255 / 70%);
   color: var(--color-primary);
   font-weight: 800;
+  cursor: pointer;
 }
 
 .calendar-card {
@@ -68,6 +69,7 @@
   border-radius: 50%;
   background: var(--surface-muted);
   color: var(--text-secondary);
+  cursor: pointer;
 }
 
 .calendar-weekdays,
@@ -136,6 +138,10 @@
 
 .calendar-dot--bathroom {
   background: var(--color-bathroom);
+}
+
+.calendar-dot--medicine {
+  background: var(--color-insight);
 }
 
 .calendar-selected {

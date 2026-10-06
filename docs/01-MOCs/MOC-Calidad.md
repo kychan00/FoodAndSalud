@@ -38,9 +38,14 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 
 ## Bugs documentados
 
+- [[BUG-0003-Migracion-Nueva-No-Aplicada-Local]]
 - [[BUG-0002-React-SetState-En-Effect]]
 - [[BUG-0001-Docker-Supabase-Read-Only-Memory]]
 
 ## Pruebas End-to-End
 
 - [[Prueba-Auth-End-to-End]]
+
+## Automatización de desarrollo
+
+- [[BUG-0004-Parche-Dependiente-de-Formato]]

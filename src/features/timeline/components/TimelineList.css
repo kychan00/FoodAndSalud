@@ -41,6 +41,11 @@
   color: var(--color-bathroom);
 }
 
+.timeline-event__icon--medicine {
+  background: var(--color-insight-soft);
+  color: var(--color-insight);
+}
+
 .timeline-event__body {
   display: grid;
   gap: 4px;

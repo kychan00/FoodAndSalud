@@ -141,5 +141,17 @@ estado: activo
 - [x] Marcadores de eventos por día
 - [x] Tab Patrones
 - [x] Resumen inicial de 30 días
-- [ ] Persistencia de Medicina
+- [x] Persistencia de Medicina
 - [ ] Análisis alimento → síntomas
+
+## Fase 2.2 — Medicina
+
+- [x] Diseñar modelo medicines
+- [x] Diseñar medicine_entries
+- [x] RLS
+- [x] Integración con timeline
+- [x] Integración visual con Calendario
+- [x] Integración inicial con Patrones
+- [x] Formulario mobile-first
+- [x] Aplicar migración remota
+- [ ] Probar registro real End-to-End

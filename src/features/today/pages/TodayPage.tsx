@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { DateStripCalendar } from "../../../components/date/DateStripCalendar";
 import { Card } from "../../../components/ui/Card";
+import { formatFullDate, formatLongDay, isToday } from "../../../utils/date";
 import { useAuth } from "../../auth/useAuth";
 import {
   RegisterSheet,
@@ -11,7 +12,6 @@ import {
 } from "../../entries/components/RegisterSheet";
 import { TimelineList } from "../../timeline/components/TimelineList";
 import { useDayTimeline } from "../../timeline/useDayTimeline";
-import { formatFullDate, formatLongDay, isToday } from "../../../utils/date";
 
 import "./TodayPage.css";
 
@@ -43,6 +43,10 @@ export function TodayPage() {
 
   const bathroomCount = events.filter(
     (event) => event.event_type === "bathroom",
+  ).length;
+
+  const medicineCount = events.filter(
+    (event) => event.event_type === "medicine",
   ).length;
 
   const openRegister = (mode: RegisterMode) => {
@@ -107,11 +111,11 @@ export function TodayPage() {
 
           <p className="today-focus__description">
             {events.length === 0
-              ? "Registre sus comidas y evacuaciones para comenzar a encontrar patrones."
+              ? "Registre comidas, Bristol y Medicina para comenzar a encontrar patrones."
               : `${foodCount} ${
                   foodCount === 1 ? "comida" : "comidas"
-                } · ${bathroomCount} ${
-                  bathroomCount === 1 ? "Bristol" : "Bristol"
+                } · ${bathroomCount} Bristol · ${medicineCount} ${
+                  medicineCount === 1 ? "medicina" : "medicinas"
                 }`}
           </p>
         </section>
@@ -186,7 +190,7 @@ export function TodayPage() {
               <strong>Todavía no hay registros</strong>
 
               <span>
-                Sus comidas y registros Bristol aparecerán aquí en orden
+                Sus comidas, Bristol y Medicina aparecerán aquí en orden
                 cronológico.
               </span>
             </Card>
@@ -203,6 +207,7 @@ export function TodayPage() {
           open={registerOpen}
           mode={registerMode}
           userId={user.id}
+          initialDate={selectedDate}
           onModeChange={setRegisterMode}
           onClose={() => setRegisterOpen(false)}
         />
