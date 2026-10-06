@@ -800,3 +800,30 @@ inicializan directamente.
 Véase:
 
 [[BUG-0017-Estado-de-Formulario-Derivado-en-useEffect]]
+
+## Fase 4.3 — Comidas recientes v1
+
+La captura de comida puede reutilizar combinaciones históricas completas.
+
+Las plantillas se derivan de:
+
+- food_entries;
+- food_entry_items;
+- foods.
+
+Se recuperan:
+
+- tipo de comida;
+- alimentos.
+
+No se recuperan:
+
+- fecha;
+- hora;
+- notas.
+
+Las combinaciones repetidas se deduplican y se conserva la versión más reciente.
+
+No se añadió una tabla de plantillas.
+
+Patrones v1 permanece congelado.

@@ -1,0 +1,91 @@
+.recent-meals {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.recent-meals__heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.recent-meals__heading > div {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recent-meals__heading svg {
+  color: var(--color-food);
+}
+
+.recent-meals__heading strong {
+  font-size: 0.76rem;
+}
+
+.recent-meals__heading > span {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+}
+
+.recent-meals__scroller {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  margin-inline: calc(var(--space-1) * -1);
+  padding: var(--space-1);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+
+.recent-meals__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-meal-card {
+  display: grid;
+  flex: 0 0 195px;
+  gap: 4px;
+  min-height: 92px;
+  align-content: start;
+  padding: var(--space-3);
+  border: 1px solid rgb(217 149 112 / 22%);
+  border-radius: var(--radius-lg);
+  background: var(--color-food-soft);
+  color: var(--text-primary);
+  text-align: left;
+  box-shadow: 0 4px 14px rgb(80 67 72 / 5%);
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.recent-meal-card__type {
+  color: var(--color-food);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.recent-meal-card strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.74rem;
+  line-height: 1.38;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.recent-meal-card small {
+  margin-top: auto;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 750;
+}
+
+.recent-meal-card:active {
+  transform: scale(0.98);
+}

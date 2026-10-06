@@ -140,3 +140,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## React
 
 - [[BUG-0017-Estado-de-Formulario-Derivado-en-useEffect]]
+
+## Comidas recientes
+
+- [[ADR-0035-Plantillas-Derivadas-de-Comidas-Historicas]]

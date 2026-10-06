@@ -62,3 +62,7 @@ de detalle para poder guardar rápidamente una comida.
 ## Corrección de registros
 
 - [[Editar-y-Eliminar-Registros-v1]]
+
+## Comidas recientes
+
+- [[Comidas-Recientes-v1]]

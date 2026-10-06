@@ -10,9 +10,17 @@ import { normalizeSuggestionText } from "../../entries/dailySuggestions";
 
 import { localDateTimeToIso, toLocalDateTimeInput } from "../../../utils/date";
 
-import { createFoodEntry, type MealType } from "../food.service";
+import {
+  createFoodEntry,
+  normalizeUniqueFoodNames,
+  type MealType,
+} from "../food.service";
 
 import { useFoodSuggestions } from "../useFoodSuggestions";
+
+import { useRecentMeals } from "../useRecentMeals";
+
+import { RecentMealTemplates } from "./RecentMealTemplates";
 
 import "../../entries/components/EntryForm.css";
 import "./FoodRegistrationForm.css";
@@ -89,6 +97,8 @@ export function FoodRegistrationForm({
 
   const { data: suggestions = [] } = useFoodSuggestions(userId);
 
+  const { data: recentMeals = [] } = useRecentMeals(userId);
+
   const visibleSuggestions = useMemo(() => {
     const selected = new Set(foodNames.map(normalizeKey));
 
@@ -110,21 +120,15 @@ export function FoodRegistrationForm({
   }, [foodInput, foodNames, suggestions]);
 
   const addFoodValue = (rawValue: string) => {
-    const value = rawValue.trim().replace(/\s+/g, " ");
+    const next = normalizeUniqueFoodNames([...foodNames, rawValue]);
 
-    if (!value) {
-      return;
-    }
-
-    const key = normalizeKey(value);
-
-    if (foodNames.some((food) => normalizeKey(food) === key)) {
+    if (next.length === foodNames.length) {
       setFoodInput("");
 
       return;
     }
 
-    setFoodNames((current) => [...current, value]);
+    setFoodNames(next);
 
     setFoodInput("");
 
@@ -155,15 +159,7 @@ export function FoodRegistrationForm({
     let namesToSave = [...foodNames];
 
     if (foodInput.trim()) {
-      const value = foodInput.trim().replace(/\s+/g, " ");
-
-      const exists = namesToSave.some(
-        (food) => normalizeKey(food) === normalizeKey(value),
-      );
-
-      if (!exists) {
-        namesToSave = [...namesToSave, value];
-      }
+      namesToSave = normalizeUniqueFoodNames([...namesToSave, foodInput]);
     }
 
     if (namesToSave.length === 0) {
@@ -201,6 +197,21 @@ export function FoodRegistrationForm({
 
   return (
     <form className="entry-form" onSubmit={(event) => void handleSubmit(event)}>
+      {foodNames.length === 0 && !foodInput.trim() ? (
+        <RecentMealTemplates
+          items={recentMeals}
+          onSelect={(item) => {
+            setMealType(item.mealType);
+
+            setFoodNames(normalizeUniqueFoodNames(item.foodNames));
+
+            setFoodInput("");
+
+            setError(null);
+          }}
+        />
+      ) : null}
+
       <section className="entry-form__section">
         <p className="entry-form__label">¿Qué tipo de comida fue?</p>
 
@@ -244,7 +255,7 @@ export function FoodRegistrationForm({
         </p>
 
         <QuickSuggestionChips
-          label="Atajos"
+          label="Alimentos"
           hint="Recientes y favoritos"
           items={visibleSuggestions.map((suggestion) => ({
             id: suggestion.id,

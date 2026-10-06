@@ -621,3 +621,29 @@ estado: activo
 - [x] Validación visual eliminación
 - [x] Validación móvil
 - [x] BUG-0017 — eliminar estado derivado mediante useEffect
+
+## Fase 4.3 — Comidas recientes v1
+
+- [x] Cerrar Fase 4.2
+- [x] Derivar plantillas desde historial
+- [x] Ordenar por eaten_at
+- [x] Recuperar tipo de comida
+- [x] Recuperar alimentos
+- [x] No copiar fecha histórica
+- [x] No copiar hora histórica
+- [x] No copiar notas históricas
+- [x] Deduplicar combinaciones repetidas
+- [x] Ignorar orden al deduplicar
+- [x] Conservar orden de la comida más reciente
+- [x] Diferenciar desayuno/comida/cena/colación
+- [x] Máximo 6 plantillas
+- [x] Scroll horizontal móvil
+- [x] Ocultar plantillas al comenzar captura manual
+- [x] Mantener atajos individuales
+- [x] Test de motor
+- [x] ADR-0035
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [x] Validación visual plantilla
+- [x] Validación de fecha/hora
+- [x] Validación móvil
