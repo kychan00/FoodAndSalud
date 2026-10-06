@@ -83,3 +83,36 @@
   font-size: 0.76rem;
   white-space: nowrap;
 }
+
+.timeline-event__side {
+  display: grid;
+  gap: 7px;
+  justify-items: end;
+  align-self: stretch;
+}
+
+.timeline-event__action {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.timeline-event__action:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.timeline-event__action:active {
+  transform: scale(0.94);
+}
+
+.timeline-event__action:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

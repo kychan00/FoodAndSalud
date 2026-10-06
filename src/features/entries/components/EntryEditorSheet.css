@@ -1,0 +1,129 @@
+.entry-editor-actions {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.entry-editor-summary {
+  display: grid;
+  gap: 5px;
+  padding-bottom: var(--space-2);
+}
+
+.entry-editor-summary strong {
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  text-transform: capitalize;
+}
+
+.entry-editor-summary span {
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.entry-editor-action {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  width: 100%;
+  align-items: center;
+  min-height: 64px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.entry-editor-action > svg {
+  color: var(--color-primary);
+}
+
+.entry-editor-action > span {
+  display: grid;
+  gap: 2px;
+}
+
+.entry-editor-action strong {
+  font-size: 0.83rem;
+}
+
+.entry-editor-action small {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.entry-editor-action--danger > svg,
+.entry-editor-action--danger strong {
+  color: var(--color-danger);
+}
+
+.entry-editor-state {
+  padding: var(--space-6) 0;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.entry-editor-state--error {
+  color: var(--color-danger);
+}
+
+.entry-editor-delete {
+  display: grid;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.entry-editor-delete__icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  margin: 0 auto;
+  border-radius: 18px;
+  background: #f8e9e9;
+  color: var(--color-danger);
+}
+
+.entry-editor-delete h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.entry-editor-delete p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.entry-editor-delete__confirm,
+.entry-editor-delete__cancel {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--radius-lg);
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.entry-editor-delete__confirm {
+  border: 0;
+  background: var(--color-danger);
+  color: white;
+}
+
+.entry-editor-delete__cancel {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+}
+
+.entry-editor-delete__confirm:disabled,
+.entry-editor-delete__cancel:disabled {
+  cursor: default;
+  opacity: 0.6;
+}

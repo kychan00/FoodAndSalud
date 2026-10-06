@@ -31,3 +31,11 @@ estado: activo
 ## Captura rápida
 
 - [[Captura-Rapida-v1]]
+
+## Corrección de registros
+
+- [[Editar-y-Eliminar-Registros-v1]]
+
+## Bugs de edición
+
+- [[BUG-0017-Estado-de-Formulario-Derivado-en-useEffect]]

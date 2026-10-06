@@ -19,9 +19,13 @@ import {
   type RegisterMode,
 } from "../../entries/components/RegisterSheet";
 
+import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
+
 import { TimelineList } from "../../timeline/components/TimelineList";
 
 import { useMonthTimeline } from "../../timeline/useMonthTimeline";
+
+import type { TimelineEvent } from "../../timeline/timeline.types";
 
 import "./CalendarPage.css";
 
@@ -66,6 +70,9 @@ export function CalendarPage() {
   const [registerOpen, setRegisterOpen] = useState(false);
 
   const [registerMode, setRegisterMode] = useState<RegisterMode>("choice");
+
+  const [selectedTimelineEvent, setSelectedTimelineEvent] =
+    useState<TimelineEvent | null>(null);
 
   const {
     data: events = [],
@@ -331,10 +338,22 @@ export function CalendarPage() {
           ) : null}
 
           {!isLoading && !isError && selectedEvents.length > 0 ? (
-            <TimelineList events={selectedEvents} />
+            <TimelineList
+              events={selectedEvents}
+              onEventAction={setSelectedTimelineEvent}
+            />
           ) : null}
         </section>
       </div>
+
+      {user ? (
+        <EntryEditorSheet
+          open={selectedTimelineEvent !== null}
+          event={selectedTimelineEvent}
+          userId={user.id}
+          onClose={() => setSelectedTimelineEvent(null)}
+        />
+      ) : null}
 
       {user ? (
         <RegisterSheet

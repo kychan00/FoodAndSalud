@@ -15,8 +15,10 @@ import {
   RegisterSheet,
   type RegisterMode,
 } from "../../entries/components/RegisterSheet";
+import { EntryEditorSheet } from "../../entries/components/EntryEditorSheet";
 import { TimelineList } from "../../timeline/components/TimelineList";
 import { useDayTimeline } from "../../timeline/useDayTimeline";
+import type { TimelineEvent } from "../../timeline/timeline.types";
 
 import "./TodayPage.css";
 
@@ -30,6 +32,9 @@ export function TodayPage() {
   const [registerMode, setRegisterMode] = useState<RegisterMode>("choice");
 
   const [registerOpen, setRegisterOpen] = useState(false);
+
+  const [selectedTimelineEvent, setSelectedTimelineEvent] =
+    useState<TimelineEvent | null>(null);
 
   const {
     data: events = [],
@@ -202,10 +207,22 @@ export function TodayPage() {
           ) : null}
 
           {!isLoading && !isError && events.length > 0 ? (
-            <TimelineList events={events} />
+            <TimelineList
+              events={events}
+              onEventAction={setSelectedTimelineEvent}
+            />
           ) : null}
         </section>
       </div>
+
+      {user ? (
+        <EntryEditorSheet
+          open={selectedTimelineEvent !== null}
+          event={selectedTimelineEvent}
+          userId={user.id}
+          onClose={() => setSelectedTimelineEvent(null)}
+        />
+      ) : null}
 
       {user ? (
         <RegisterSheet

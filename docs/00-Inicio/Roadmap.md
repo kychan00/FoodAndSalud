@@ -575,3 +575,49 @@ estado: activo
 - [x] Validación visual alimentos
 - [x] Validación visual Medicina
 - [x] Validación visual móvil
+
+## Fase 4.2 — Corregir registros v1
+
+- [x] Cerrar Fase 4.1
+- [x] Menú de acciones en Timeline
+- [x] Disponible desde Hoy
+- [x] Disponible desde Calendario
+- [x] Editar comida
+- [x] Editar fecha/hora de comida
+- [x] Editar tipo de comida
+- [x] Editar alimentos
+- [x] Editar notas de comida
+- [x] Mantener atajos al editar comida
+- [x] Editar Bristol
+- [x] Editar fecha/hora Bristol
+- [x] Editar tipo Bristol
+- [x] Editar urgencia
+- [x] Editar dolor
+- [x] Editar notas Bristol
+- [x] Editar Medicina
+- [x] Editar medicamento
+- [x] Editar fecha/hora Medicina
+- [x] Editar dosis
+- [x] Editar unidad
+- [x] Editar motivo
+- [x] Editar notas Medicina
+- [x] Mantener atajos al editar Medicina
+- [x] Eliminar comida
+- [x] Eliminar Bristol
+- [x] Eliminar Medicina
+- [x] Confirmación antes de eliminar
+- [x] No eliminar catálogos reutilizables
+- [x] Invalidar timeline
+- [x] Invalidar patterns
+- [x] Invalidar daily-suggestions
+- [x] Test de normalización
+- [x] Test de copy del editor
+- [x] ADR-0034
+- [x] Documentación Obsidian
+- [x] Regresión Patrones v1
+- [x] Validación visual comida
+- [x] Validación visual Bristol
+- [x] Validación visual Medicina
+- [x] Validación visual eliminación
+- [x] Validación móvil
+- [x] BUG-0017 — eliminar estado derivado mediante useEffect

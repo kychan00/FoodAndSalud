@@ -58,3 +58,7 @@ de detalle para poder guardar rápidamente una comida.
 ## Captura rápida
 
 - [[Captura-Rapida-v1]]
+
+## Corrección de registros
+
+- [[Editar-y-Eliminar-Registros-v1]]

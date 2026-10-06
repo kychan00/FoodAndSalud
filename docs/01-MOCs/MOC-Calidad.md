@@ -132,3 +132,11 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Captura rápida
 
 - [[ADR-0033-Atajos-Basados-en-Historial-Personal]]
+
+## Corrección de registros
+
+- [[ADR-0034-Registros-Historicos-vs-Catalogos-Reutilizables]]
+
+## React
+
+- [[BUG-0017-Estado-de-Formulario-Derivado-en-useEffect]]

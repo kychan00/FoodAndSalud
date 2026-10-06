@@ -179,3 +179,7 @@ repetido ocho veces.
 ## Captura rápida
 
 - [[Prueba-Captura-Rapida-v1]]
+
+## Corrección de registros
+
+- [[Prueba-Editar-y-Eliminar-Registros-v1]]

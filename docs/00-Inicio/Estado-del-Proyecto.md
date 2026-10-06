@@ -720,3 +720,83 @@ No se requieren migraciones.
 ### Patrones
 
 Patrones v1 permanece congelado.
+
+## Fase 4.2 — Corregir registros v1
+
+El timeline permite abrir acciones sobre cada registro.
+
+Acciones:
+
+- Editar;
+- Eliminar.
+
+### Comida
+
+Puede corregirse:
+
+- hora;
+- tipo;
+- alimentos;
+- notas.
+
+### Bristol
+
+Puede corregirse:
+
+- hora;
+- tipo;
+- urgencia;
+- dolor;
+- notas.
+
+### Medicina
+
+Puede corregirse:
+
+- medicamento;
+- hora;
+- dosis;
+- unidad;
+- motivo;
+- notas.
+
+### Eliminación
+
+La eliminación requiere confirmación.
+
+Se elimina el evento histórico, no el alimento o medicamento reutilizable del
+catálogo.
+
+### Integridad
+
+La edición de items de comida usa rollback compensatorio del snapshot anterior
+si falla el reemplazo.
+
+### Patrones
+
+Editar o eliminar invalida `patterns`.
+
+Patrones v1 permanece metodológicamente congelado.
+
+### Recuperación React Fase 4.2
+
+La primera implementación de los editores utilizó `useEffect` para copiar datos
+de React Query a estado local.
+
+ESLint detectó:
+
+`react-hooks/set-state-in-effect`.
+
+Se corrigió mediante una separación explícita entre:
+
+- contenedor de consulta;
+- formulario con estado local.
+
+Los formularios se montan únicamente cuando existen datos y sus estados se
+inicializan directamente.
+
+`EntryEditorSheet` también dejó de depender de `useEffect`.
+
+Véase:
+
+[[BUG-0017-Estado-de-Formulario-Derivado-en-useEffect]]
