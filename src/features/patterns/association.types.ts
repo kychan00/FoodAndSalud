@@ -32,6 +32,18 @@ export interface MedicineObservation {
   id: string;
 
   occurredAt: string;
+
+  /*
+   * Opcionales para mantener compatibilidad con fixtures
+   * históricos y con el motor agregado.
+   */
+  medicineId?: string;
+
+  medicineName?: string;
+
+  dose?: number | null;
+
+  unit?: string | null;
 }
 
 export interface FoodAssociation {

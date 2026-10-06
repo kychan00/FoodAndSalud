@@ -88,3 +88,9 @@ fecha: 2026-10-06
 - [[Factores-Concurrentes]]
 - [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]
 - [[Prueba-Factores-Concurrentes]]
+
+## Medicamentos específicos
+
+- [[Medicamentos-Especificos]]
+- [[ADR-0028-Identidad-de-Medicamento-en-Patrones]]
+- [[Prueba-Medicamentos-Especificos]]

@@ -490,3 +490,39 @@ en lugar de:
 `confusor causal`.
 
 El análisis continúa siendo descriptivo.
+
+## Fase 3.10 — Medicamentos específicos
+
+El detalle de alimento ya no trata todos los registros de Medicina como una sola
+categoría.
+
+Cada evento real puede conservar:
+
+- medicine_id;
+- nombre;
+- dosis;
+- unidad;
+- hora relativa.
+
+Para cada medicamento se compara:
+
+alimento + medicamento
+
+vs
+
+el mismo alimento sin ese medicamento.
+
+La interfaz muestra:
+
+- porcentaje de coexistencia;
+- muestras;
+- tasas;
+- diferencia;
+- número de tomas;
+- mediana temporal;
+- dosis observadas.
+
+No se realizó ninguna migración de base de datos porque la información necesaria
+ya estaba disponible en `medicines` y `medicine_entries`.
+
+El análisis sigue siendo descriptivo y no causal.

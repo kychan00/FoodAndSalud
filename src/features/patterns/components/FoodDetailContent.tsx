@@ -18,6 +18,8 @@ import { FoodCombinationAnalysis } from "./FoodCombinationAnalysis";
 
 import { FoodConcurrentFactors } from "./FoodConcurrentFactors";
 
+import { FoodSpecificMedicines } from "./FoodSpecificMedicines";
+
 import { FoodEffectMetrics } from "./FoodEffectMetrics";
 
 import { FoodTemporalPersistence } from "./FoodTemporalPersistence";
@@ -219,6 +221,8 @@ export function FoodDetailContent({
 
       <FoodConcurrentFactors report={data} />
 
+      <FoodSpecificMedicines report={data} />
+
       <FoodCombinationAnalysis report={data} />
 
       <FoodHistoryChart
@@ -369,7 +373,15 @@ export function FoodDetailContent({
                 {item.medicineOverlap ? (
                   <div className="food-detail-history-item__medicine">
                     <Pill size={16} />
-                    Medicina presente dentro de la ventana efectiva
+                    {item.medicines.some((medicine) => medicine.medicineName)
+                      ? `Medicina: ${[
+                          ...new Set(
+                            item.medicines
+                              .map((medicine) => medicine.medicineName)
+                              .filter((name): name is string => Boolean(name)),
+                          ),
+                        ].join(", ")}`
+                      : "Medicina presente dentro de la ventana efectiva"}
                   </div>
                 ) : null}
               </Card>

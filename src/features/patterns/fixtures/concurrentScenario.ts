@@ -44,7 +44,15 @@ for (let day = 1; day <= 20; day += 1) {
       medicines.push({
         id: `medicine-${day}`,
 
+        medicineId: "omeprazole",
+
+        medicineName: "Omeprazol",
+
         occurredAt: iso(day, 9),
+
+        dose: 20,
+
+        unit: "mg",
       });
     }
 
@@ -92,13 +100,13 @@ export const concurrentMedicineScenario: PatternQaScenario = {
   title: "Café con Medicina discriminable",
 
   description:
-    "Café aparece diez veces. En seis exposiciones también se registra Medicina y las seis tienen respuesta marcada. En cuatro exposiciones sin Medicina la respuesta es normal. Arroz funciona como comparación externa normal.",
+    "Café aparece diez veces. En seis exposiciones también se registra Omeprazol 20 mg y las seis tienen respuesta marcada. En cuatro exposiciones sin Omeprazol la respuesta es normal. Arroz funciona como comparación externa normal.",
 
   bugFocus:
-    "Comprueba que Medicina deje de ser una simple advertencia y pueda compararse dentro de las propias exposiciones de Café.",
+    "Comprueba que el sistema pueda identificar qué medicamento concreto aparece junto al patrón.",
 
   expectedText:
-    "Café con Medicina debe mostrar 100% de respuestas marcadas y Café sin Medicina 0%, con una diferencia de +100 pp.",
+    "Café con Omeprazol debe mostrar 100% de respuestas marcadas y Café sin Omeprazol 0%, con diferencia de +100 pp.",
 
   expectedSignals: {
     coffee: "medium",

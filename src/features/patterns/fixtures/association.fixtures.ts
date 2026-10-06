@@ -81,6 +81,8 @@ function bathroom(
 function medicine(id: string, day: number, hour = 9): MedicineObservation {
   return {
     id,
+    medicineId: "medicine-qa",
+    medicineName: "Medicina QA",
     occurredAt: iso(day, hour),
   };
 }

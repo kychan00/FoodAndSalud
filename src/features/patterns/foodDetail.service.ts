@@ -61,7 +61,7 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
 
     supabase
       .from("medicine_entries")
-      .select("id,taken_at")
+      .select("id,taken_at,medicine_id,dose,unit")
       .eq("user_id", userId)
       .gte("taken_at", startIso)
       .lte("taken_at", endIso)
@@ -98,13 +98,44 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
     }),
   );
 
-  const medicines: MedicineObservation[] = (medicinesResult.data ?? []).map(
-    (item) => ({
-      id: item.id,
+  const medicineEntries = medicinesResult.data ?? [];
 
-      occurredAt: item.taken_at,
-    }),
-  );
+  const medicineIds = [
+    ...new Set(medicineEntries.map((item) => item.medicine_id)),
+  ];
+
+  const medicineNameById = new Map<string, string>();
+
+  if (medicineIds.length > 0) {
+    const { data: medicineCatalog, error: medicineCatalogError } =
+      await supabase
+        .from("medicines")
+        .select("id,name")
+        .eq("user_id", userId)
+        .in("id", medicineIds);
+
+    if (medicineCatalogError) {
+      throw medicineCatalogError;
+    }
+
+    for (const item of medicineCatalog ?? []) {
+      medicineNameById.set(item.id, item.name);
+    }
+  }
+
+  const medicines: MedicineObservation[] = medicineEntries.map((item) => ({
+    id: item.id,
+
+    occurredAt: item.taken_at,
+
+    medicineId: item.medicine_id,
+
+    medicineName: medicineNameById.get(item.medicine_id),
+
+    dose: item.dose === null ? null : Number(item.dose),
+
+    unit: item.unit,
+  }));
 
   if (allEntries.length === 0) {
     return buildFoodDetailReport({
@@ -126,15 +157,6 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
 
   const allEntryIds = allEntries.map((entry) => entry.id);
 
-  /*
-   * Una sola consulta para todos los items del periodo.
-   *
-   * Esto permite crear:
-   *
-   * - exposiciones del alimento seleccionado;
-   * - alimentos concurrentes;
-   * - comidas donde el alimento NO estuvo presente.
-   */
   const { data: allItems, error: allItemsError } = await supabase
     .from("food_entry_items")
     .select("food_entry_id,food_id")
@@ -191,11 +213,6 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
     itemsByEntry.set(item.food_entry_id, current);
   }
 
-  /*
-   * Todas las exposiciones del periodo.
-   *
-   * Éstas alimentan el comparador del motor.
-   */
   const comparisonExposures: FoodExposure[] = [];
 
   for (const item of items) {
@@ -260,6 +277,7 @@ export async function getFoodDetailReport(userId: string, foodId: string) {
           item,
         ): item is {
           foodId: string;
+
           foodName: string;
         } => item !== null,
       );

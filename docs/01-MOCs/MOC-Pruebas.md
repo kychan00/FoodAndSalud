@@ -155,3 +155,7 @@ repetido ocho veces.
 ## Factores concurrentes
 
 - [[Prueba-Factores-Concurrentes]]
+
+## Medicamentos específicos
+
+- [[Prueba-Medicamentos-Especificos]]

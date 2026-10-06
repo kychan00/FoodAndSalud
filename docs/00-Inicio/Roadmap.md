@@ -421,3 +421,30 @@ estado: activo
 - [x] ADR-0027
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.10 — Medicamentos específicos
+
+- [x] Conservar medicine_id
+- [x] Recuperar nombre desde catálogo
+- [x] Conservar dosis
+- [x] Conservar unidad
+- [x] Asociar tomas con ventana efectiva
+- [x] Identificar medicamento por exposición
+- [x] Comparar con medicamento
+- [x] Comparar sin medicamento
+- [x] Calcular diferencia en pp
+- [x] Detectar medicamento inseparable
+- [x] Detectar pocos datos
+- [x] Detectar mayor cuando aparece
+- [x] Detectar menor cuando aparece
+- [x] Detectar diferencia pequeña
+- [x] Calcular mediana temporal
+- [x] Mostrar número de tomas
+- [x] Mostrar dosis registradas
+- [x] Mostrar nombre en historial
+- [x] Mantener fixtures históricos compatibles
+- [x] Tests del motor
+- [x] Test QA
+- [x] ADR-0028
+- [x] Documentación Obsidian
+- [x] Validación visual

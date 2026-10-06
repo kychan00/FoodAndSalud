@@ -110,3 +110,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 
 - [[Factores-Concurrentes]]
 - [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]
+
+## Medicamentos específicos
+
+- [[Medicamentos-Especificos]]
+- [[ADR-0028-Identidad-de-Medicamento-en-Patrones]]

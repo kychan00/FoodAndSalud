@@ -98,3 +98,11 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Lenguaje causal
 
 - [[ADR-0027-Factores-Concurrentes-No-Confusores-Causales]]
+
+## Identidad de Medicina
+
+- [[ADR-0028-Identidad-de-Medicamento-en-Patrones]]
+
+## Guards QA
+
+- [[BUG-0014-Guard-QA-Nombre-Real-de-Medicamento]]

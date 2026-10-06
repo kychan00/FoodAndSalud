@@ -12,6 +12,7 @@ import type {
 import type {
   FoodDetailBathroomOutcome,
   FoodDetailExposureInput,
+  FoodDetailMedicineContext,
   FoodDetailReport,
   FoodDetailWindow,
 } from "./foodDetail.types";
@@ -64,6 +65,25 @@ function getBathroomsAfter(
     );
 }
 
+function getMedicinesAfter(
+  exposure: FoodDetailExposureInput,
+  medicines: MedicineObservation[],
+  hours: number,
+  boundaryByEntry: Map<string, MealWindowBoundary>,
+) {
+  const boundary = getBoundary(exposure, boundaryByEntry);
+
+  return medicines
+    .filter((medicine) =>
+      isEventInsideMealWindow(boundary, medicine.occurredAt, hours),
+    )
+    .sort(
+      (left, right) =>
+        new Date(left.occurredAt).getTime() -
+        new Date(right.occurredAt).getTime(),
+    );
+}
+
 function toOutcome(
   exposure: FoodDetailExposureInput,
   bathroom: BathroomObservation,
@@ -82,6 +102,27 @@ function toOutcome(
     adverse: isBathroomAdverse(bathroom),
 
     elapsedHours: hoursBetween(exposure.eatenAt, bathroom.occurredAt),
+  };
+}
+
+function toMedicineContext(
+  exposure: FoodDetailExposureInput,
+  medicine: MedicineObservation,
+): FoodDetailMedicineContext {
+  return {
+    id: medicine.id,
+
+    medicineId: medicine.medicineId ?? null,
+
+    medicineName: medicine.medicineName ?? null,
+
+    occurredAt: medicine.occurredAt,
+
+    elapsedHours: hoursBetween(exposure.eatenAt, medicine.occurredAt),
+
+    dose: medicine.dose ?? null,
+
+    unit: medicine.unit ?? null,
   };
 }
 
@@ -261,13 +302,20 @@ export function buildFoodDetailReport({
         boundaryByEntry,
       );
 
+      const linkedMedicines = getMedicinesAfter(
+        exposure,
+        medicines,
+        24,
+        boundaryByEntry,
+      );
+
       const firstBathroom = linkedBathrooms[0] ?? null;
 
       const firstAdverseBathroom =
         linkedBathrooms.find(isBathroomAdverse) ?? null;
 
-      const medicineOverlap = medicines.some((medicine) =>
-        isEventInsideMealWindow(boundary, medicine.occurredAt, 24),
+      const medicineContexts = linkedMedicines.map((medicine) =>
+        toMedicineContext(exposure, medicine),
       );
 
       return {
@@ -291,7 +339,9 @@ export function buildFoodDetailReport({
           ? toOutcome(exposure, firstAdverseBathroom)
           : null,
 
-        medicineOverlap,
+        medicineOverlap: medicineContexts.length > 0,
+
+        medicines: medicineContexts,
 
         windowTruncated: isMealWindowTruncated(boundary, 24),
 

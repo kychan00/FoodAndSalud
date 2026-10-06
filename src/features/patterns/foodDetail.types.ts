@@ -60,6 +60,26 @@ export interface FoodDetailBathroomOutcome {
   elapsedHours: number;
 }
 
+export interface FoodDetailMedicineContext {
+  id: string;
+
+  /*
+   * Pueden ser null en fixtures antiguos que únicamente
+   * registraban que existió "alguna Medicina".
+   */
+  medicineId: string | null;
+
+  medicineName: string | null;
+
+  occurredAt: string;
+
+  elapsedHours: number;
+
+  dose: number | null;
+
+  unit: string | null;
+}
+
 export interface FoodExposureHistoryItem {
   entryId: string;
 
@@ -78,6 +98,8 @@ export interface FoodExposureHistoryItem {
   firstAdverseBathroom: FoodDetailBathroomOutcome | null;
 
   medicineOverlap: boolean;
+
+  medicines: FoodDetailMedicineContext[];
 
   windowTruncated: boolean;
 
