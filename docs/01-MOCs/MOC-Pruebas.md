@@ -114,3 +114,11 @@ repetido ocho veces.
 
 - [[Prueba-QA-Detalle-Alimento]]
 - [[ADR-0019-Vista-Compartida-Real-QA]]
+
+## Combinaciones
+
+- [[Prueba-Combinaciones-Alimentos]]
+
+## TypeScript y fixtures
+
+- [[BUG-0007-Type-Widening-Fixture-QA]]

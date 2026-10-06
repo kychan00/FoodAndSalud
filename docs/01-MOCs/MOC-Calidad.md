@@ -60,3 +60,7 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 ## Automatización
 
 - [[BUG-0006-Parche-PatternsPage-Dependiente-de-Formato]]
+
+## TypeScript
+
+- [[BUG-0007-Type-Widening-Fixture-QA]]

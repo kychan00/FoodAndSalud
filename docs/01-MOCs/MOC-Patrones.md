@@ -35,3 +35,13 @@ fecha: 2026-10-06
 
 - [[Prueba-QA-Detalle-Alimento]]
 - [[ADR-0019-Vista-Compartida-Real-QA]]
+
+## Combinaciones
+
+- [[Analisis-de-Combinaciones]]
+- [[ADR-0020-Comparar-Contextos-No-Culpables]]
+- [[Prueba-Combinaciones-Alimentos]]
+
+## Bugs QA
+
+- [[BUG-0007-Type-Widening-Fixture-QA]]

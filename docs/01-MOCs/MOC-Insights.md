@@ -76,3 +76,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 ## QA de explicabilidad
 
 - [[Prueba-QA-Detalle-Alimento]]
+
+## Desambiguación
+
+- [[Analisis-de-Combinaciones]]
+- [[ADR-0020-Comparar-Contextos-No-Culpables]]

@@ -248,3 +248,26 @@ estado: activo
 - [x] Tests del adaptador
 - [x] Documentación MOC Pruebas
 - [ ] Validación visual de todos los escenarios
+
+## Fase 3.2 — Alimento vs combinaciones
+
+- [x] Detectar alimentos concurrentes
+- [x] Comparar con alimento presente
+- [x] Comparar sin alimento concurrente
+- [x] Calcular diferencia porcentual
+- [x] Detectar combinaciones inseparables
+- [x] Detectar pocos datos
+- [x] Detectar coincidencia mayor
+- [x] Detectar coincidencia menor
+- [x] Detectar tasas similares
+- [x] Calcular exposiciones sin acompañantes
+- [x] Integrar en detalle real
+- [x] Integrar en detalle QA
+- [x] Nuevo escenario Café solo vs Café + Leche
+- [x] Tests unitarios
+- [x] Tests QA
+- [x] Documentación Obsidian
+- [ ] Validación visual
+- [ ] Comparaciones con ventanas 6 / 12 / 24 h
+
+- [x] BUG-0007 type widening en fixture QA

@@ -14,6 +14,8 @@ import type { AssociationSignal } from "../association.types";
 
 import type { FoodDetailReport } from "../foodDetail.types";
 
+import { FoodCombinationAnalysis } from "./FoodCombinationAnalysis";
+
 import { FoodHistoryChart } from "./FoodHistoryChart";
 
 import { FoodWindowChart } from "./FoodWindowChart";
@@ -182,6 +184,8 @@ export function FoodDetailContent({
       </section>
 
       <FoodWindowChart windows={data.windows} />
+
+      <FoodCombinationAnalysis report={data} />
 
       <FoodHistoryChart
         foodName={data.foodName}

@@ -276,3 +276,26 @@ FoodDetailContent
 La interfaz visual es compartida.
 
 Esto permite probar la pantalla real sin contaminar los datos del usuario.
+
+## Fase 3.2 — Comparación de combinaciones
+
+El detalle del alimento ya puede comparar contextos.
+
+Ejemplo:
+
+Café + Leche
+vs
+Café sin Leche
+
+El motor distingue:
+
+- combinación con mayor coincidencia;
+- combinación con menor coincidencia;
+- tasas similares;
+- pocos datos;
+- alimentos inseparables.
+
+Cuando dos alimentos aparecen siempre juntos, FoodAndSalud declara que no puede
+separarlos con la información disponible.
+
+No se asigna causalidad automática.
