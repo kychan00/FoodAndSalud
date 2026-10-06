@@ -142,7 +142,7 @@ export function FoodDetailContent({
 
         <p>
           {data.association && data.association.evaluableExposures > 0
-            ? `${data.association.adverseExposures} de ${data.association.evaluableExposures} exposiciones evaluables tuvieron una respuesta marcada dentro de 24 horas.`
+            ? `${data.association.adverseExposures} de ${data.association.evaluableExposures} exposiciones evaluables tuvieron una respuesta marcada dentro de su ventana efectiva posterior a la comida.`
             : "Todavía no hay suficientes exposiciones evaluables para interpretar este alimento."}
         </p>
       </Card>
@@ -182,6 +182,26 @@ export function FoodDetailContent({
           <span>Con Medicina</span>
         </Card>
       </section>
+
+      {data.association && data.association.truncatedExposures > 0 ? (
+        <Card className="food-detail-censoring">
+          <strong>Ventanas interrumpidas por otra comida</strong>
+
+          <p>
+            {data.association.truncatedExposures}{" "}
+            {data.association.truncatedExposures === 1
+              ? "exposición terminó"
+              : "exposiciones terminaron"}{" "}
+            antes del máximo de 24 horas porque se registró una comida
+            posterior.
+          </p>
+
+          <p>
+            Las evacuaciones registradas después de esa nueva comida no se
+            atribuyen también a {data.foodName}.
+          </p>
+        </Card>
+      ) : null}
 
       <FoodWindowChart windows={data.windows} />
 
@@ -304,10 +324,19 @@ export function FoodDetailContent({
                   </div>
                 ) : null}
 
+                {item.windowTruncated ? (
+                  <div className="food-detail-history-item__window">
+                    <Clock3 size={16} />
+                    Ventana efectiva:{" "}
+                    <strong>{item.effectiveWindowHours.toFixed(1)} h</strong>.
+                    Terminó al registrarse otra comida.
+                  </div>
+                ) : null}
+
                 {item.medicineOverlap ? (
                   <div className="food-detail-history-item__medicine">
                     <Pill size={16} />
-                    Medicina presente dentro de las siguientes 24 h
+                    Medicina presente dentro de la ventana efectiva
                   </div>
                 ) : null}
               </Card>

@@ -142,3 +142,16 @@
   background: var(--surface-muted);
   font-size: 0.72rem !important;
 }
+
+.food-association__censoring {
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-bathroom-soft);
+  color: var(--text-secondary);
+  font-size: 0.72rem !important;
+  line-height: 1.5;
+}
+
+.food-association__censoring strong {
+  color: var(--color-bathroom);
+}

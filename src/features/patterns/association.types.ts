@@ -63,6 +63,12 @@ export interface FoodAssociation {
 
   medicineOverlapExposures: number;
 
+  /*
+   * Exposiciones cuya ventana nominal de 24 h terminó
+   * antes porque se registró otra comida.
+   */
+  truncatedExposures: number;
+
   signal: AssociationSignal;
   confidence: AssociationConfidence;
 
@@ -85,6 +91,8 @@ export interface AssociationReport {
   totalMealWindows: number;
   totalEvaluableMealWindows: number;
   totalAdverseMealWindows: number;
+
+  totalTruncatedMealWindows: number;
 
   /*
    * Métrica descriptiva secundaria.

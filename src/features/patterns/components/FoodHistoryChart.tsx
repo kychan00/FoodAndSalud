@@ -181,7 +181,10 @@ export function FoodHistoryChart({
                       </strong>
 
                       {point.bristol === null ? (
-                        <span>Sin evacuación registrada dentro de 24 h</span>
+                        <span>
+                          Sin evacuación registrada dentro de la ventana
+                          efectiva
+                        </span>
                       ) : (
                         <>
                           <span>Bristol {point.bristol}</span>
@@ -232,8 +235,9 @@ export function FoodHistoryChart({
       </div>
 
       <p className="food-detail-chart__footnote">
-        Las exposiciones sin evacuación posterior permanecen sin evaluar; no se
-        consideran automáticamente resultados normales.
+        La ventana dura como máximo 24 horas y termina antes si se registra otra
+        comida. Las exposiciones sin evacuación dentro de su ventana permanecen
+        sin evaluar.
       </p>
     </section>
   );

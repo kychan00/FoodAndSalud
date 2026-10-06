@@ -25,6 +25,8 @@ export function FoodWindowChart({ windows }: FoodWindowChartProps) {
     evaluable: item.evaluableExposures,
 
     adverse: item.adverseExposures,
+
+    truncated: item.truncatedExposures,
   }));
 
   return (
@@ -36,7 +38,8 @@ export function FoodWindowChart({ windows }: FoodWindowChartProps) {
 
         <p>
           Qué porcentaje de exposiciones evaluables tuvo una respuesta marcada
-          dentro de cada ventana.
+          dentro de cada ventana. Si aparece otra comida antes, la ventana
+          anterior termina en ese momento.
         </p>
       </div>
 
@@ -69,9 +72,14 @@ export function FoodWindowChart({ windows }: FoodWindowChartProps) {
               const point = payload[0]?.payload as
                 | {
                     window: string;
+
                     rate: number;
+
                     evaluable: number;
+
                     adverse: number;
+
+                    truncated: number;
                   }
                 | undefined;
 
@@ -88,6 +96,12 @@ export function FoodWindowChart({ windows }: FoodWindowChartProps) {
                   </span>
 
                   <span>{point.rate}% con respuesta marcada</span>
+
+                  {point.truncated > 0 ? (
+                    <span>
+                      {point.truncated} ventanas interrumpidas por otra comida
+                    </span>
+                  ) : null}
                 </div>
               );
             }}

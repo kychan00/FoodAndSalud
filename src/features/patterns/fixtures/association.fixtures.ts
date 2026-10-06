@@ -1,3 +1,5 @@
+import { overlappingMealScenario } from "./overlapScenario";
+
 import {
   combinationDiscriminationScenario,
   delayedCombinationScenario,
@@ -337,6 +339,7 @@ function buildMixedMealScenario(): PatternQaScenario {
 }
 
 export const patternQaScenarios: PatternQaScenario[] = [
+  overlappingMealScenario,
   combinationDiscriminationScenario,
   delayedCombinationScenario,
   buildHighCoffeeScenario(),

@@ -9,9 +9,14 @@ import type {
   MedicineObservation,
 } from "./association.types";
 
-const OUTCOME_WINDOW_HOURS = 24;
+import {
+  buildMealWindowBoundaries,
+  isEventInsideMealWindow,
+  isMealWindowTruncated,
+  type MealWindowBoundary,
+} from "./mealWindow";
 
-const OUTCOME_WINDOW_MS = OUTCOME_WINDOW_HOURS * 60 * 60 * 1000;
+const OUTCOME_WINDOW_HOURS = 24;
 
 const PRIOR_WEIGHT = 4;
 
@@ -27,11 +32,7 @@ interface BuildAssociationReportInput {
   medicines: MedicineObservation[];
 }
 
-interface MealWindow {
-  entryId: string;
-
-  eatenAt: string;
-
+interface MealWindow extends MealWindowBoundary {
   foodIds: Set<string>;
 }
 
@@ -107,36 +108,53 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-function isWithinOutcomeWindow(start: number, candidate: string) {
-  const candidateTime = new Date(candidate).getTime();
+function dedupeFoodExposures(exposures: FoodExposure[]) {
+  const seen = new Set<string>();
 
-  const difference = candidateTime - start;
-
-  return difference > 0 && difference <= OUTCOME_WINDOW_MS;
-}
-
-function buildMealWindows(exposures: FoodExposure[]) {
-  const windows = new Map<string, MealWindow>();
+  const deduped: FoodExposure[] = [];
 
   for (const exposure of exposures) {
-    const current = windows.get(exposure.entryId);
+    const key = `${exposure.foodId}::${exposure.entryId}`;
 
-    if (current) {
-      current.foodIds.add(exposure.foodId);
-
+    if (seen.has(key)) {
       continue;
     }
 
-    windows.set(exposure.entryId, {
-      entryId: exposure.entryId,
+    seen.add(key);
 
-      eatenAt: exposure.eatenAt,
-
-      foodIds: new Set([exposure.foodId]),
-    });
+    deduped.push(exposure);
   }
 
-  return [...windows.values()];
+  return deduped;
+}
+
+function buildMealWindows(exposures: FoodExposure[]): MealWindow[] {
+  const boundaries = buildMealWindowBoundaries(exposures);
+
+  const foodIdsByEntry = new Map<string, Set<string>>();
+
+  for (const exposure of exposures) {
+    const current = foodIdsByEntry.get(exposure.entryId) ?? new Set<string>();
+
+    current.add(exposure.foodId);
+
+    foodIdsByEntry.set(exposure.entryId, current);
+  }
+
+  return boundaries.map((boundary) => ({
+    ...boundary,
+
+    foodIds: foodIdsByEntry.get(boundary.entryId) ?? new Set<string>(),
+  }));
+}
+
+function getLinkedBathrooms(
+  window: MealWindowBoundary,
+  bathrooms: BathroomObservation[],
+) {
+  return bathrooms.filter((bathroom) =>
+    isEventInsideMealWindow(window, bathroom.occurredAt, OUTCOME_WINDOW_HOURS),
+  );
 }
 
 function evaluateMealWindows(
@@ -148,11 +166,7 @@ function evaluateMealWindows(
   let adverseExposures = 0;
 
   for (const window of windows) {
-    const eatenAt = new Date(window.eatenAt).getTime();
-
-    const linkedBathrooms = bathrooms.filter((bathroom) =>
-      isWithinOutcomeWindow(eatenAt, bathroom.occurredAt),
-    );
+    const linkedBathrooms = getLinkedBathrooms(window, bathrooms);
 
     if (linkedBathrooms.length === 0) {
       continue;
@@ -177,26 +191,6 @@ function evaluateMealWindows(
   };
 }
 
-function dedupeFoodExposures(exposures: FoodExposure[]) {
-  const seen = new Set<string>();
-
-  const deduped: FoodExposure[] = [];
-
-  for (const exposure of exposures) {
-    const key = `${exposure.foodId}::${exposure.entryId}`;
-
-    if (seen.has(key)) {
-      continue;
-    }
-
-    seen.add(key);
-
-    deduped.push(exposure);
-  }
-
-  return deduped;
-}
-
 export function buildAssociationReport({
   days,
   totalFoodEntries,
@@ -209,21 +203,19 @@ export function buildAssociationReport({
   const bathroomEventAdverseRate =
     bathrooms.length > 0 ? adverseBathrooms.length / bathrooms.length : 0;
 
-  /*
-   * Una misma comida puede contener múltiples alimentos.
-   *
-   * Para la referencia global se cuenta UNA sola ventana
-   * por food_entry.
-   */
-  const mealWindows = buildMealWindows(exposures);
+  const uniqueExposures = dedupeFoodExposures(exposures);
+
+  const mealWindows = buildMealWindows(uniqueExposures);
+
+  const mealWindowByEntry = new Map(
+    mealWindows.map((window) => [window.entryId, window]),
+  );
 
   const globalMealStats = evaluateMealWindows(mealWindows, bathrooms);
 
-  /*
-   * Evita que el mismo alimento repetido accidentalmente
-   * dentro de una misma comida infle sus exposiciones.
-   */
-  const uniqueExposures = dedupeFoodExposures(exposures);
+  const totalTruncatedMealWindows = mealWindows.filter((window) =>
+    isMealWindowTruncated(window, OUTCOME_WINDOW_HOURS),
+  ).length;
 
   const exposuresByFood = new Map<string, FoodExposure[]>();
 
@@ -246,12 +238,24 @@ export function buildAssociationReport({
 
     let medicineOverlapExposures = 0;
 
-    for (const exposure of foodExposures) {
-      const eatenAt = new Date(exposure.eatenAt).getTime();
+    let truncatedExposures = 0;
 
-      const linkedBathrooms = bathrooms.filter((bathroom) =>
-        isWithinOutcomeWindow(eatenAt, bathroom.occurredAt),
-      );
+    for (const exposure of foodExposures) {
+      const window = mealWindowByEntry.get(exposure.entryId) ?? {
+        entryId: exposure.entryId,
+
+        eatenAt: exposure.eatenAt,
+
+        nextMealAt: null,
+
+        foodIds: new Set([exposure.foodId]),
+      };
+
+      if (isMealWindowTruncated(window, OUTCOME_WINDOW_HOURS)) {
+        truncatedExposures += 1;
+      }
+
+      const linkedBathrooms = getLinkedBathrooms(window, bathrooms);
 
       if (linkedBathrooms.length > 0) {
         evaluableExposures += 1;
@@ -270,7 +274,11 @@ export function buildAssociationReport({
       }
 
       const medicineOverlap = medicines.some((medicine) =>
-        isWithinOutcomeWindow(eatenAt, medicine.occurredAt),
+        isEventInsideMealWindow(
+          window,
+          medicine.occurredAt,
+          OUTCOME_WINDOW_HOURS,
+        ),
       );
 
       if (medicineOverlap) {
@@ -278,12 +286,6 @@ export function buildAssociationReport({
       }
     }
 
-    /*
-     * CONTROL INTERNO:
-     *
-     * ventanas de comida donde el alimento objetivo
-     * NO estuvo presente.
-     */
     const controlWindows = mealWindows.filter(
       (window) => !window.foodIds.has(foodId),
     );
@@ -293,16 +295,6 @@ export function buildAssociationReport({
     const comparisonSource: AssociationComparisonSource =
       controlStats.evaluableExposures > 0 ? "food_absent" : "all_meals";
 
-    /*
-     * Si existen comidas evaluables sin el alimento,
-     * son el comparador principal.
-     *
-     * Si el alimento aparece en todas las comidas,
-     * usamos la referencia global de ventanas de comida.
-     *
-     * Esto es conservador: si el alimento está presente
-     * siempre, la aplicación no inventa un control inexistente.
-     */
     const baselineAdverseRate =
       comparisonSource === "food_absent"
         ? controlStats.adverseRate
@@ -369,6 +361,8 @@ export function buildAssociationReport({
 
       medicineOverlapExposures,
 
+      truncatedExposures,
+
       signal,
 
       confidence,
@@ -403,6 +397,8 @@ export function buildAssociationReport({
     totalEvaluableMealWindows: globalMealStats.evaluableExposures,
 
     totalAdverseMealWindows: globalMealStats.adverseExposures,
+
+    totalTruncatedMealWindows,
 
     bathroomEventAdverseRate,
 

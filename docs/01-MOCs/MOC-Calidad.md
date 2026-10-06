@@ -78,3 +78,9 @@ Evitar que el proyecto dependa de recordar cómo se resolvió algo anteriormente
 
 - [[BUG-0009-Baseline-Denominadores-No-Comparables]]
 - [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]
+
+## Superposición temporal
+
+- [[BUG-0010-Doble-Atribucion-Ventanas-Superpuestas]]
+- [[BUG-0011-Parche-Import-Combination-Engine]]
+- [[ADR-0024-Censura-Por-Nueva-Comida]]

@@ -100,7 +100,7 @@ export function FoodAssociationCard({
               {association.adverseExposures} de {association.evaluableExposures}
             </strong>{" "}
             exposiciones evaluables coincidieron con una respuesta digestiva
-            marcada dentro de las siguientes 24 horas.
+            marcada dentro de su ventana efectiva posterior a la comida.
           </p>
         ) : (
           <p>
@@ -146,6 +146,18 @@ export function FoodAssociationCard({
             usa como referencia la frecuencia global por ventanas de comida.
           </p>
         )}
+
+        {association.truncatedExposures > 0 ? (
+          <p className="food-association__censoring">
+            <strong>{association.truncatedExposures}</strong>{" "}
+            {association.truncatedExposures === 1
+              ? "ventana terminó"
+              : "ventanas terminaron"}{" "}
+            antes del máximo de 24 horas porque se registró otra comida. Los
+            eventos posteriores a esa nueva comida no se atribuyen también a{" "}
+            {association.foodName}.
+          </p>
+        ) : null}
 
         {association.medicineOverlapExposures > 0 ? (
           <p className="food-association__confounder">

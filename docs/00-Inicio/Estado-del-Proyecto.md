@@ -378,3 +378,24 @@ Si no existen comidas sin un alimento determinado, se utiliza la referencia
 global por ventanas de comida.
 
 También se evita contar dos veces el mismo alimento dentro de una misma comida.
+
+## Fase 3.6 — Control de ventanas superpuestas
+
+Las ventanas de resultado dejan de solaparse libremente entre comidas.
+
+Regla:
+
+comida A
+→ ventana A
+→ nueva comida B
+→ termina ventana A
+→ comienza ventana B.
+
+Esto reduce la doble atribución de una misma evacuación a varias comidas
+sucesivas.
+
+La interfaz muestra cuántas ventanas fueron interrumpidas y la duración efectiva
+de cada exposición afectada.
+
+La estrategia es deliberadamente conservadora y puede reducir sensibilidad a
+latencias largas.

@@ -90,3 +90,8 @@ FoodAndSalud no debe presentar correlaciones como causalidad médica.
 ## Referencia comparable
 
 - [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]
+
+## Censura temporal
+
+- [[Ventanas-Interrumpidas-por-Nueva-Comida]]
+- [[ADR-0024-Censura-Por-Nueva-Comida]]

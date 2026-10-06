@@ -325,3 +325,26 @@ estado: activo
 - [x] ADR-0023
 - [x] Documentación Obsidian
 - [x] Validación visual
+
+## Fase 3.6 — Ventanas superpuestas
+
+- [x] Detectar siguiente comida
+- [x] Motor temporal compartido
+- [x] Cerrar ventana ante nueva comida
+- [x] Mantener máximo 24 h
+- [x] Aplicar a 6 / 12 / 24 h
+- [x] Aplicar a asociaciones
+- [x] Aplicar a baseline
+- [x] Aplicar a detalle
+- [x] Aplicar a combinaciones
+- [x] Aplicar a Medicina
+- [x] Contar ventanas interrumpidas
+- [x] Mostrar ventana efectiva
+- [x] Escenario QA de superposición
+- [x] Tests unitarios
+- [x] Tests QA
+- [x] BUG-0010
+- [x] BUG-0011
+- [x] ADR-0024
+- [x] Documentación Obsidian
+- [x] Validación visual

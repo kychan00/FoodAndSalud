@@ -160,6 +160,12 @@ export function PatternsPage() {
                   Son asociaciones temporales personales, no una demostración de
                   que un alimento sea la causa.
                 </p>
+
+                <p>
+                  Si se registra otra comida antes de terminar una ventana, la
+                  ventana anterior se cierra en ese momento para evitar atribuir
+                  la misma respuesta digestiva a varias comidas consecutivas.
+                </p>
               </div>
             </Card>
 

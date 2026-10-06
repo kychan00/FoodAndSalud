@@ -15,30 +15,46 @@ import type {
   FoodDetailWindow,
 } from "./foodDetail.types";
 
+import {
+  buildMealWindowBoundaries,
+  getEffectiveMealWindowHours,
+  isEventInsideMealWindow,
+  isMealWindowTruncated,
+  type MealWindowBoundary,
+} from "./mealWindow";
+
 const HOURS = [6, 12, 24] as const;
 
 function hoursBetween(start: string, end: string) {
   return (new Date(end).getTime() - new Date(start).getTime()) / 3_600_000;
 }
 
-function isInsideWindow(
-  exposureTime: string,
-  eventTime: string,
-  hours: number,
+function getBoundary(
+  exposure: FoodDetailExposureInput,
+  boundaryByEntry: Map<string, MealWindowBoundary>,
 ) {
-  const elapsed = hoursBetween(exposureTime, eventTime);
+  return (
+    boundaryByEntry.get(exposure.entryId) ?? {
+      entryId: exposure.entryId,
 
-  return elapsed > 0 && elapsed <= hours;
+      eatenAt: exposure.eatenAt,
+
+      nextMealAt: null,
+    }
+  );
 }
 
 function getBathroomsAfter(
-  exposureTime: string,
+  exposure: FoodDetailExposureInput,
   bathrooms: BathroomObservation[],
   hours: number,
+  boundaryByEntry: Map<string, MealWindowBoundary>,
 ) {
+  const boundary = getBoundary(exposure, boundaryByEntry);
+
   return bathrooms
     .filter((bathroom) =>
-      isInsideWindow(exposureTime, bathroom.occurredAt, hours),
+      isEventInsideMealWindow(boundary, bathroom.occurredAt, hours),
     )
     .sort(
       (left, right) =>
@@ -51,13 +67,27 @@ function buildWindow(
   hours: 6 | 12 | 24,
   exposures: FoodDetailExposureInput[],
   bathrooms: BathroomObservation[],
+  boundaryByEntry: Map<string, MealWindowBoundary>,
 ): FoodDetailWindow {
   let evaluableExposures = 0;
 
   let adverseExposures = 0;
 
+  let truncatedExposures = 0;
+
   for (const exposure of exposures) {
-    const linked = getBathroomsAfter(exposure.eatenAt, bathrooms, hours);
+    const boundary = getBoundary(exposure, boundaryByEntry);
+
+    if (isMealWindowTruncated(boundary, hours)) {
+      truncatedExposures += 1;
+    }
+
+    const linked = getBathroomsAfter(
+      exposure,
+      bathrooms,
+      hours,
+      boundaryByEntry,
+    );
 
     if (linked.length === 0) {
       continue;
@@ -81,6 +111,8 @@ function buildWindow(
 
     adverseRate:
       evaluableExposures > 0 ? adverseExposures / evaluableExposures : 0,
+
+    truncatedExposures,
   };
 }
 
@@ -94,11 +126,17 @@ export function buildFoodDetailReport({
   comparisonExposures,
 }: {
   foodId: string;
+
   foodName: string;
+
   days: number;
+
   exposures: FoodDetailExposureInput[];
+
   bathrooms: BathroomObservation[];
+
   medicines: MedicineObservation[];
+
   comparisonExposures?: FoodExposure[];
 }): FoodDetailReport {
   const associationExposures: FoodExposure[] = exposures.map((exposure) => ({
@@ -117,6 +155,12 @@ export function buildFoodDetailReport({
     analysisExposures.map((item) => item.entryId),
   ).size;
 
+  const mealContext = buildMealWindowBoundaries(analysisExposures);
+
+  const boundaryByEntry = new Map(
+    mealContext.map((boundary) => [boundary.entryId, boundary]),
+  );
+
   const associationReport = buildAssociationReport({
     days,
 
@@ -134,14 +178,16 @@ export function buildFoodDetailReport({
     null;
 
   const windows = HOURS.map((hours) =>
-    buildWindow(hours, exposures, bathrooms),
+    buildWindow(hours, exposures, bathrooms, boundaryByEntry),
   );
 
   const coFoodCounter = new Map<
     string,
     {
       foodId: string;
+
       foodName: string;
+
       count: number;
     }
   >();
@@ -163,6 +209,7 @@ export function buildFoodDetailReport({
       } else {
         coFoodCounter.set(coFood.foodId, {
           ...coFood,
+
           count: 1,
         });
       }
@@ -183,16 +230,19 @@ export function buildFoodDetailReport({
         new Date(right.eatenAt).getTime() - new Date(left.eatenAt).getTime(),
     )
     .map((exposure) => {
+      const boundary = getBoundary(exposure, boundaryByEntry);
+
       const linkedBathrooms = getBathroomsAfter(
-        exposure.eatenAt,
+        exposure,
         bathrooms,
         24,
+        boundaryByEntry,
       );
 
       const first = linkedBathrooms[0] ?? null;
 
       const medicineOverlap = medicines.some((medicine) =>
-        isInsideWindow(exposure.eatenAt, medicine.occurredAt, 24),
+        isEventInsideMealWindow(boundary, medicine.occurredAt, 24),
       );
 
       return {
@@ -223,12 +273,18 @@ export function buildFoodDetailReport({
           : null,
 
         medicineOverlap,
+
+        windowTruncated: isMealWindowTruncated(boundary, 24),
+
+        effectiveWindowHours: getEffectiveMealWindowHours(boundary, 24),
       };
     });
 
   return {
     foodId,
+
     foodName,
+
     days,
 
     totalExposures: exposures.length,
@@ -241,7 +297,10 @@ export function buildFoodDetailReport({
 
     history,
 
+    mealContext,
+
     bathrooms,
+
     medicines,
   };
 }

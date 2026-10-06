@@ -15,27 +15,32 @@ import type {
   FoodDetailReport,
 } from "./foodDetail.types";
 
-const WINDOWS: CombinationWindowHours[] = [6, 12, 24];
+import { isEventInsideMealWindow, type MealWindowBoundary } from "./mealWindow";
 
-function elapsedHours(start: string, end: string) {
-  return (new Date(end).getTime() - new Date(start).getTime()) / 3_600_000;
-}
+const WINDOWS: CombinationWindowHours[] = [6, 12, 24];
 
 function getStats(
   exposures: FoodDetailExposureInput[],
   bathrooms: BathroomObservation[],
   hours: CombinationWindowHours,
+  boundaryByEntry: Map<string, MealWindowBoundary>,
 ): CombinationStats {
   let evaluableExposures = 0;
 
   let adverseExposures = 0;
 
   for (const exposure of exposures) {
-    const linked = bathrooms.filter((bathroom) => {
-      const elapsed = elapsedHours(exposure.eatenAt, bathroom.occurredAt);
+    const boundary = boundaryByEntry.get(exposure.entryId) ?? {
+      entryId: exposure.entryId,
 
-      return elapsed > 0 && elapsed <= hours;
-    });
+      eatenAt: exposure.eatenAt,
+
+      nextMealAt: null,
+    };
+
+    const linked = bathrooms.filter((bathroom) =>
+      isEventInsideMealWindow(boundary, bathroom.occurredAt, hours),
+    );
 
     if (linked.length === 0) {
       continue;
@@ -92,6 +97,7 @@ function buildWindowComparison({
   withoutExposures,
   bathrooms,
   allExposureCount,
+  boundaryByEntry,
 }: {
   hours: CombinationWindowHours;
 
@@ -102,10 +108,17 @@ function buildWindowComparison({
   bathrooms: BathroomObservation[];
 
   allExposureCount: number;
-}): CombinationWindowComparison {
-  const together = getStats(togetherExposures, bathrooms, hours);
 
-  const without = getStats(withoutExposures, bathrooms, hours);
+  boundaryByEntry: Map<string, MealWindowBoundary>;
+}): CombinationWindowComparison {
+  const together = getStats(
+    togetherExposures,
+    bathrooms,
+    hours,
+    boundaryByEntry,
+  );
+
+  const without = getStats(withoutExposures, bathrooms, hours, boundaryByEntry);
 
   const status = getStatus(together, without, allExposureCount);
 
@@ -136,6 +149,10 @@ export function buildFoodCombinationReport(
     coFoods: item.coFoods,
   }));
 
+  const boundaryByEntry = new Map<string, MealWindowBoundary>(
+    report.mealContext.map((boundary) => [boundary.entryId, boundary]),
+  );
+
   const exactSoloExposures = exposures.filter(
     (exposure) => exposure.coFoods.length === 0,
   );
@@ -143,14 +160,22 @@ export function buildFoodCombinationReport(
   const exactSoloWindows = WINDOWS.map((hours) => ({
     hours,
 
-    stats: getStats(exactSoloExposures, report.bathrooms, hours),
+    stats: getStats(
+      exactSoloExposures,
+      report.bathrooms,
+      hours,
+      boundaryByEntry,
+    ),
   }));
 
   const exactSolo = exactSoloWindows.find((item) => item.hours === 24)
     ?.stats ?? {
     totalExposures: 0,
+
     evaluableExposures: 0,
+
     adverseExposures: 0,
+
     adverseRate: 0,
   };
 
@@ -176,10 +201,16 @@ export function buildFoodCombinationReport(
       const windows = WINDOWS.map((hours) =>
         buildWindowComparison({
           hours,
+
           togetherExposures,
+
           withoutExposures,
+
           bathrooms: report.bathrooms,
+
           allExposureCount: exposures.length,
+
+          boundaryByEntry,
         }),
       );
 
@@ -191,6 +222,7 @@ export function buildFoodCombinationReport(
 
       return {
         coFoodId,
+
         coFoodName,
 
         share:

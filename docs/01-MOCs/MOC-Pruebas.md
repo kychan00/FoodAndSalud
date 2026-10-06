@@ -138,3 +138,7 @@ repetido ocho veces.
 ## Baseline
 
 - [[Prueba-Baseline-Comparable]]
+
+## Superposición temporal
+
+- [[Prueba-Ventanas-Superpuestas]]

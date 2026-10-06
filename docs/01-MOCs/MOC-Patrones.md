@@ -61,3 +61,10 @@ fecha: 2026-10-06
 - [[BUG-0009-Baseline-Denominadores-No-Comparables]]
 - [[ADR-0023-Baseline-Por-Ventanas-de-Comida]]
 - [[Prueba-Baseline-Comparable]]
+
+## Superposición temporal
+
+- [[Ventanas-Interrumpidas-por-Nueva-Comida]]
+- [[ADR-0024-Censura-Por-Nueva-Comida]]
+- [[BUG-0010-Doble-Atribucion-Ventanas-Superpuestas]]
+- [[Prueba-Ventanas-Superpuestas]]
